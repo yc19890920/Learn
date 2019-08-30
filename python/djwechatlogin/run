@@ -1,0 +1,3 @@
+/home/python/pyenv/versions/Linux-Opration/bin/python manage.py runserver 0.0.0.0:9910
+
+/usr/local/u-mail/app/engine/bin/python manage.py runserver 0.0.0.0:9910

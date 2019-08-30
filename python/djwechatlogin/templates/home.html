@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>xxxx</title>
+    <meta name="keywords" content="U-Mail邮件营销平台"/>
+    <meta name="description" content="U-Mail邮件营销平台"/>
+    <meta name="viewport" content="width=device-width,initial-scale=0.5,user-scalable=no"/>
+    <script src="http://rescdn.qqmail.com/node/ww/wwopenmng/js/sso/wwLogin-1.0.0.js"></script>
+    <style type="text/css">
+        .txt-color-red{color:#a90329!important}.errornote{font-size: 95%;}
+    </style>
+</head>
+<body>
+<div class="weixinlogin">
+    <div class="weixinpass" style="padding-top: 10px !important;">
+        <div id="erweimaImg"></div>
+    </div>
+
+</div>
+</body>
+<script type="text/javascript">
+    window.onload = function(){
+        function guid() {
+            function S4() {
+                return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+            }
+            return (S4()+S4()+S4()+S4());
+        }
+        window.WwLogin({
+            "id" : "erweimaImg",
+            "appid": "ww6e71658ca5a36c82",
+            "agentid": "1000002",
+            "redirect_uri": "http%3A%2F%2Fmail.luzi.gq%2Fweixin%2Fwechat%2Fcallback%2F",
+            state: guid(),
+            "href" : "https://www.bestedm.org/static/login/css/login-weixin.css",
+        });
+    }
+</script>
+</html>

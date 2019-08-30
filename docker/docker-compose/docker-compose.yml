@@ -1,0 +1,18 @@
+#
+nginx:
+  container_name: nginx91
+  image: nginx:latest
+  ports:
+   - "8091:80"
+  volumes:
+       - /home/python/Learn/docker/docker-compose/wwwroot/8091:/usr/share/nginx/html
+  hostname: nginx.test.com
+
+nginx-php:
+  container_name: nginx92
+  image: nginx:latest
+  ports:
+   - "8092:80"
+  volumes:
+   - /home/python/Learn/docker/docker-compose/wwwroot/8092:/usr/share/nginx/html
+  hostname: nginx-php.test.com

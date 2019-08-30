@@ -1,0 +1,33 @@
+# ###############
+#  flask-redis, flask-app
+
+version: "3"
+services:
+  flask-redis:
+    image: redis
+    container_name: flask-redis
+    restart: always
+
+#
+  flask-app:
+    # image: redis
+    # image: composeapp ##从哪个镜像启动
+    image: flask-app:v1
+    container_name: flask-app
+    # 启动运行之后，执行哪些命令
+    command: python app.py
+    depends_on:
+       - flask-redis
+    build:
+       context: .
+       dockerfile: Dockerfile.alpine
+    volumes:
+        - ./web_file:/app/file
+    ports:
+        - "5000:5000"
+    restart: always
+    logging:
+       driver: json-file
+       options:
+         max-size: "200k"
+         max-file: "10"
