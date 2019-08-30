@@ -15,3 +15,8 @@
 - [Compose 模板文件](https://yeasy.gitbooks.io/docker_practice/compose/compose_file.html)
 - [Docker Compose 配置文件详解](https://www.jianshu.com/p/2217cfed29d7)
 - [Docker Compose 之进阶篇](https://www.cnblogs.com/sparkdev/p/9803554.html)
+- [docker-compose命令详解](https://www.cnblogs.com/ccorz/p/dockercompose-ming-ling-xian-ie.html)
+
+- [docker swarm集群](https://www.cnblogs.com/elvi/p/8424378.html)
+
+- [docker registry 私有仓库 安装配置、查询、删除](https://www.cnblogs.com/elvi/p/8384604.html)
