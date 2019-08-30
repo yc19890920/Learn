@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>WebSocket demo</title>
+    <style type="text/css">
+        body {
+            font-family: "Courier New", sans-serif;
+            text-align: center;
+        }
+        .buttons {
+            font-size: 4em;
+            display: flex;
+            justify-content: center;
+        }
+        .button, .value {
+            line-height: 1;
+            padding: 2rem;
+            margin: 2rem;
+            border: medium solid;
+            min-height: 1em;
+            min-width: 1em;
+        }
+        .button {
+            cursor: pointer;
+            user-select: none;
+        }
+        .minus {
+            color: red;
+        }
+        .plus {
+            color: green;
+        }
+        .value {
+            min-width: 2em;
+        }
+        .state {
+            font-size: 2em;
+        }
+    </style>
+</head>
+<body>
+<div class="buttons">
+    <div class="minus button">-</div>
+    <div class="value">?</div>
+    <div class="plus button">+</div>
+</div>
+<div class="state">
+    <span class="users">?</span> online
+</div>
+<script>
+    var minus = document.querySelector('.minus'),
+        plus = document.querySelector('.plus'),
+        value = document.querySelector('.value'),
+        users = document.querySelector('.users'),
+        websocket = new WebSocket("ws://192.168.1.24:10000/yc@test.com?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InljQHRlc3QuY29tIiwidXNlcl9pZCI6MjQwNSwic2hhcmVfdHlwZSI6ImFsbCIsInNoYXJlIjpmYWxzZSwib3JpZ2luYWxfaWQiOjI0MDUsImV4cCI6MTU2Mjc2MTY1OCwiZW1haWwiOiIifQ.PAH7JsZxsHrgTPTmJ8fiYwK8XW3zqLjgfjm8u6TfpJM");
+    websocket.onopen = function () {
+        // 使用send()方法发送数据
+        // var data = "这是测试数据"
+        var data = JSON.stringify({action: 'minus'})
+        websocket.send(data);
+        // alert("数据发送中:\n这是测试数据");
+    };
+    minus.onclick = function (event) {
+        websocket.send(JSON.stringify({action: 'minus'}));
+    }
+    plus.onclick = function (event) {
+        websocket.send(JSON.stringify({action: 'plus'}));
+    }
+    websocket.onmessage = function (event) {
+        data = JSON.parse(event.data);
+        switch (data.type) {
+            case 'state':
+                value.textContent = data.value;
+                break;
+            case 'users':
+                users.textContent = (
+                    data.count.toString() + " user" +
+                    (data.count == 1 ? "" : "s"));
+                break;
+            default:
+                console.error(
+                    "unsupported event", data);
+        }
+    };
+</script>
+</body>
+</html>
