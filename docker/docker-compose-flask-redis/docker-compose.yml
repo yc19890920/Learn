@@ -4,7 +4,8 @@
 version: "3"
 services:
   flask-redis:
-    image: redis
+    # image: redis
+    image: "redis:alpine"
     container_name: flask-redis
     restart: always
 
@@ -24,7 +25,7 @@ services:
     volumes:
         - ./web_file:/app/file
     ports:
-        - "5000:5000"
+        - "8000:5000"
     restart: always
     logging:
        driver: json-file
