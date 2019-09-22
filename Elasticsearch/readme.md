@@ -1,0 +1,7 @@
+- [Elasticsearch权威指南（中文版）](https://es.xiaoleilu.com/)
+- [终于有人把Elasticsearch原理讲透了！](http://developer.51cto.com/art/201904/594615.htm)
+- [全文搜索引擎 ElasticSearch 还是 Solr？](https://www.cnblogs.com/jajian/p/9801154.html)
+- [全文搜索引擎选ElasticSearch还是Solr？](https://blog.csdn.net/A_BlackMoon/article/details/89096077)
+- [Elasticsearch学习，请先看这一篇！](https://blog.csdn.net/makang110/article/details/80596017)
+- [Elasticsearch 快速开始](https://www.cnblogs.com/cjsblog/p/9439331.html)
+- [Elasticsearch 安装配置及学习](https://blog.csdn.net/Darryl_Tang/article/details/87995866)

@@ -23,6 +23,10 @@ kafka
 rabbitmq
 rsyslog
 etcd
+kafka
+elasticsearch
+Solr
+
 
 
 
