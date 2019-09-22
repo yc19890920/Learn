@@ -1,0 +1,10 @@
+# -*- coding: utf-8 -*-
+
+RABBITMQ_HOST = "192.168.181.130"
+RABBITMQ_POST = 10000
+
+# 测试虚拟主机
+RABBITMQ_VHOSTNAME = "my_vhost"
+
+RABBITMQ_USER = "yc"
+RABBITMQ_PASSWORD = "123456"
