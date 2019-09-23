@@ -1,0 +1,5 @@
+- [理解OAuth 2.0](http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html)
+- [理解RESTful架构](http://www.ruanyifeng.com/blog/2011/09/restful.html)
+- [RESTful API 设计指南](http://www.ruanyifeng.com/blog/2014/05/restful_api.html)
+- [Django REST framework API 指南](https://github.com/jianshijiuyou/django-rest-framework-api-guide)
+- [Django REST framework框架](https://blog.csdn.net/yangsen99/article/details/82505794)
