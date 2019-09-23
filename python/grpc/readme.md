@@ -1,5 +1,7 @@
 - [grpc/examples/python/](https://github.com/grpc/grpc/tree/master/examples/python)
 - [Python gRPC 入门](https://juejin.im/post/5b19590b6fb9a01e4b062391)
+- [gRPC + Python 入门到生产环境](https://zhuanlan.zhihu.com/p/34960247)
+- [Pure-Python gRPC implementation for asyncio](https://grpclib.readthedocs.io/en/latest/)
 
 
 1. 安装 gRPC

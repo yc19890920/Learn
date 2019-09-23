@@ -72,10 +72,10 @@ tail -100f ../redis.log
 
 4, 查看主从信息
 cli连接redis成功后, 输入 info replication
-![img/01master.jpg](01master.jpg)
+![img/01master.jpg](./img/01master.jpg)
 
 下面是其中一个slave的replication信息
-![img/01slave.jpg](01slave.jpg)
+![img/01slave.jpg](./img/01slave.jpg)
 
 5, 测试主从同步
 在master上写入变量, 在slave上查看是否同步, 此过程略.
@@ -86,7 +86,7 @@ cli连接redis成功后, 输入 info replication
 ```
 
 一个哨兵的日志如下, 可以看出哨兵正在监听,并已识别到2个slave
-![img/01sentinel.jpg](01sentinel.jpg)
+![img/01sentinel.jpg](./img/01sentinel.jpg)
 
 ## 故障转移
 模拟发生故障, 进入master主机172.31.175.142, kill掉redis-server进程.
@@ -116,21 +116,21 @@ cli连接redis成功后, 输入 info replication
 172.31.175.143 | 哨兵、slave
 172.31.175.144 | 哨兵、slave -> master
 
-![img/01failover.jpg](01failover.jpg)
+![img/01failover.jpg](./img/01failover.jpg)
 
 进入新的master 172.31.175.144, 查看redis的主从信息, 还剩一从172.31.175.143
-![img/01failover2.jpg](01failover2.jpg)
+![img/01failover2.jpg](./img/01failover2.jpg)
 
 ## 故障恢复
 模拟故障恢复,进入老的master 172.31.175.142, 重启刚才kill掉的redis, 之后查看其主从信息, 发现老的master已经变成slave了,如下
-![img/01recovery.jpg](01recovery.jpg)
+![img/01recovery.jpg](./img/01recovery.jpg)
 
 //因为172.31.175.142的redis.conf在故障转移时被修改了,所以重启之后就直接成了slave
 进入新的master 172.31.175.144下,再去查看最新的主从信息, 发现加入了新的slave, 如下
-![img/01recovery2.jpg](01recovery2.jpg)
+![img/01recovery2.jpg](./img/01recovery2.jpg)
 
 
 故障恢复之后, redis恢复到了一主二从三哨兵, 只不过master/slave换了地方, 如下
-![img/01recovery3.jpg](01recovery3.jpg)
+![img/01recovery3.jpg](./img/01recovery3.jpg)
 
 //若此时想要调整master/slave, 则需要手工操作, 所以为了方便起见, 建议在故障转移之前备份配置文件.
