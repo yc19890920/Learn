@@ -14,6 +14,8 @@ web 调试启动快捷键设置
   alias ycoperation="/etc/init.d/yc-webrun operation"
   alias ycedm="/etc/init.d/yc-webrun edmweb"
   alias yczhimeng="/etc/init.d/yc-webrun zhimeng"
+  alias ycgit="/etc/init.d/yc-webrun pycgitdel"
+  alias yclearn="/etc/init.d/yc-webrun pyclearndel"
 
  source ~/.bashrc
 
@@ -57,6 +59,16 @@ start(){
     return $?
 }
 
+delete_lern_pyc(){
+    cd /home/python/Learn
+    find . -name "*.pyc"  | xargs -n 10 rm -f
+}
+
+delete_git_pyc(){
+    cd /home/python/git
+    find . -name "*.pyc"  | xargs -n 10 rm -f
+}
+
 _RETURN=$? ;
 case "$1" in
     "webvue")
@@ -83,6 +95,12 @@ case "$1" in
         CMD="/home/python/pyenv/versions/edm_web/bin/python /home/python/zhi_meng/manage.py runserver 0.0.0.0:7070"
         start $CMD;
         _RETURN=$?;
+        ;;
+    "pycgitdel")
+        delete_git_pyc;
+        ;;
+    "pyclearndel")
+        delete_lern_pyc;
         ;;
     *)
         echo "Usage: $0 {webvue|operation|edmweb|zhimeng}"
