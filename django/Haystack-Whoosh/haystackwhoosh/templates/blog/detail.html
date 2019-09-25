@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+
+{% block title %} {{ article.title }} {% endblock %}
+
+{% block css_block %}
+<style>
+</style>
+{% endblock %}
+
+{% block page_content %}
+<div class="row">
+
+    <div class="span8">
+        <!-- 文章 -->
+        <article class="article-wrap">
+            <div class="article-head">
+                <a href="{% url 'article_detail' article.id %}" title="{{ article.title }}"><h3>{{ article.title }}</h3></a>
+            </div>
+            <div class="article-body">
+                {{ article.content | safe}}
+            </div>
+            <div class="article-foot">
+                {% if article.source %}
+                <p><small>来源：{{ article.source }}</small></p>
+                {% endif %}
+                <p class="text-right"><a><small>{{ article.auth|default_if_none:"" }}</small></a><small> 发布于 {{ article.created|date:"Y-m-d H:i" }}</small></p>
+            </div>
+        </article>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block jsblock %}
+{% endblock %}

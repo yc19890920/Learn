@@ -1,0 +1,35 @@
+
+检查数据表更新：
+/home/python/pyenv/versions/haystack/bin/python /home/python/Learn/django/Haystack-Whoosh/haystackwhoosh/manage.py makemigrations
+
+构建whoosh 全文索引：
+/home/python/pyenv/versions/haystack/bin/python /home/python/Learn/django/Haystack-Whoosh/haystackwhoosh/manage.py rebuild_index
+
+构建whoosh 全文索引:
+/home/python/pyenv/versions/haystack/bin/python /home/python/Learn/django/Haystack-Whoosh/haystackwhoosh/manage.py rebuild_index
+
+apt-get install libc6-dev gcc
+apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm
+1. 安装pyenv
+git clone https://github.com/yyuu/pyenv.git  /home/python/pyenv
+
+2. 配置
+```
+echo 'export PATH=/home/python/pyenv/bin:$PATH' >> ~/.bashrc
+echo 'export PYENV_ROOT=/home/python/pyenv' >> ~/.bashrc
+echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+source .bashrc
+```
+
+3. 查看可以安装的Python的版本： pyenv install --list
+4. 安装python：pyenv install 3.7.0 -v
+5. 刷新： pyenv rehash
+6. 查看已安装： pyenv versions
+7. 设置全局：  pyenv global 3.7.0
+
+1. 安装 Pyenv-virtualenv插件
+```
+git clone https://github.com/yyuu/pyenv-virtualenv.git   /home/python/pyenv/plugins/pyenv-virtualenv
+echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
+source .bashrc
+```
