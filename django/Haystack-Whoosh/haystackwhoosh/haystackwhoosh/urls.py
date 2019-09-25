@@ -17,12 +17,17 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include, url
 from haystack.views import SearchView
-import haystack
+
+from app.blog.models import Article
+
+class MySeachView(SearchView):
+    pass
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path(r'^search/', include('haystack.urls')),
     path('blog/', include('app.blog.urls')),
     # 其实haystack.urls的内容为
-    url(r'^$', SearchView(), name='haystack_search'),
+    # url(r'^$', SearchView(), name='haystack_search'),
+    url(r'^$', MySeachView(), name='haystack_search'),
 ]

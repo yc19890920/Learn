@@ -12,5 +12,4 @@ class ArticleIndex(indexes.SearchIndex, indexes.Indexable):  # 类名必须为�
 
     def index_queryset(self, using=None):  # 重载index_..函数
         """Used when the entire index for model is updated."""
-        print(dir(self))
         return self.get_model().objects.all()
