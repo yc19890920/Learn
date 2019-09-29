@@ -3,12 +3,12 @@
 PYENV="/home/python/pyenv"
 VIRTUAENV="/home/python/pyenv/plugins/pyenv-virtualenv"
 PYTHON37="/home/python/pyenv/versions/3.7.0/bin/python"
-PYTHON_HAYSTACK="/home/python/pyenv/versions/haystack/bin/python"
-PYTHON_HAYSTACK_PIP="/home/python/pyenv/versions/haystack/bin/pip"
-
-PROJECT="/home/python/Learn/django/Haystack-Whoosh/haystackwhoosh"
-PROJECT_DIR="/home/python/Learn/django/Haystack-Whoosh"
-DJANGO_ADMIN="/home/python/pyenv/versions/haystack/bin/django-admin"
+PYTHON_PATH="/home/python/pyenv/versions/haystack/bin"
+PYTHON_HAYSTACK="$PYTHON_PATH/python"
+PYTHON_HAYSTACK_PIP="$PYTHON_PATH/pip"
+PROJECT_DIR="$(pwd)"
+PROJECT="$PROJECT_DIR/haystackwhoosh"
+DJANGO_ADMIN="$PYTHON_PATH/django-admin"
 
 update_apt(){
     sudo apt-get install libc6-dev gcc
@@ -66,10 +66,10 @@ create_project(){
 
     if [ -e $PROJECT_DIR/requirements.txt -a -s $PROJECT_DIR/requirements.txt ]; then
         rm $PROJECT_DIR/requirements.txt
-        $PYTHON_HAYSTACK_PIP install django whoosh django-haystack jieba hiredis redis meinheld gunicorn pymysql
+        $PYTHON_HAYSTACK_PIP install django whoosh django-haystack jieba hiredis redis meinheld gunicorn pymysql drf-haystack
         echo "requrements exists"
     else
-        $PYTHON_HAYSTACK_PIP install django whoosh django-haystack jieba hiredis redis meinheld gunicorn pymysql
+        $PYTHON_HAYSTACK_PIP install django whoosh django-haystack jieba hiredis redis meinheld gunicorn pymysql drf-haystack
     fi
 
     $PYTHON_HAYSTACK_PIP freeze > $PROJECT_DIR/requirements.txt
@@ -132,7 +132,7 @@ start_project(){
 
     # 构建whoosh 全文索引
     echo -e "构建whoosh 全文索引：\n $PYTHON_HAYSTACK $PROJECT/manage.py rebuild_index"
-    $PYTHON_HAYSTACK $PROJECT/manage.py rebuild_index   # or update_index
+    $PYTHON_HAYSTACK $PROJECT/manage.py rebuild_index  # or update_index
 
     echo -e "运行：\n $PYTHON_HAYSTACK  $PROJECT/manage.py runserver 0.0.0.0:9999"
     $PYTHON_HAYSTACK  $PROJECT/manage.py runserver 0.0.0.0:9999

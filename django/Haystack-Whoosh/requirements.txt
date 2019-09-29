@@ -1,12 +1,16 @@
 Django==2.2.5
 django-haystack==2.8.1
+djangorestframework==3.9.4
+drf-haystack==1.8.5
 greenlet==0.4.15
 gunicorn==19.9.0
 hiredis==1.0.0
 jieba==0.39
 meinheld==1.0.1
 PyMySQL==0.9.3
+python-dateutil==2.8.0
 pytz==2019.2
 redis==3.3.8
+six==1.12.0
 sqlparse==0.3.0
 Whoosh==2.7.4

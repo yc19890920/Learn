@@ -8,10 +8,13 @@
 - [使用Django haystack集成solr编写搜索引擎（一）](https://blog.csdn.net/sinat_33455447/article/details/59109075)
 - [使用haystack实现Django的全文搜索 -- Elasticsearch搜索引擎](https://blog.csdn.net/gymaisyl/article/details/84654469)
 
+- [WHOOSH使用手册（INDEX）（四）](https://www.cnblogs.com/mydriverc/articles/4135326.html)
 
 ## 配置
 ```
 pip install whoosh django-haystack jieba
+当然，如果你的Django项目中，使用到 REST framework，那么可以直接安装 pip install drf-haystack
+
 # 配置Django项目的settings.py里面的INSTALLED_APPS添加Haystack
 INSTALLED_APPS = [ 
         'django.contrib.admin',
