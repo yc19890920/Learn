@@ -72,7 +72,7 @@ delete_git_pyc(){
 _RETURN=$? ;
 case "$1" in
     "webvue")
-        CMD='/home/python/pyenv/versions/Linux-Opration/bin/python /home/python/Linux-WebVue/manage.py runserver 0.0.0.0:9990  > /dev/null 2>&1'
+        CMD='/home/python/pyenv/versions/Linux-Opration/bin/python /home/python/Linux-WebVue/manage.py runserver 0.0.0.0:9990'
         start $CMD;
         _RETURN=$?;
         ;;
