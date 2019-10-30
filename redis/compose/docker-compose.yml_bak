@@ -1,0 +1,55 @@
+version: '3'
+services:
+  redis-master:
+    image: redis:4.0.9
+    container_name: redis-master
+    environment:
+      TZ: Asia/Shanghai
+  redis-slave-1:
+    image: redis:4.0.9
+    container_name: redis-slave-1
+    command: redis-server --slaveof redis-master 6379
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+    links:
+      - redis-master
+  redis-slave-2:
+    image: redis:4.0.9
+    container_name: redis-slave-2
+    command: redis-server --slaveof redis-master 6379
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+    links:
+      - redis-master
+  redis-sentinel-1:
+    build: sentinel
+    container_name: redis-sentinel-1
+    environment:
+      - SENTINEL_DOWN_AFTER=5000
+      - SENTINEL_FAILOVER=5000
+    links:
+      - redis-master
+      - redis-slave-1
+      - redis-slave-2
+  redis-sentinel-2:
+    build: sentinel
+    container_name: redis-sentinel-2
+    environment:
+      - SENTINEL_DOWN_AFTER=5000
+      - SENTINEL_FAILOVER=5000
+    links:
+      - redis-master
+      - redis-slave-1
+      - redis-slave-2
+  redis-sentinel-3:
+    build: sentinel
+    container_name: redis-sentinel-3
+    environment:
+      - SENTINEL_DOWN_AFTER=5000
+      - SENTINEL_FAILOVER=5000
+    links:
+      - redis-master
+      - redis-slave-1
+      - redis-slave-2
