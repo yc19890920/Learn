@@ -1,8 +1,13 @@
 redis 队列对访问流量进行分流
 redis 限流系统的设计
 
-
+- [Redis 复制、Sentinel的搭建和原理说明](https://www.cnblogs.com/zhoujinyi/p/5570024.html)
 - [Redis哨兵模式（sentinel）学习总结及部署记录](https://www.cnblogs.com/nulige/articles/9269479.html)
+- [Detect Redis Config File](https://zhuanlan.zhihu.com/p/50101602)
+- [Redis 配置详解（一）](http://cs-cjl.com/2019/04_09_redis_configuration_1)
+- [Redis 配置详解（二）](http://cs-cjl.com/2019/04_09_redis_configuration_2)
+
+
 
 ## 获取并修改redis配置文件
 redis官方提供了一个配置文件样例，通过wget工具下载下来。我用的root用户，就直接下载到/root目录里了。

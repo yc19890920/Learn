@@ -1,0 +1,12 @@
+version: '2'
+services:
+  redis:
+    image: redis:latest
+    container_name: redis-2
+    ports:
+      - "6382:6379"
+    volumes:
+      - /home/python/Learn/redis/docker-redis-single/redis.conf:/etc/redis/redis.conf
+      - /home/python/Learn/redis/docker-redis-single/data2:/data
+    command: redis-server /etc/redis/redis.conf --appendonly yes
+    privileged: true
