@@ -38,7 +38,7 @@ pymongo==3.7.1
 PyMySQL==0.9.2
 python-paginate==0.3.7
 pytz==2018.4
-PyYAML==3.12
+PyYAML==5.1
 Represent==1.5.1
 sanic==0.7.0
 Sanic-Auth==0.2.0
