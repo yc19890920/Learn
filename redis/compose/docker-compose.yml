@@ -5,6 +5,11 @@ services:
     container_name: redis-master
     environment:
       TZ: Asia/Shanghai
+    volumes:
+      - ./data/redis-master/conf/redis-master.conf:/usr/local/etc/redis/redis.conf
+      - ./data/redis-master/data:/data
+    # ports:
+    #   - "36379:6379"
   redis-slave:
     image: redis:4.0.9
     # container_name: redis-slave
@@ -14,6 +19,8 @@ services:
       TZ: Asia/Shanghai
     links:
       - redis-master
+    # ports:
+    #   - "46379:6379"
   redis-sentinel:
     build: sentinel
     # container_name: redis-sentinel
@@ -23,3 +30,5 @@ services:
     links:
       - redis-master
       - redis-slave
+    # ports:
+    #  - "26379:26379"
