@@ -1,0 +1,9 @@
+Django==1.10.1
+django-redis==4.6.0
+MySQL-python==1.2.5
+redis
+hiredis
+django-redis-sentinel
+gunicorn
+meinheld
+setproctitle

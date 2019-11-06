@@ -1,0 +1,504 @@
+[2019-10-25 08:58:55 +0000] [17263] [INFO] Starting gunicorn 19.9.0
+[2019-10-25 08:58:55 +0000] [17263] [ERROR] Connection in use: ('0.0.0.0', 10000)
+[2019-10-25 08:58:55 +0000] [17263] [ERROR] Retrying in 1 second.
+[2019-10-25 08:58:56 +0000] [17263] [ERROR] Connection in use: ('0.0.0.0', 10000)
+[2019-10-25 08:58:56 +0000] [17263] [ERROR] Retrying in 1 second.
+[2019-10-25 08:58:57 +0000] [17263] [ERROR] Connection in use: ('0.0.0.0', 10000)
+[2019-10-25 08:58:57 +0000] [17263] [ERROR] Retrying in 1 second.
+[2019-10-25 08:58:58 +0000] [17263] [ERROR] Connection in use: ('0.0.0.0', 10000)
+[2019-10-25 08:58:58 +0000] [17263] [ERROR] Retrying in 1 second.
+[2019-10-25 08:58:59 +0000] [17263] [ERROR] Connection in use: ('0.0.0.0', 10000)
+[2019-10-25 08:58:59 +0000] [17263] [ERROR] Retrying in 1 second.
+[2019-10-25 08:59:00 +0000] [17263] [ERROR] Can't connect to ('0.0.0.0', 10000)
+[2019-10-25 10:20:21 +0000] [22497] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 2000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f668e204cf8>
+  errorlog: /home/python/Learn/redis/redis-in-action/django-sentinel/log/error.log
+  enable_stdio_inheritance: False
+  worker_class: egg:meinheld#gunicorn_worker
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f668e204b18>
+  pre_fork: <function pre_fork at 0x7f668e204c08>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 1000
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 17
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: django:6666
+  pre_exec: <function pre_exec at 0x7f668e216140>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f668e216668>
+  logconfig: None
+  logconfig_dict: {}
+  config: /home/python/Learn/redis/redis-in-action/django-sentinel/doc/web-django.conf.py
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f668e204a28>
+  reload_extra_files: []
+  accesslog: /home/python/Learn/redis/redis-in-action/django-sentinel/log/access.log
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f668e216230>
+  post_request: <function post_request at 0x7f668e2162a8>
+  user: 1000
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f668e204ed8>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 30
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f668e204938>
+  post_worker_init: <function post_worker_init at 0x7f668e204de8>
+  worker_abort: <function worker_abort at 0x7f668e216050>
+  child_exit: <function child_exit at 0x7f668e216398>
+  worker_exit: <function worker_exit at 0x7f668e216488>
+  default_proc_name: spike.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/python/Learn/redis/redis-in-action/django-sentinel
+  daemon: True
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['0.0.0.0:6666']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f668e216578>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-10-25 10:20:21 +0000] [22497] [INFO] Starting gunicorn 19.9.0
+[2019-10-25 10:20:21 +0000] [22497] [DEBUG] Arbiter booted
+[2019-10-25 10:20:21 +0000] [22497] [INFO] Listening at: http://0.0.0.0:6666 (22497)
+[2019-10-25 10:20:21 +0000] [22497] [INFO] Using worker: egg:meinheld#gunicorn_worker
+[2019-10-25 10:20:21 +0000] [22528] [INFO] Booting worker with pid: 22528
+[2019-10-25 10:20:21 +0000] [22536] [INFO] Booting worker with pid: 22536
+[2019-10-25 10:20:21 +0000] [22541] [INFO] Booting worker with pid: 22541
+[2019-10-25 10:20:21 +0000] [22542] [INFO] Booting worker with pid: 22542
+[2019-10-25 10:20:21 +0000] [22543] [INFO] Booting worker with pid: 22543
+[2019-10-25 10:20:21 +0000] [22544] [INFO] Booting worker with pid: 22544
+[2019-10-25 10:20:21 +0000] [22549] [INFO] Booting worker with pid: 22549
+[2019-10-25 10:20:21 +0000] [22556] [INFO] Booting worker with pid: 22556
+[2019-10-25 10:20:21 +0000] [22559] [INFO] Booting worker with pid: 22559
+[2019-10-25 10:20:21 +0000] [22560] [INFO] Booting worker with pid: 22560
+[2019-10-25 10:20:21 +0000] [22563] [INFO] Booting worker with pid: 22563
+[2019-10-25 10:20:21 +0000] [22567] [INFO] Booting worker with pid: 22567
+[2019-10-25 10:20:22 +0000] [22571] [INFO] Booting worker with pid: 22571
+[2019-10-25 10:20:22 +0000] [22574] [INFO] Booting worker with pid: 22574
+[2019-10-25 10:20:22 +0000] [22575] [INFO] Booting worker with pid: 22575
+[2019-10-25 10:20:22 +0000] [22578] [INFO] Booting worker with pid: 22578
+[2019-10-25 10:20:22 +0000] [22583] [INFO] Booting worker with pid: 22583
+[2019-10-25 10:20:22 +0000] [22497] [DEBUG] 17 workers
+[2019-10-25 10:26:13 +0000] [22497] [INFO] Handling signal: term
+[2019-10-25 10:26:13 +0000] [22560] [INFO] Worker exiting (pid: 22560)
+[2019-10-25 10:26:13 +0000] [22549] [INFO] Worker exiting (pid: 22549)
+[2019-10-25 10:26:13 +0000] [22574] [INFO] Worker exiting (pid: 22574)
+[2019-10-25 10:26:13 +0000] [22567] [INFO] Worker exiting (pid: 22567)
+[2019-10-25 10:26:13 +0000] [22528] [INFO] Worker exiting (pid: 22528)
+[2019-10-25 10:26:13 +0000] [22563] [INFO] Worker exiting (pid: 22563)
+[2019-10-25 10:26:13 +0000] [22536] [INFO] Worker exiting (pid: 22536)
+[2019-10-25 10:26:13 +0000] [22559] [INFO] Worker exiting (pid: 22559)
+[2019-10-25 10:26:13 +0000] [22575] [INFO] Worker exiting (pid: 22575)
+[2019-10-25 10:26:13 +0000] [22543] [INFO] Worker exiting (pid: 22543)
+[2019-10-25 10:26:13 +0000] [22571] [INFO] Worker exiting (pid: 22571)
+[2019-10-25 10:26:13 +0000] [22583] [INFO] Worker exiting (pid: 22583)
+[2019-10-25 10:26:13 +0000] [22542] [INFO] Worker exiting (pid: 22542)
+[2019-10-25 10:26:13 +0000] [22544] [INFO] Worker exiting (pid: 22544)
+[2019-10-25 10:26:13 +0000] [22556] [INFO] Worker exiting (pid: 22556)
+[2019-10-25 10:26:13 +0000] [22578] [INFO] Worker exiting (pid: 22578)
+[2019-10-25 10:26:13 +0000] [22541] [INFO] Worker exiting (pid: 22541)
+[2019-10-25 10:26:13 +0000] [22497] [INFO] Shutting down: Master
+[2019-10-25 10:26:25 +0000] [23408] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 2000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7ff6ce756cf8>
+  errorlog: /home/python/Learn/redis/redis-in-action/django-sentinel/log/error.log
+  enable_stdio_inheritance: False
+  worker_class: egg:meinheld#gunicorn_worker
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7ff6ce756b18>
+  pre_fork: <function pre_fork at 0x7ff6ce756c08>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 1000
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 17
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: django:6666
+  pre_exec: <function pre_exec at 0x7ff6ce768140>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7ff6ce768668>
+  logconfig: None
+  logconfig_dict: {}
+  config: /home/python/Learn/redis/redis-in-action/django-sentinel/doc/web-django.conf.py
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7ff6ce756a28>
+  reload_extra_files: []
+  accesslog: /home/python/Learn/redis/redis-in-action/django-sentinel/log/access.log
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7ff6ce768230>
+  post_request: <function post_request at 0x7ff6ce7682a8>
+  user: 1000
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7ff6ce756ed8>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 30
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7ff6ce756938>
+  post_worker_init: <function post_worker_init at 0x7ff6ce756de8>
+  worker_abort: <function worker_abort at 0x7ff6ce768050>
+  child_exit: <function child_exit at 0x7ff6ce768398>
+  worker_exit: <function worker_exit at 0x7ff6ce768488>
+  default_proc_name: spike.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/python/Learn/redis/redis-in-action/django-sentinel
+  daemon: True
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['0.0.0.0:6666']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7ff6ce768578>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-10-25 10:26:25 +0000] [23408] [INFO] Starting gunicorn 19.9.0
+[2019-10-25 10:26:25 +0000] [23408] [DEBUG] Arbiter booted
+[2019-10-25 10:26:25 +0000] [23408] [INFO] Listening at: http://0.0.0.0:6666 (23408)
+[2019-10-25 10:26:25 +0000] [23408] [INFO] Using worker: egg:meinheld#gunicorn_worker
+[2019-10-25 10:26:25 +0000] [23438] [INFO] Booting worker with pid: 23438
+[2019-10-25 10:26:25 +0000] [23442] [INFO] Booting worker with pid: 23442
+[2019-10-25 10:26:25 +0000] [23448] [INFO] Booting worker with pid: 23448
+[2019-10-25 10:26:25 +0000] [23451] [INFO] Booting worker with pid: 23451
+[2019-10-25 10:26:25 +0000] [23454] [INFO] Booting worker with pid: 23454
+[2019-10-25 10:26:25 +0000] [23456] [INFO] Booting worker with pid: 23456
+[2019-10-25 10:26:25 +0000] [23460] [INFO] Booting worker with pid: 23460
+[2019-10-25 10:26:25 +0000] [23465] [INFO] Booting worker with pid: 23465
+[2019-10-25 10:26:25 +0000] [23468] [INFO] Booting worker with pid: 23468
+[2019-10-25 10:26:25 +0000] [23469] [INFO] Booting worker with pid: 23469
+[2019-10-25 10:26:25 +0000] [23470] [INFO] Booting worker with pid: 23470
+[2019-10-25 10:26:25 +0000] [23479] [INFO] Booting worker with pid: 23479
+[2019-10-25 10:26:25 +0000] [23480] [INFO] Booting worker with pid: 23480
+[2019-10-25 10:26:25 +0000] [23481] [INFO] Booting worker with pid: 23481
+[2019-10-25 10:26:25 +0000] [23482] [INFO] Booting worker with pid: 23482
+[2019-10-25 10:26:25 +0000] [23487] [INFO] Booting worker with pid: 23487
+[2019-10-25 10:26:25 +0000] [23495] [INFO] Booting worker with pid: 23495
+[2019-10-25 10:26:25 +0000] [23408] [DEBUG] 17 workers
+[2019-10-25 10:28:53 +0000] [23408] [INFO] Handling signal: term
+[2019-10-25 10:28:53 +0000] [23438] [INFO] Worker exiting (pid: 23438)
+[2019-10-25 10:28:53 +0000] [23456] [INFO] Worker exiting (pid: 23456)
+[2019-10-25 10:28:53 +0000] [23495] [INFO] Worker exiting (pid: 23495)
+[2019-10-25 10:28:53 +0000] [23465] [INFO] Worker exiting (pid: 23465)
+[2019-10-25 10:28:53 +0000] [23460] [INFO] Worker exiting (pid: 23460)
+[2019-10-25 10:28:53 +0000] [23468] [INFO] Worker exiting (pid: 23468)
+[2019-10-25 10:28:53 +0000] [23479] [INFO] Worker exiting (pid: 23479)
+[2019-10-25 10:28:53 +0000] [23480] [INFO] Worker exiting (pid: 23480)
+[2019-10-25 10:28:53 +0000] [23470] [INFO] Worker exiting (pid: 23470)
+[2019-10-25 10:28:53 +0000] [23442] [INFO] Worker exiting (pid: 23442)
+[2019-10-25 10:28:53 +0000] [23482] [INFO] Worker exiting (pid: 23482)
+[2019-10-25 10:28:53 +0000] [23451] [INFO] Worker exiting (pid: 23451)
+[2019-10-25 10:28:53 +0000] [23454] [INFO] Worker exiting (pid: 23454)
+[2019-10-25 10:28:53 +0000] [23448] [INFO] Worker exiting (pid: 23448)
+[2019-10-25 10:28:53 +0000] [23469] [INFO] Worker exiting (pid: 23469)
+[2019-10-25 10:28:53 +0000] [23481] [INFO] Worker exiting (pid: 23481)
+[2019-10-25 10:28:53 +0000] [23487] [INFO] Worker exiting (pid: 23487)
+[2019-10-25 10:28:53 +0000] [23408] [INFO] Shutting down: Master
+[2019-10-25 10:29:00 +0000] [23760] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 2000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7f836b25acf8>
+  errorlog: /home/python/Learn/redis/redis-in-action/django-sentinel/log/error.log
+  enable_stdio_inheritance: False
+  worker_class: egg:meinheld#gunicorn_worker
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7f836b25ab18>
+  pre_fork: <function pre_fork at 0x7f836b25ac08>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 1000
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 17
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: django:10086
+  pre_exec: <function pre_exec at 0x7f836b26c140>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7f836b26c668>
+  logconfig: None
+  logconfig_dict: {}
+  config: /home/python/Learn/redis/redis-in-action/django-sentinel/doc/web-django.conf.py
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7f836b25aa28>
+  reload_extra_files: []
+  accesslog: /home/python/Learn/redis/redis-in-action/django-sentinel/log/access.log
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7f836b26c230>
+  post_request: <function post_request at 0x7f836b26c2a8>
+  user: 1000
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7f836b25aed8>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 30
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7f836b25a938>
+  post_worker_init: <function post_worker_init at 0x7f836b25ade8>
+  worker_abort: <function worker_abort at 0x7f836b26c050>
+  child_exit: <function child_exit at 0x7f836b26c398>
+  worker_exit: <function worker_exit at 0x7f836b26c488>
+  default_proc_name: spike.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/python/Learn/redis/redis-in-action/django-sentinel
+  daemon: True
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['0.0.0.0:10086']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7f836b26c578>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-10-25 10:29:00 +0000] [23760] [INFO] Starting gunicorn 19.9.0
+[2019-10-25 10:29:00 +0000] [23760] [DEBUG] Arbiter booted
+[2019-10-25 10:29:00 +0000] [23760] [INFO] Listening at: http://0.0.0.0:10086 (23760)
+[2019-10-25 10:29:00 +0000] [23760] [INFO] Using worker: egg:meinheld#gunicorn_worker
+[2019-10-25 10:29:00 +0000] [23790] [INFO] Booting worker with pid: 23790
+[2019-10-25 10:29:00 +0000] [23801] [INFO] Booting worker with pid: 23801
+[2019-10-25 10:29:00 +0000] [23804] [INFO] Booting worker with pid: 23804
+[2019-10-25 10:29:00 +0000] [23807] [INFO] Booting worker with pid: 23807
+[2019-10-25 10:29:00 +0000] [23808] [INFO] Booting worker with pid: 23808
+[2019-10-25 10:29:00 +0000] [23809] [INFO] Booting worker with pid: 23809
+[2019-10-25 10:29:00 +0000] [23812] [INFO] Booting worker with pid: 23812
+[2019-10-25 10:29:00 +0000] [23815] [INFO] Booting worker with pid: 23815
+[2019-10-25 10:29:00 +0000] [23818] [INFO] Booting worker with pid: 23818
+[2019-10-25 10:29:00 +0000] [23820] [INFO] Booting worker with pid: 23820
+[2019-10-25 10:29:00 +0000] [23822] [INFO] Booting worker with pid: 23822
+[2019-10-25 10:29:00 +0000] [23827] [INFO] Booting worker with pid: 23827
+[2019-10-25 10:29:01 +0000] [23830] [INFO] Booting worker with pid: 23830
+[2019-10-25 10:29:01 +0000] [23835] [INFO] Booting worker with pid: 23835
+[2019-10-25 10:29:01 +0000] [23836] [INFO] Booting worker with pid: 23836
+[2019-10-25 10:29:01 +0000] [23841] [INFO] Booting worker with pid: 23841
+[2019-10-25 10:29:01 +0000] [23844] [INFO] Booting worker with pid: 23844
+[2019-10-25 10:29:01 +0000] [23760] [DEBUG] 17 workers
+[2019-10-25 10:30:57 +0000] [23760] [INFO] Handling signal: term
+[2019-10-25 10:30:57 +0000] [23844] [INFO] Worker exiting (pid: 23844)
+[2019-10-25 10:30:57 +0000] [23812] [INFO] Worker exiting (pid: 23812)
+[2019-10-25 10:30:57 +0000] [23809] [INFO] Worker exiting (pid: 23809)
+[2019-10-25 10:30:57 +0000] [23820] [INFO] Worker exiting (pid: 23820)
+[2019-10-25 10:30:57 +0000] [23818] [INFO] Worker exiting (pid: 23818)
+[2019-10-25 10:30:57 +0000] [23808] [INFO] Worker exiting (pid: 23808)
+[2019-10-25 10:30:57 +0000] [23815] [INFO] Worker exiting (pid: 23815)
+[2019-10-25 10:30:57 +0000] [23841] [INFO] Worker exiting (pid: 23841)
+[2019-10-25 10:30:57 +0000] [23836] [INFO] Worker exiting (pid: 23836)
+[2019-10-25 10:30:57 +0000] [23790] [INFO] Worker exiting (pid: 23790)
+[2019-10-25 10:30:57 +0000] [23827] [INFO] Worker exiting (pid: 23827)
+[2019-10-25 10:30:57 +0000] [23830] [INFO] Worker exiting (pid: 23830)
+[2019-10-25 10:30:57 +0000] [23822] [INFO] Worker exiting (pid: 23822)
+[2019-10-25 10:30:57 +0000] [23801] [INFO] Worker exiting (pid: 23801)
+[2019-10-25 10:30:57 +0000] [23835] [INFO] Worker exiting (pid: 23835)
+[2019-10-25 10:30:57 +0000] [23804] [INFO] Worker exiting (pid: 23804)
+[2019-10-25 10:30:57 +0000] [23807] [INFO] Worker exiting (pid: 23807)
+[2019-10-25 10:30:57 +0000] [23760] [INFO] Shutting down: Master
+[2019-10-25 10:31:09 +0000] [24034] [DEBUG] Current configuration:
+  proxy_protocol: False
+  worker_connections: 2000
+  disable_redirect_access_to_syslog: False
+  statsd_host: None
+  max_requests_jitter: 0
+  post_fork: <function post_fork at 0x7ff24dd2dcf8>
+  errorlog: /home/python/Learn/redis/redis-in-action/django-sentinel/log/error.log
+  enable_stdio_inheritance: False
+  worker_class: egg:meinheld#gunicorn_worker
+  ssl_version: 2
+  suppress_ragged_eofs: True
+  syslog_facility: user
+  when_ready: <function when_ready at 0x7ff24dd2db18>
+  pre_fork: <function pre_fork at 0x7ff24dd2dc08>
+  cert_reqs: 0
+  preload_app: False
+  keepalive: 2
+  sendfile: None
+  reuse_port: False
+  worker_tmp_dir: None
+  group: 1000
+  umask: 0
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  workers: 17
+  graceful_timeout: 30
+  do_handshake_on_connect: False
+  spew: False
+  proc_name: django:10086
+  pre_exec: <function pre_exec at 0x7ff24dd3f140>
+  limit_request_fields: 100
+  pythonpath: None
+  on_exit: <function on_exit at 0x7ff24dd3f668>
+  logconfig: None
+  logconfig_dict: {}
+  config: /home/python/Learn/redis/redis-in-action/django-sentinel/doc/web-django.conf.py
+  pidfile: None
+  check_config: False
+  statsd_prefix: 
+  on_reload: <function on_reload at 0x7ff24dd2da28>
+  reload_extra_files: []
+  accesslog: /home/python/Learn/redis/redis-in-action/django-sentinel/log/access.log
+  reload_engine: auto
+  proxy_allow_ips: ['127.0.0.1']
+  pre_request: <function pre_request at 0x7ff24dd3f230>
+  post_request: <function post_request at 0x7ff24dd3f2a8>
+  user: 1000
+  forwarded_allow_ips: ['127.0.0.1']
+  worker_int: <function worker_int at 0x7ff24dd2ded8>
+  paste: None
+  raw_paste_global_conf: []
+  threads: 30
+  max_requests: 0
+  limit_request_line: 4094
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  certfile: None
+  on_starting: <function on_starting at 0x7ff24dd2d938>
+  post_worker_init: <function post_worker_init at 0x7ff24dd2dde8>
+  worker_abort: <function worker_abort at 0x7ff24dd3f050>
+  child_exit: <function child_exit at 0x7ff24dd3f398>
+  worker_exit: <function worker_exit at 0x7ff24dd3f488>
+  default_proc_name: spike.wsgi:application
+  loglevel: debug
+  syslog: False
+  syslog_prefix: None
+  chdir: /home/python/Learn/redis/redis-in-action/django-sentinel
+  daemon: True
+  syslog_addr: udp://localhost:514
+  ciphers: TLSv1
+  bind: ['0.0.0.0:10086']
+  raw_env: []
+  initgroups: False
+  capture_output: False
+  reload: False
+  limit_request_field_size: 8190
+  nworkers_changed: <function nworkers_changed at 0x7ff24dd3f578>
+  timeout: 30
+  keyfile: None
+  ca_certs: None
+  tmp_upload_dir: None
+  backlog: 2048
+  logger_class: gunicorn.glogging.Logger
+[2019-10-25 10:31:09 +0000] [24034] [INFO] Starting gunicorn 19.9.0
+[2019-10-25 10:31:09 +0000] [24034] [DEBUG] Arbiter booted
+[2019-10-25 10:31:09 +0000] [24034] [INFO] Listening at: http://0.0.0.0:10086 (24034)
+[2019-10-25 10:31:09 +0000] [24034] [INFO] Using worker: egg:meinheld#gunicorn_worker
+[2019-10-25 10:31:09 +0000] [24064] [INFO] Booting worker with pid: 24064
+[2019-10-25 10:31:09 +0000] [24073] [INFO] Booting worker with pid: 24073
+[2019-10-25 10:31:09 +0000] [24076] [INFO] Booting worker with pid: 24076
+[2019-10-25 10:31:09 +0000] [24077] [INFO] Booting worker with pid: 24077
+[2019-10-25 10:31:09 +0000] [24080] [INFO] Booting worker with pid: 24080
+[2019-10-25 10:31:09 +0000] [24081] [INFO] Booting worker with pid: 24081
+[2019-10-25 10:31:09 +0000] [24088] [INFO] Booting worker with pid: 24088
+[2019-10-25 10:31:10 +0000] [24091] [INFO] Booting worker with pid: 24091
+[2019-10-25 10:31:10 +0000] [24096] [INFO] Booting worker with pid: 24096
+[2019-10-25 10:31:10 +0000] [24099] [INFO] Booting worker with pid: 24099
+[2019-10-25 10:31:10 +0000] [24102] [INFO] Booting worker with pid: 24102
+[2019-10-25 10:31:10 +0000] [24105] [INFO] Booting worker with pid: 24105
+[2019-10-25 10:31:10 +0000] [24108] [INFO] Booting worker with pid: 24108
+[2019-10-25 10:31:10 +0000] [24111] [INFO] Booting worker with pid: 24111
+[2019-10-25 10:31:10 +0000] [24114] [INFO] Booting worker with pid: 24114
+[2019-10-25 10:31:10 +0000] [24115] [INFO] Booting worker with pid: 24115
+[2019-10-25 10:31:10 +0000] [24118] [INFO] Booting worker with pid: 24118
+[2019-10-25 10:31:10 +0000] [24034] [DEBUG] 17 workers
+[2019-10-25 10:33:41 +0000] [24034] [INFO] Handling signal: term
+[2019-10-25 10:33:41 +0000] [24064] [INFO] Worker exiting (pid: 24064)
+[2019-10-25 10:33:41 +0000] [24096] [INFO] Worker exiting (pid: 24096)
+[2019-10-25 10:33:41 +0000] [24080] [INFO] Worker exiting (pid: 24080)
+[2019-10-25 10:33:41 +0000] [24108] [INFO] Worker exiting (pid: 24108)
+[2019-10-25 10:33:41 +0000] [24073] [INFO] Worker exiting (pid: 24073)
+[2019-10-25 10:33:41 +0000] [24076] [INFO] Worker exiting (pid: 24076)
+[2019-10-25 10:33:41 +0000] [24091] [INFO] Worker exiting (pid: 24091)
+[2019-10-25 10:33:41 +0000] [24102] [INFO] Worker exiting (pid: 24102)
+[2019-10-25 10:33:41 +0000] [24077] [INFO] Worker exiting (pid: 24077)
+[2019-10-25 10:33:41 +0000] [24099] [INFO] Worker exiting (pid: 24099)
+[2019-10-25 10:33:41 +0000] [24111] [INFO] Worker exiting (pid: 24111)
+[2019-10-25 10:33:41 +0000] [24105] [INFO] Worker exiting (pid: 24105)
+[2019-10-25 10:33:41 +0000] [24081] [INFO] Worker exiting (pid: 24081)
+[2019-10-25 10:33:41 +0000] [24118] [INFO] Worker exiting (pid: 24118)
+[2019-10-25 10:33:41 +0000] [24114] [INFO] Worker exiting (pid: 24114)
+[2019-10-25 10:33:41 +0000] [24088] [INFO] Worker exiting (pid: 24088)
+[2019-10-25 10:33:41 +0000] [24115] [INFO] Worker exiting (pid: 24115)
+[2019-10-25 10:33:41 +0000] [24034] [INFO] Shutting down: Master
