@@ -26,3 +26,23 @@ python 基础数据结构：
 图（Graph）
 堆积（Heap）
 散列表（Hash table）
+
+
+排序数组
+排序链表
+调表
+B tree
+LSM tree
+Hash Map
+Fractal Tree
+红黑树  Red-Black-tree
+COLA
+
+
+对映射来说的关键特性：
+是否支持范围查找？
+是否能够处理更新？
+读写性能指标？
+是否面向磁盘结构？
+并行指标？
+内存占用

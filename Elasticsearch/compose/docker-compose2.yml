@@ -1,0 +1,88 @@
+version: '3'
+services:
+  es01:
+    image: elasticsearch:7.4.2
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - node.master=true
+      - node.data=true
+      - bootstrap.memory_lock=true
+      - http.cors.enabled=true
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - "discovery.zen.ping.unicast.hosts=es01,es02,es03"
+      - "discovery.zen.minimum_master_nodes=2"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/es01:/usr/share/elasticsearch/data
+      - ./logs/es01:/usr/share/elasticsearch/logs
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
+  es02:
+    image: elasticsearch:7.4.2
+    container_name: es02
+    environment:
+      - node.name=es02
+      - cluster.name=es-docker-cluster
+      - node.master=true
+      - node.data=true
+      - bootstrap.memory_lock=true
+      - http.cors.enabled=true
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - "discovery.zen.ping.unicast.hosts=es01,es02,es03"
+      - "discovery.zen.minimum_master_nodes=2"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/es02:/usr/share/elasticsearch/data
+      - ./logs/es02:/usr/share/elasticsearch/logs
+    networks:
+      - elastic
+  es03:
+    image: elasticsearch:7.4.2
+    container_name: es03
+    environment:
+      - node.name=es03
+      - cluster.name=es-docker-cluster
+      - node.master=true
+      - node.data=true
+      - bootstrap.memory_lock=true
+      - http.cors.enabled=true
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - "discovery.zen.ping.unicast.hosts=es01,es02,es03"
+      - "discovery.zen.minimum_master_nodes=2"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/es03:/usr/share/elasticsearch/data
+      - ./logs/es03:/usr/share/elasticsearch/logs
+    networks:
+      - elastic
+
+#volumes:
+#  data01:
+#    driver: local
+#  data02:
+#    driver: local
+#  data03:
+#    driver: local
+
+networks:
+  elastic:
+    driver: bridge

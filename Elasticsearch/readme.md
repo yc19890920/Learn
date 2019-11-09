@@ -15,5 +15,19 @@
 - [docker简易搭建ElasticSearch集群](https://blog.csdn.net/belonghuang157405/article/details/83301937)
 - [Docker 简单部署 ElasticSearch](https://www.cnblogs.com/jianxuanbing/p/9410800.html)
 
+
+- [一文了解 Elasticsearch 及其与 Python 的对接实现](https://juejin.im/post/5bad93efe51d450e9d64aede)
+- [python 使用 elasticsearch 常用方法（索引）](https://www.cnblogs.com/loveyouyou616/p/11573044.html)
+- [python 使用 elasticsearch 常用方法（检索）](https://www.cnblogs.com/loveyouyou616/p/11573080.html)
+- [python 使用 elasticsearch 常用方法（聚合）](https://www.cnblogs.com/loveyouyou616/p/11573104.html)
+- [Python 操作 ElasticSearch](https://www.cnblogs.com/shaosks/p/7592229.html)
+- [ElasticSearch文档](https://www.cnblogs.com/shaosks/p/7494761.html)
+- [ElasticSearch搜索](https://www.cnblogs.com/shaosks/p/7515227.html)
+- [ElasticSearch 排序](https://www.cnblogs.com/shaosks/p/7542076.html)
+- [ElasticSearch 结构化搜索](https://www.cnblogs.com/shaosks/p/7566985.html)
+- [ElasticSearch 安装中文分词器](https://www.cnblogs.com/shaosks/p/7525060.html)
+- [ElasticSearch 组合过滤器](https://www.cnblogs.com/shaosks/p/7567336.html)
+- [ElasticSearch 结构化搜索全文](https://www.cnblogs.com/shaosks/p/7568722.html)
+
 Elasticsearch: 集群内的原理 、 分布式文档存储 、 执行分布式检索 和 分片内部原理 
  结构化搜索 到 控制相关度

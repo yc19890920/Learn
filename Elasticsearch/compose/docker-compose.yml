@@ -1,0 +1,86 @@
+version: '3'
+services:
+  es01:
+    image: elasticsearch:6.7.0
+    container_name: es01
+    privileged: true
+    environment:
+      - cluster.name=elasticsearch-cluster
+      - node.name=es01
+      - node.master=true
+      - node.data=true
+      - bootstrap.memory_lock=true
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=es01,es02,es03"
+      - "discovery.zen.minimum_master_nodes=2"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/es01:/usr/share/elasticsearch/data
+      - ./logs/es01:/usr/share/elasticsearch/logs
+    ports:
+      - 9200:9200
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+  es02:
+    image: elasticsearch:6.7.0
+    container_name: es02
+    privileged: true
+    environment:
+      - cluster.name=elasticsearch-cluster
+      - node.name=es02
+      - node.master=true
+      - node.data=true
+      - bootstrap.memory_lock=true
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=es01,es02,es03"
+      - "discovery.zen.minimum_master_nodes=2"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/es02:/usr/share/elasticsearch/data
+      - ./logs/es02:/usr/share/elasticsearch/logs
+    ports:
+      - 9201:9200
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+  es03:
+    image: elasticsearch:6.7.0
+    container_name: es03
+    privileged: true
+    environment:
+      - cluster.name=elasticsearch-cluster
+      - node.name=es03
+      - node.master=true
+      - node.data=true
+      - bootstrap.memory_lock=true
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=es01,es02,es03"
+      - "discovery.zen.minimum_master_nodes=2"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data/es03:/usr/share/elasticsearch/data
+      - ./logs/es03:/usr/share/elasticsearch/logs
+    ports:
+      - 9202:9200
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
