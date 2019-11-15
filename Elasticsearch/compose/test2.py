@@ -60,7 +60,7 @@ def create_data():
         {"_index": INDEX, "_type": DOC_TYPE, "_id": 1, "_source": {"email": "1248644045@qq.com", "attrs": [1,2,3,4] } },
         {"_index": INDEX, "_type": DOC_TYPE, "_id": 2, "_source": {"email": "1248644045@qq.comr", "attrs": [4, 5, 6]}},
         {"_index": INDEX, "_type": DOC_TYPE, "_id": 3, "_source": {"email": "378704992@qq.com", "attrs": [3, 9]}},
-        {"_index": INDEX, "_type": DOC_TYPE, "_id": 4, "_source": {"email": "1248644045@163.com", "attrs": [2, 3]}},
+        {"_index": INDEX, "_type": DOC_TYPE, "_id": 4, "_source": {"email": "1248644045@163.com", "attrs": [2, 3], 'd': 'aaaa'}},
     ]
     success, result = bulk(es, actions, index=INDEX, raise_on_error=True)
     print(u"==================== 批量添加 ====================")
@@ -177,8 +177,8 @@ def search_data():
         "query": {
             "match_all": {}
         },
-        "from": 1,  # 从第二条数据开始， 即_id=3,2 两条数据， _id=4并不能获取
-        "size": 2,  # 获取2条数据
+        "from": 0,  # 从第二条数据开始， 即_id=3,2 两条数据， _id=4并不能获取
+        "size": 5,  # 获取2条数据
         "sort": { # 排序
             "_id": {
                 "order": "desc"  # 降序
@@ -200,6 +200,23 @@ def search_data():
                u'total': 4, u'max_score': 1.0},
      u'_shards': {u'successful': 5, u'failed': 0, u'skipped': 0, u'total': 5}, u'took': 3, u'timed_out': False}
      """
+
+    # 等于查询 attrs = 5
+    result = es.search(index=INDEX, size=1, body={
+        "query": {
+            "term": {
+                "attrs": 5
+            }
+        }
+    })
+    print(u"==================== 查询所有数据 ====================")
+    print(result)
+    print result["hits"]["total"]
+    print result["took"]
+    # {u'hits': {u'hits': [{u'_score': 1.0, u'_type': u'table', u'_id': u'2',
+    #                       u'_source': {u'email': u'1248644045@qq.comr', u'attrs': [4, 5, 6]}, u'_index': u'db'}],
+    #            u'total': 2, u'max_score': 1.0},
+    #  u'_shards': {u'successful': 5, u'failed': 0, u'skipped': 0, u'total': 5}, u'took': 11, u'timed_out': False}
 
 if __name__ == "__main__":
     # delete_index()
