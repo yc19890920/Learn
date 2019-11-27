@@ -2,6 +2,7 @@ version: '3'
 services:
   web:
     build: ./dblog
+    image: dblog:0.1
     # dockerfile: Dockerfile.prod
     # command: gunicorn -c gconf.conf dblog.wsgi:application
     command: supervisord -n -c /usr/src/app/supervisord.conf
@@ -25,6 +26,7 @@ services:
       - redis
     networks:
       - dblog-network
+    #network_mode: host
     logging:
       driver: "json-file"
       options:
@@ -59,6 +61,7 @@ services:
       #      MYSQL_ROOT_PASSWORD: '123456'
     networks:
       - dblog-network
+    #network_mode: host
     logging:
       driver: "json-file"
       options:
@@ -72,6 +75,7 @@ services:
       - 6379
     networks:
       - dblog-network
+    #network_mode: host
     volumes:
       - ./data/redis:/data
     logging:
@@ -80,6 +84,7 @@ services:
         max-size: "100m"
   nginx:
     build: ./nginx
+    image: dblog-nginx:0.1
     # privileged: true
     container_name: dblog-nginx
     ports:
@@ -88,6 +93,7 @@ services:
       - web
     networks:
       - dblog-network
+    #network_mode: host
     volumes:
       - ./dblog/static:/home/app/web/static
       - ./dblog/media:/home/app/web/media

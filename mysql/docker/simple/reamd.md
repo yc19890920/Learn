@@ -24,7 +24,7 @@ services:
 ```
 
 2.在 docker-compose.yml文件下的目录下，使用docker -compose命令 创建mysql数据库容器
-docker-compose up
+docker-compose up -d
 
 
 mysql -h127.0.0.1 -p6033 -uroot -p123456

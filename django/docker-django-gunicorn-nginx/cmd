@@ -31,8 +31,8 @@ remove(){
     echo "停止并删除容器......"
     docker-compose -f docker-compose.prod.yml down -v
 
-    echo "删除镜像"
-    docker rmi docker-django-gunicorn-nginx_web
+    # echo "删除镜像"
+    # docker rmi docker-django-gunicorn-nginx_web
 
     echo "清除无效容器......"
     echo 'y' | docker container prune
@@ -49,7 +49,10 @@ bak_data(){
 rebak_data(){
     echo "还原(导入)数据"
     docker cp ${DIR}/dblog/doc/data.sql dblog-mysql:/tmp
-    docker-compose -f docker-compose.prod.yml exec db mysql -u root -p dblog < /tmp/data.sql
+    # docker-compose -f docker-compose.prod.yml exec -T db mysql -u root -p dblog < $DIR/dblog/doc/data.sql
+    docker cp $DIR/dblog/doc/data.sql dblog-mysql:/tmp
+    docker cp $DIR/mysql/password.txt dblog-mysql:/tmp
+    docker-compose -f docker-compose.prod.yml exec -T db mysql --defaults-extra-file=/tmp/password.txt < /tmp/data.sql
 }
 
 case "$1" in

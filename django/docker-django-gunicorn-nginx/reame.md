@@ -1,4 +1,5 @@
 - [dockerizing-django-with-postgres-gunicorn-and-nginx](https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/)
+- [使用docker部署django技术栈项目](https://juejin.im/post/5d6ce6a66fb9a06b1d215ce0)
 - [Docker部署 - Django+MySQL+uWSGI+Nginx](https://zhuanlan.zhihu.com/p/29609591)
 - [使用docker构建部署django+mysql项目(docker-compose)](https://www.centos.bz/2017/09/%E4%BD%BF%E7%94%A8docker%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2djangomysql%E9%A1%B9%E7%9B%AEdocker-compose/)
 - [Docker setup for Django on MySQL](https://medium.com/@minghz42/docker-setup-for-django-on-mysql-1f063c9d16a0)
