@@ -1,0 +1,19 @@
+version: '3'
+services:
+    db:
+        #构建mysql镜像
+        image: mysql
+        container_name: mysql-db # 容器名
+        command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci #设置utf8字符集
+        restart: always
+        environment:
+          MYSQL_ROOT_PASSWORD: 123456 # root管理员用户密码
+          MYSQL_USER: test            # 创建test用户
+          MYSQL_PASSWORD: test        # 设置test用户的密码
+        ports:
+          - '6033:3306'  #host物理直接映射端口为6033
+        volumes:
+            #mysql数据库挂载到host物理机目录$(pwd)/data/db
+          - /home/python/Learn/mysql/docker/simple/data/db:/var/lib/mysql
+            #容器的配置目录挂载到host物理机目录/e/docker/mysql/data/conf
+          - /home/python/Learn/mysql/docker/simple/data/conf:/etc/mysql/conf.d
