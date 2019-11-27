@@ -1,0 +1,7 @@
+/home/python/pyenv/versions/dblog/bin/python /home/python/dblog/manage.py runserver 0.0.0.0:8080
+
+/home/python/pyenv/versions/dblog/bin/python /home/python/dblog/manage.py migrate
+/home/python/pyenv/versions/dblog/bin/python /home/python/dblog/manage.py createsuperuser
+
+systemctl reload nginx.service apache2.service
+

@@ -1,0 +1,20 @@
+<div id="list-talk">
+    <fieldset>
+        <legend>文章评论</legend>
+
+        {% if article.blogcomments %}
+            <table id="rows-talk" class="table table-hover table-striped table-bordered" style="">
+                <tbody>
+                {% for d in article.blogcomments %}
+                    <tr data-talk-id="11">
+                        <td class="talk-user span2"><i class="icon-user"></i> {{ d.username }}<span class="talk-time">{{ d.created|date:"Y-m-d H:i" }}</span>
+                        </td>
+                        <td class="talk-cont">{{ d.content }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+    </fieldset>
+</div>

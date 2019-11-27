@@ -1,0 +1,113 @@
+version: '3'
+services:
+  web:
+    build: ./dblog
+    # dockerfile: Dockerfile.prod
+    # command: gunicorn -c gconf.conf dblog.wsgi:application
+    command: supervisord -n -c /usr/src/app/supervisord.conf
+    restart: always
+    # privileged: true
+    container_name: dblog-web
+    volumes:
+      - ./dblog/static:/usr/src/app/static
+      - ./dblog/media:/usr/src/app/media
+      - ./dblog/log:/usr/src/app/log
+      - ./dblog/gconf.conf:/usr/src/app/gconf.conf
+      - ./dblog/supervisord.conf:/usr/src/app/supervisord.conf
+      # - static_volume:/home/dblog/web/static
+      # - media_volume:/home/dblog/web/static
+    expose:
+      - 8000
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+      - redis
+    networks:
+      - dblog-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+  db:
+    image: mysql:5.7
+    restart: always
+    # privileged: true
+    container_name: dblog-mysql
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+      --max_allowed_packet=128M
+    expose:
+      - 3306
+    volumes:
+      - ./mysql/my.cnf:/etc/my.cnf
+      - ./data/mysql:/var/lib/mysql
+    env_file:
+      - ./.env.prod.db
+      #    environment:
+      #      MYSQL_DATABASE: 'dblog'
+      #      MYSQL_USER: 'dblog'
+      #      MYSQL_PASSWORD: '123456'
+      #      MYSQL_ROOT_PASSWORD: '123456'
+    networks:
+      - dblog-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+  redis:
+    image: "redis:alpine"
+    restart: always
+    # privileged: true
+    container_name: dblog-redis
+    expose:
+      - 6379
+    networks:
+      - dblog-network
+    volumes:
+      - ./data/redis:/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+  nginx:
+    build: ./nginx
+    # privileged: true
+    container_name: dblog-nginx
+    ports:
+      - 8001:80
+    depends_on:
+      - web
+    networks:
+      - dblog-network
+    volumes:
+      - ./dblog/static:/home/app/web/static
+      - ./dblog/media:/home/app/web/media
+      # - static_volume:/home/dblog/web/static
+      # - media_volume:/home/dblog/web/static
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+networks:
+  dblog-network:
+    driver: bridge
+
+#volumes:
+#  static_volume:
+#  media_volume:
+
+

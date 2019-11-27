@@ -1,0 +1,22 @@
+<td>{{ number }}</td>
+<td>{{ d.title|default_if_none:'' }}</td>
+<td>{{ d.get_status_display }}</td>
+<td>{{ d.auth|default_if_none:'' }}</td>
+<td>{{ d.views }}</td>
+<td>{{ d.likes }}</td>
+<td>{{ d.topped_display }}</td>
+<td>{{ d.created|date:"Y-m-d H:i" }}</td>
+<td>{{ d.updated|date:"Y-m-d H:i" }}</td>
+<td>{{ d.category.name }}</td>
+<td>
+    {% for t in d.tags.all %}
+        <button class="btn btn-minier btn-primary"> {{ t.name }}</button>
+    {% endfor %}
+</td>
+<td>
+    <a type="button" class="btn btn-minier btn-primary" href="{% url 'article_modify' d.id %}">修改</a>
+    <a type="button" class="btn btn-minier btn-danger" href="Javascript: setStatus({{ d.id }}, 'delete')">删除</a>
+    {% if d.status == 'p' %}
+        <a class="btn btn-minier btn-primary" href="{% url 'detail' d.id %}" target="_blank">查看文章</a>
+    {% endif %}
+</td>

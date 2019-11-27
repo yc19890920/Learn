@@ -1,0 +1,8 @@
+<ul class="nav nav-tabs nav-stacked">
+    <li class="active"><a href="javascript:;">最新评论</a></li>
+
+    {% for d in newcom_list %}
+        <li><a class="texted" title="{{ d.content }}" href="{% url 'detail' d.article_id %}#comment{{ d.id }}">{{ d.content }}</a></li>
+    {% endfor %}
+
+</ul>

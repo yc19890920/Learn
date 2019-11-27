@@ -1,0 +1,8 @@
+#sudo lsof -t -i tcp:8080| xargs kill -9
+/home/ubuntu/.pythonbrew/venvs/Python-2.7.10/dblog/bin/python /home/ubuntu/git/dblog/manage.py runserver 0.0.0.0:8080
+
+/home/python/pyenv/versions/django-blog/bin/python /home/python/git/dblog/manage.py runserver 0.0.0.0:8080
+
+
+/home/ubuntu/pyenv/versions/django-blog/bin/python /home/ubuntu/git/dblog/manage.py runserver 0.0.0.0:8080
+

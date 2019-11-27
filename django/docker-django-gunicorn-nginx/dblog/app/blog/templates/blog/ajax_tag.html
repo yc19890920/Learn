@@ -1,0 +1,7 @@
+<td>{{ number }}</td>
+<td>{{ d.name|default_if_none:'' }}</td>
+<td>{{ d.created|date:"Y-m-d H:i" }}</td>
+<td>{{ d.updated|date:"Y-m-d H:i" }}</td>
+<td>
+    <a type="button" class="btn btn-minier btn-danger" href="Javascript: setStatus({{ d.id }}, 'delete')">删除</a>
+</td>

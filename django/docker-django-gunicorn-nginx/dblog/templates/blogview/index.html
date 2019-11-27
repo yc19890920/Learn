@@ -1,0 +1,124 @@
+{% extends 'blogview/base.html' %}
+{% load staticfiles %}
+{% load paginate_tags %}
+
+{% block title %} 博客 - 活动日志 {% endblock %}
+
+{% block head_css %}{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+
+        <div class="span8">
+
+            <!-- 顶部图片 -->
+            <div id="carousel" class="carousel slide thumbnail">
+                <ol class="carousel-indicators">
+                    <li data-target="#carousel" data-slide-to="0"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="{% static 'blogview/img/1.png' %}">
+                        <div class="carousel-caption">
+                            <h4>Hello World</h4>
+                            <p>Code is Poetry, Life is Sweet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 顶部url -->
+            <ul class="breadcrumb">
+                <li><a href="{% url 'index' %}"><i class="icon-home"></i></a> <span class="divider">/</span></li>
+                <li><a href="{% url 'index' %}">活动日志</a> <span class="divider">/</span></li>
+                {% if search_for %}
+                    <li class="active">搜索：{{ search_for }}</li>
+                {% elif tag_name %}
+                    <li class="active">标签：{{ tag_name }}</li>
+                {% endif %}
+            </ul>
+
+            <!-- 文章 -->
+            <div>
+
+                <div class="article-list">
+                    {% paginate article_list 3 %}
+                    {% for d in article_list %}
+                        <article class="article-wrap">
+
+                            <div class="article-head">
+                                <a href="{% url 'detail' d.id %}" title="{{ d.title }}" target="_blank"><h4>{{ d.title }}</h4></a>
+                                <p>
+                                    <small>标签：</small>
+                                    <small>
+                                        {% for t in d.tags.all %}
+                                            <a href="{% url 'tag' t.id %}"><span class="label label-success">{{ t.name }}</span></a>&nbsp;&nbsp;
+                                        {% endfor %}
+                                    </small>
+                                </p>
+                            </div>
+
+                            <div class="article-body">
+                                {{ d.abstract | safe }}
+                            </div>
+
+                            <div class="article-foot">
+                                <p></p>
+                                <p class="text-right"><a><small>{{ d.auth|default_if_none:"" }}</small></a><small> 发布于 {{ d.created|date:"Y-m-d H:i" }}</small></p>
+                                <p class="text-right"><a href="{% url 'detail' d.id %}" title="{{ article.title }}" target="_blank">全文 » </a></p>
+                            </div>
+
+                        </article>
+                    {% endfor %}
+                </div>
+
+                <!-- 分页 -->
+                {% include 'blogview/include/pagination.html' %}
+            </div>
+
+        </div>
+
+
+        <div class="sidebar span4">
+
+
+            <!-- 搜索 -->
+            {% include 'blogview/include/search.html' %}
+
+            <!-- 标签 -->
+            {% include 'blogview/include/tag.html' %}
+
+            <!-- 热门文章 -->
+            {% include 'blogview/include/hot.html' %}
+
+            <!-- 最新文章 -->
+            {% include 'blogview/include/new_art.html' %}
+
+            <!-- 最新评论 -->
+            {% include 'blogview/include/new_com.html' %}
+
+        </div>
+
+
+    </div>
+
+
+    <a id="scrollUp" href="#top" title="" style="position: fixed; z-index: 2147483647; display: none;"></a>
+{% endblock %}
+
+{% block foot_js %}
+    <!--<script type="text/javascript" src="http://tajs.qq.com/stats?sId=30516020" charset="UTF-8"></script>-->
+    <script type="text/javascript">
+        /*
+         var _gaq = _gaq || [];
+         _gaq.push(['_setAccount', 'UA-42785503-1']);
+         _gaq.push(['_trackPageview']);
+
+         (function() {
+         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+         })();
+         */
+    </script>
+{% endblock %}

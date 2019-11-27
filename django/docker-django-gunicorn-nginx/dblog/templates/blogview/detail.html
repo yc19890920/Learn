@@ -1,0 +1,145 @@
+{% extends 'blogview/base.html' %}
+{% load staticfiles %}
+
+{% block title %} {{ article.title }} {% endblock %}
+
+{% block head_css %}
+    <style>
+        #form-talk .control-label {  text-align: left;  }
+        .talk-time {display: block; font-size: .8em; color: grey;}
+        article a, .talk-cont {word-wrap: break-word; word-break: break-all;}
+        @media print {  #talks {display: none}  }
+
+        .control-group.has-error .control-label, .control-group.has-error .help-block, .control-group.has-error .help-inline {
+            color: #D16E6C;
+        }
+        .control-group.has-error input, .control-group.has-error select, .control-group.has-error textarea, .has-error {
+            border-color: #f2a696;
+            color: #D68273;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+    </style>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+
+        <div class="span8">
+
+            <!-- 文章 -->
+            <article class="article-wrap">
+                <div class="article-head">
+                    <a href="{% url 'detail' article.id %}" title="{{ article.title }}"><h3>{{ article.title }}</h3></a>
+                    <p><small>标签：</small>
+                        <small>
+                            {% for t in article.tags.all %}
+                                <a href="{% url 'tag' t.id %}"><span class="label label-success">{{ t.name }}</span></a>&nbsp;&nbsp;
+                            {% endfor %}
+                        </small>
+
+                    </p>
+                </div>
+                <div class="article-body">
+                    {{ article.content | safe}}
+                </div>
+                <div class="article-foot">
+                    {% if article.source %}
+                        <p><small>来源：{{ article.source }}</small></p>
+                    {% endif %}
+                    <p class="text-right"><a><small>{{ article.auth|default_if_none:"" }}</small></a><small> 发布于 {{ article.created|date:"Y-m-d H:i" }}</small></p>
+                </div>
+            </article>
+            <div>
+                <ul class="pager">
+                    {% if article.get_previous_obj %}
+                        <li class="previous"><a href="{% url 'detail' article.get_previous_obj.id %}">← 上一篇</a></li>
+                    {% else %}
+                        <li class="previous disabled"><a href="javascript:;">← 上一篇</a></li>
+                    {% endif %}
+                    <li><a href="javascript:;" title="点赞（+1）" class="award" data-post-id="{{ article.id }}" data-plus-ts="✓ 1">+ 1</a></li>
+                    {% if article.get_next_obj %}
+                        <li class="next"><a href="{% url 'detail' article.get_next_obj.id %}">下一篇 →</a></li>
+                    {% else %}
+                        <li class="next disabled"><a href="javascript:;">下一篇 →</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- 文章分享 -->
+            <div id="shares" style="margin-bottom: 25px;">
+                {% include 'blogview/include/share.html' %}
+            </div>
+
+            <!-- 文章评论 -->
+            <div id="talks">
+
+                <!-- 具体评论 -->
+                {% include 'blogview/include/talk.html' %}
+
+                <!-- 评论表单 -->
+                {% include 'blogview/include/comment.html' %}
+
+            </div>
+        </div>
+
+
+        <div class="sidebar span4">
+
+            {% include 'blogview/include/search.html' %}
+
+            <!-- 标签 -->
+            {% include 'blogview/include/tag.html' %}
+
+            <!-- 热门文章 -->
+            {% include 'blogview/include/hot.html' %}
+
+            <!-- 最新文章 -->
+            {% include 'blogview/include/new_art.html' %}
+
+            <!-- 相关文章 -->
+            {% include 'blogview/include/refer.html' %}
+
+        </div>
+
+
+    </div>
+
+
+    <a id="scrollUp" href="#top" title="" style="position: fixed; z-index: 2147483647; display: none;"></a>
+{% endblock %}
+
+{% block foot_js %}
+    <!--<script type="text/javascript" src="http://tajs.qq.com/stats?sId=30516020" charset="UTF-8"></script>-->
+    <script type="text/javascript">
+
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        $(function() {
+            $('.pager .award').click(function() {
+                var i = $(this);
+                if (i.attr('disabled') != 'disabled') {
+                    i.attr('disabled', 'disabled').parent().addClass('disabled');
+                    i.text(i.data('plus-ts'));
+                    $.post('{% url "score" %}', { 'poid': i.data('post-id'), }, function() {
+                        // i.text(i.data('plus-ts'));
+                    }, 'json');
+                }
+            });
+        })
+
+        /*
+         var _gaq = _gaq || [];
+         _gaq.push(['_setAccount', 'UA-42785503-1']);
+         _gaq.push(['_trackPageview']);
+
+         (function() {
+         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+         })();
+         */
+    </script>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "日志" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "博客" %}</a> </li>
+    <li class="active">{% trans "日志" %}</li>
+{% endblock %}
+
+{% block page-content %}
+    <div id="content-main">
+        <div class="module">
+            <table id="change-history">
+                <thead>
+                <tr>
+                    <th scope="col">Log</th>
+                    <th scope="col">Path</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for log, path in logfiles %}
+                    <tr>
+                        <!--<th scope="row"><a href="#" class="logfile_change">{{ log }}</a></th>-->
+                        <th scope="row"><a href="{% url 'admin:django_logtail_log_changelist' %}?log={{ log }}" class="logfile_change">{{ log }}</a></th>
+                        <td>{{ path }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <div id="log-tail">
+            </div>
+        </div>
+    </div>
+    <ul class="object-tools">
+        <li><a href="#" id="auto-scroll-toggle" class="historylink">打开自动滚动</a></li>
+        <li><a href="#" id="auto-poll-toggle" class="historylink">关闭自动轮询</a></li>
+    </ul>
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/logtailjs/fonts.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/logtailjs/base.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/logtailjs/changelists.css' %}" />
+    <link href="{% static 'admin/logtailjs/logtail.css' %}" type="text/css" media="all" rel="stylesheet" />
+    <style>
+        #log-tail{  /* height: 500px!important;*/  }
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script type="text/javascript" src="/static/admin/logtailjs/jquery.js"></script>
+    <script type="text/javascript" src="/static/admin/logtailjs/jquery.init.js"></script>
+    <script type="text/javascript" src="/static/admin/logtailjs/logtail.js"></script>
+
+    <script type="text/javascript">
+        (function($) {
+            var baseUrl = "{% url 'admin:django_logtail_log_changelist' %}";
+            var updateInterval = {{ update_interval }};
+            window.tailer = new window.LogTailer(baseUrl, updateInterval);
+
+            // Configure JQuery Events
+            $('.logfile_change').on('click', function() {
+                var log = $(this).text();
+                window.tailer.poll(log);
+            });
+            var log = "{{ request.GET.log }}";
+            if(log){
+                window.tailer.poll(log);
+                window.tailer.autoScroll = true;
+                $('#auto-scroll-toggle').text('关闭自动滚动');
+            };
+
+            $('#auto-scroll-toggle').on('click', function(e) {
+                e.preventDefault();
+                if (window.tailer.autoScroll) {
+                    window.tailer.autoScroll = false;
+                    $(this).text('打开自动滚动');
+                }
+                else {
+                    window.tailer.autoScroll = true;
+                    $(this).text('关闭自动滚动');
+                }
+            });
+
+            $('#auto-poll-toggle').on('click', function(e) {
+                e.preventDefault();
+                if (window.tailer.autoPoll) {
+                    window.tailer.autoPoll = false;
+                    $(this).text('打开自动轮询');
+                }
+                else {
+                    window.tailer.autoPoll = true;
+                    $(this).text('关闭自动轮询');
+                }
+            });
+        })(django.jQuery);
+
+    </script>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% load static from staticfiles %}
+<fieldset>
+    <div class="bdsharebuttonbox">
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+        <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣"></a>
+        <a href="#" class="bds_huaban" data-cmd="huaban" title="花瓣网"></a>
+        <a href="#" class="bds_renren" data-cmd="renren" title="人人网"></a>
+        <a href="#" class="bds_fbook" data-cmd="fbook" title="Facebook"></a>
+        <a href="#" class="bds_twi" data-cmd="twi" title="Twitter"></a>
+        <a href="#" class="bds_linkedin" data-cmd="linkedin" title="linkedin"></a>
+        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+        <a href="#" class="bds_kaixin001" data-cmd="kaixin001" title="分享到开心网"></a>
+        <a href="#" class="bds_more" data-cmd="more"></a>
+    </div>
+    <script>
+        window._bd_share_config={
+            "common":{
+                "bdSnsKey":{},
+                "bdText":"", //分享的内容
+                "bdUrl": "", // 分享的Url地址
+                "bdDesc": "", //分享的摘要
+                "bdPic":"", // 分享的图片
+                "bdMini":"2", //
+                "bdMiniList":false,
+                "bdStyle":"0",
+                "bdSize":"16"
+            },
+            "share":{
+                "bdSize" : 32,
+            },
+            "image": {
+                "viewList": ["weixin", "tsina","tqq", "douban", "huaban", "renren", "fbook", "twi", "linkedin", "qzone", "kaixin001"],
+                "viewText":"分享到：","viewSize":"16"
+            },
+            "selectShare": {
+                "bdContainerClass":null,
+                "bdSelectMiniList":["weixin", "tsina","tqq", "douban", "huaban", "renren", "fbook", "twi", "linkedin", "qzone", "kaixin001"]
+            }
+        };
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src = '{% static 'api/js/share.js' %}?v=89860593.js?'];
+    </script>
+</fieldset>

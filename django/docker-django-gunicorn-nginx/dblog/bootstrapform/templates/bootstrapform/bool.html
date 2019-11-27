@@ -1,0 +1,15 @@
+{% load bootstrap %}
+<div class="form-group{% if field.errors %} has-error{% endif %}">
+    <label class="control-label {{ classes.label }} " for="{{ field.auto_id }}">{{ field.label }}</label>
+    <div class=" {{ classes.value }} ">
+        <label class="inline">
+            <input name="{{ field.name }}" class="ace ace-switch ace-switch-5" id="{{ field.auto_id }}" type="checkbox" {% if field.value %} checked="" {% endif %}>
+            <span class="lbl"></span>
+        </label>
+        {% if field.help_text %}
+            <p class="help-block">
+                {{ field.help_text|safe }}
+            </p>
+        {% endif %}
+    </div>
+</div>

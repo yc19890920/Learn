@@ -1,0 +1,178 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load bootstrap %}
+
+{% block title %} {% trans "操作日志" %} {% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "博客" %}</a> </li>
+    <li class="active">{% trans "操作日志" %}</li>
+{% endblock %}
+
+{% block page-content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1>{% trans "操作日志" %}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12" style="margin-bottom: 10px">
+            <div class="pull-right">
+                <form id="search_form" class="form-inline pull-right" role="form" action="" style="text-align: left">
+                    {{ form|bootstrap_flag }}
+                    <button type="submit" class="btn btn-primary btn-sm">查询</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr role="row">
+                    <th width="8%">{% trans "ID" %}</th>
+                    <th>{% trans "操作人" %}</th>
+                    <th>{% trans "操作对象" %}</th>
+                    <th>{% trans "动作" %}</th>
+                    <th>{% trans "操作内容" %}</th>
+                    <th>{% trans "操作IP" %}</th>
+                    <th>{% trans "操作时间" %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'admin/components/_mod/jquery-ui.custom/jquery-ui.custom.css' %}" />
+    <link href="{% static 'admin/components/datatables/media/css/dataTables.bootstrap.css' %}">
+    <link href="{% static "admin/components/datetimepiker/bootstrap-datetimepicker.min.css" %}" rel="stylesheet">
+    <style>
+        .control-label-flag { width: 60px; }
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script src="{% static 'admin/components/datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'admin/components/_mod/datatables/jquery.dataTables.bootstrap.js' %}"></script>
+    <script src="{% static 'admin/components/_mod/jquery-ui.custom/jquery-ui.custom.js' %}"></script>
+    <script src="{% static "admin/components/datetimepiker/bootstrap-datetimepicker.min.js" %}"></script>
+    <script src="{% static "admin/components/datetimepiker/bootstrap-datetimepicker.zh-CN.js" %}"></script>
+
+    <script>
+        $(function(){
+            $('#{{ form.start_time.auto_id }}').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii:00',
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                // minView: 2,
+                pickerPosition: "bottom-right",
+            });
+
+            $('#{{ form.end_time.auto_id }}').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii:00',
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                // minView: 2,
+                pickerPosition: "bottom-right",
+            });
+        });
+
+        var ip_table;
+        $(function () {
+            var ajax_url = "{% url 'admin_log_ajax' %}" + window.location.search;
+            ip_table = $('#dynamic-table').dataTable({
+                // "columnDefs": [ { "targets": [ 0 ], "visible": false, "searchable": false }],
+                "iDisplayLength": 25,
+                "processing": false,
+                "serverSide": true,
+                "stateSave": true,
+                "autoWidth" : true,
+                "bAutoWidth": false,
+                "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]],
+                "ajax": ajax_url,
+                "aaSorting": [
+                    [ 0, "desc" ]
+                ],
+                "oLanguage": {
+                    "sLengthMenu": "{% blocktrans %}显示 _MENU_ 每页{% endblocktrans %}",
+                    "sZeroRecords": "{% blocktrans %}对不起! 信息筛选结果为空!{% endblocktrans %}",
+                    "sInfo": "{% blocktrans %}从 _START_ 到 _END_ 总计: _TOTAL_ 条记录{% endblocktrans %}",
+                    "sInfoEmpty": "{% blocktrans %}总计: 0 条记录{% endblocktrans %}",
+                    "sInfoFiltered": "{% blocktrans %}(从 _MAX_ 条记录筛选出){% endblocktrans %}",
+                    "sSearch": "{% blocktrans %}搜索: {% endblocktrans %}",
+                    "oPaginate": {
+                        "sFirst":    " {% blocktrans %}第一页{% endblocktrans %} ",
+                        "sPrevious": " {% blocktrans %}上一页{% endblocktrans %} ",
+                        "sNext":     " {% blocktrans %}下一页{% endblocktrans %} ",
+                        "sLast":     " {% blocktrans %}最后一页{% endblocktrans %} "
+                    }
+                },
+                // "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+ "t"+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+
+                "drawCallback": function(oSettings, json) {
+                    $('#dynamic-table tr').click( function() {
+                        if ( $(this).hasClass('row_selected') )
+                            $(this).removeClass('row_selected');
+                        else
+                            $(this).addClass('row_selected');
+                    } );
+                },
+
+            });
+        });
+
+        $.fn.dataTableExt.oApi.fnGetFilteredNodes = function ( oSettings ) {
+            var anRows = [];
+            var length = oSettings.aiDisplay.length;
+            for ( var i=0, iLen=length ; i<iLen ; i++ ) {
+                var nRow = oSettings.aoData[ oSettings.aiDisplay[i] ].nTr;
+                anRows.push( nRow );
+            }
+            return anRows;
+        };
+
+        function fnGetAll() {
+            var aTrs = ip_table.fnGetFilteredNodes();
+            for ( var i=0 ; i<aTrs.length ; i++ ) {
+                if ( !$(aTrs[i]).hasClass('row_selected') )
+                    $(aTrs[i]).addClass('row_selected');
+            }
+        }
+
+        function fnGetReverse() {
+            var aTrs = ip_table.fnGetFilteredNodes();
+            for (var i=0 ; i<aTrs.length ; i++ ) {
+                if ( $(aTrs[i]).hasClass('row_selected') ) {
+                    $(aTrs[i]).removeClass('row_selected');
+                }
+            }
+        }
+
+        function fnGetSelected() {
+            var aReturn = new Array();
+            var aTrs = ip_table.fnGetFilteredNodes();
+            for ( var i=0 ; i<aTrs.length ; i++ ) {
+                if ( $(aTrs[i]).hasClass('row_selected') ) {
+                    var aData = ip_table.fnGetData( aTrs[i]);
+                    var iId = aData[0];
+                    aReturn.push( iId );
+                }
+            }
+            return aReturn;
+        }
+
+    </script>
+
+{% endblock %}

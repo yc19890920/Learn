@@ -1,0 +1,12 @@
+
+docker-compose -f docker-compose.prod.yml down -v
+
+docker-compose -f docker-compose.prod.yml up -d --build
+
+docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --noinput
+
+# 数据还原
+docker-compose -f docker-compose.prod.yml exec db mysql -u root -p dblog < /home/python/git/dblog/doc/data.sql
+
+# 备份数据
+docker-compose -f docker-compose.prod.yml exec db mysqldump -u dblog -P 3306 -p dblog > /home/python/git/dblog/doc/data.sql

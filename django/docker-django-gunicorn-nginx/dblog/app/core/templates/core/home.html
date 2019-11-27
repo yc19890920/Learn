@@ -1,0 +1,194 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "主页" %}{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">{% trans "用户主页" %}</li>
+{% endblock %}
+
+{% block js_block %}
+<script type="text/javascript" src="{% static 'fusioncharts/fusioncharts.js' %}"></script>
+<script type="text/javascript" src="{% static 'fusioncharts/fusioncharts.charts.js' %}"></script>
+<script type="text/javascript" src="{% static 'fusioncharts/fusioncharts.theme.fint.js' %}"></script>
+{% endblock %}
+
+{% block page-content %}
+<div class="row">
+    <div class="space-12"></div>
+    <div class="col-xs-12">
+        <div class="page-header">
+            <h1>
+                {% trans "个人主页" %}
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    人生苦短，我用python
+                </small>
+            </h1>
+        </div>
+    </div>
+</div>
+
+<!--<div class="row">
+    <div class="col-xs-12">
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right"> </label>
+            <div class="col-sm-9">
+                <div class="col-xs-10 col-sm-3">
+                    <p style="margin-left: 30px;">断章</p>
+                    <p>你站在桥上看风景</p>
+                    <p >看风景的人在楼上看你。</p>
+                    <p>明月装饰了你的窗子</p>
+                    <p>你装饰了别人的梦。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+
+{% if network_monitor_infos %}
+<div class="row">
+    <div class="col-xs-12 col-sm-12 widget-container-col" id="widget-container-col-2">
+        <div class="widget-box " id="widget-box-2">
+            <!-- #section:custom/widget-box.options -->
+            <div class="widget-header">
+                <h5 class="widget-title bigger lighter">
+                    最近3天网卡流量监控
+                </h5>
+                <div class="pull-right" style="margin-top: 10px;margin-right: 13px;">
+                    {% for k in network_monitor_keys %}
+                    <label class="radio-inline">
+                        <input class="radioItemnet" {% if forloop.first %}checked=""{% endif %} value="{{ k }}" id="optionsRadiosNetwork" name="optionsRadiosNetwork" type="radio" autocomplete="off">{{ k }}
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- /section:custom/widget-box.options -->
+            <div class="widget-body">
+                <div class="widget-main no-padding" style="min-height: 535px;">
+                    {% for key, datas in network_monitor_infos %}
+                    <div id="net-info-container-{{ key }}" style="margin:0 auto;" {% if forloop.first %}{% else %}class="display-none"{% endif %}>
+                        <div class="pull-right" style="margin-top: 10px;margin-right: 13px;">
+                            {% for daykey, day, v in datas %}
+                            <label class="radio-inline">
+                                <input class="radioItemnet{{ key }}" {% if daykey == 'today' %}checked=""{% endif %} value="{{ daykey }}" id="optionsRadiosNetworkDay{{ key }}" name="optionsRadiosNetworkDay{{ key }}" type="radio" autocomplete="off">{{ day }}
+                            </label>
+                            {% endfor %}
+                        </div>
+
+                        {% for daykey, day, v in datas %}
+                        <div id="net-info-container-{{ key }}-{{ daykey }}" style="margin:0 auto;"  {% if daykey == 'today' %}{% else %}class="display-none"{% endif %}></div>
+                    {% if v %}
+                    <script type="text/javascript">
+                        FusionCharts.ready(function () {
+                            new FusionCharts({{ v|safe }}).render();
+                        });
+                    </script>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div><!-- /.widget-main -->
+        </div>
+    </div>
+</div><!-- /.span -->
+</div><!-- /.row -->
+{% endif %}
+
+
+{% if ntcp_info_json %}
+<div class="row">
+    <div class="col-xs-12 col-sm-12 widget-container-col" id="widget-container-col-3">
+        <div class="widget-box " id="widget-box-3">
+            <div class="widget-header">
+                <h5 class="widget-title bigger lighter">
+                    TCP连接情况
+                </h5>
+                {%  if bntcp_info_json %}
+                <div class="pull-right" style="margin-top: 10px;margin-right: 13px;">
+                    <label class="radio-inline">
+                        <input class="radioItemcpu" checked="" value="now" id="optionsRadiosNow" name="optionsRadiosNow" type="radio" autocomplete="off">今日
+                    </label>
+                    <label class="radio-inline">
+                        <input class="radioItemcpu" value="bnow" id="optionsRadiosNow" name="optionsRadiosNow" type="radio" autocomplete="off">昨日
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+            <div class="widget-body">
+                <div class="widget-main no-padding" style="min-height: 500px;">
+                    <div id="tcp-info-container-now" style="margin:0 auto;"></div>
+                    <script type="text/javascript">
+                        FusionCharts.ready(function () {
+                            var visitChart1 = new FusionCharts({{ ntcp_info_json|safe }}).render();
+                        });
+                    </script>
+                    {%  if bntcp_info_json %}
+                    <div id="tcp-info-container-bnow" style="margin:0 auto;" class="display-none"></div>
+                    <script type="text/javascript">
+                        FusionCharts.ready(function () {
+                            var visitChart2 = new FusionCharts({{ bntcp_info_json|safe }}).render();
+                        });
+                    </script>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block css_block %}
+<link href="{% static 'admin/components/datatables/media/css/dataTables.bootstrap.css' %}">
+{% endblock %}
+
+{% block my_jsblock %}
+<script src="{% static 'admin/components/datatables/media/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'admin/components/_mod/datatables/jquery.dataTables.bootstrap.js' %}"></script>
+<script>
+    $(function() {
+        $(".radioItemcpu").change( function() {
+            var selectedvalue = $("input[name='optionsRadiosNow']:checked").val();
+            if ( selectedvalue == "now"){
+                $("#tcp-info-container-now").removeClass("display-none");
+                $("#tcp-info-container-bnow").addClass("display-none");
+            } else {
+                $("#tcp-info-container-now").addClass("display-none");
+                $("#tcp-info-container-bnow").removeClass("display-none");
+            }
+        });
+
+        var network_monitor_keys = {{ network_monitor_keys|safe }};
+        // alert(network_monitor_keys[1]);
+        $(".radioItemnet").change( function() {
+            var selectedvalue = $("input[name='optionsRadiosNetwork']:checked").val();
+            $("#net-info-container-"+selectedvalue).removeClass("display-none");
+            for (var i = 0, j = network_monitor_keys.length; i < j; i++){
+                var network = $.trim(network_monitor_keys[i]);
+                if ( network != selectedvalue ) {
+                    $("#net-info-container-"+network).addClass("display-none");
+                }
+            }
+        });
+
+        {% for key in network_monitor_keys %}
+        var days = new Array('today', 'yest', 'bday');
+        $(".radioItemnet{{ key }}").change( function() {
+            var selectedvalue = $("input[name='optionsRadiosNetworkDay{{ key }}']:checked").val();
+            $("#net-info-container-{{ key }}-"+selectedvalue).removeClass("display-none");
+            for (var i = 0, j = days.length; i < j; i++){
+                var day = $.trim(days[i]);
+                if ( day != selectedvalue ) {
+                    $("#net-info-container-{{ key }}-"+day).addClass("display-none");
+                }
+            }
+        });
+        {% endfor %}
+    });
+</script>
+{% endblock %}

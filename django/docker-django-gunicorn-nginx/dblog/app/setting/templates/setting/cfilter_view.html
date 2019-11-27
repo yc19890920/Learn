@@ -1,0 +1,48 @@
+{% load static %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4 class="modal-title" id="myModalLabel" style="font-weight: 600">
+        过滤规则：{{ obj.name }}
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            {% if status == "option" %}条件{% else %}动作{% endif %}
+        </small>
+    </h4>
+</div>
+
+<div class="modal-body padding-25">
+    <div class="widget-body">
+        <div class="form-horizontal ">
+            <div class="row">
+                <div class="col-xs-12">
+
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th width="12%">序号</th>
+                            <th>{% if status == "option" %}条件{% else %}动作{% endif %} </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for d in lists %}
+                        <tr >
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                {% autoescape off %}
+                                {{ d.view_html }}
+                                {% endautoescape %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div><!-- /.span -->
+            </div><!-- /.row -->
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+</div>
+

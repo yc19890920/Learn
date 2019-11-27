@@ -1,0 +1,10 @@
+{% if refer_list %}
+    <ul class="nav nav-tabs nav-stacked">
+
+        <li class="active"><a href="javascript:;">相关文章</a></li>
+        {% for d in refer_list %}
+            <li><a class="texted" title="{{ d.title }}" href="{% url 'detail' d.id %}">{{ d.title }}</a></li>
+        {% endfor %}
+
+    </ul>
+{% endif %}

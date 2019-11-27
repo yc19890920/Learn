@@ -1,0 +1,22 @@
+
+dblog:123456
+root:dblog
+
+/usr/local/pyenv/versions/dblog/bin/python
+
+/usr/local/pyenv/versions/dblog/bin/supervisord -c /usr/local/yangcheng/dblog/supervisord.conf 
+/usr/local/pyenv/versions/dblog/bin/supervisorctl -c /usr/local/yangcheng/dblog/supervisord.conf 
+
+
+/usr/local/pyenv/versions/dblog/bin/celery 
+/usr/local/pyenv/versions/dblog/bin/gunicorn 
+
+
+
+备份数据库
+mysqldump -u dblog -P 3306 -p dblog > /usr/local/yangcheng/dblog/doc/data.sql
+
+数据还原
+mysql -u root -p dblog < /usr/local/yangcheng/dblog/doc/data.sql
+mysql -u dblog -p dblog < /usr/local/yangcheng/dblog/doc/data.sql
+

@@ -1,0 +1,3 @@
+- [Django 1.11.6 文档](http://python.usyiyi.cn/translate/Django_111/index.html)
+- [django latest](http://django-intro-zh.readthedocs.io/zh_CN/latest/)
+- [Django 1.8.2](http://python.usyiyi.cn/translate/django_182/index.html)

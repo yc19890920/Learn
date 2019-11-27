@@ -1,0 +1,17 @@
+<td>{{ d.id }}</td>
+<td>{{ number }}</td>
+<td>{{ d.filename|default_if_none:'' }}</td>
+<td>{{ d.filetype|default_if_none:'' }}</td>
+<td>
+    <a data-toggle="modal" data-target="#MyModal" data-whatever="{{ d.filepath|default_if_none:'' }}" href="#"
+       class="" type="button">{{ d.filepath|default_if_none:'' }}</a>
+</td>
+<td>{{ d.filesize|filesizeformat }}</td>
+<td>{{ d.article|default_if_none:'' }}</td>
+<td>{{ d.created|date:"Y-m-d H:i" }}</td>
+<td>
+    <a data-toggle="modal" data-target="#MyModal" data-whatever="{{ d.filepath|default_if_none:'' }}" href="#"
+       class="btn btn-minier btn-primary" type="button">查看图片</a>
+    <!--<a class="btn btn-minier btn-primary" href="{{ d.filepath|default_if_none:'' }}" target="_blank">查看图片2</a>-->
+    <a type="button" class="btn btn-minier btn-danger" href="Javascript: setStatus({{ d.id }}, 'delete')">删除</a>
+</td>

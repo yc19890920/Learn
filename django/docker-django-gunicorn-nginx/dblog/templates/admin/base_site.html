@@ -1,0 +1,346 @@
+{% extends 'admin/base.html' %}
+{% load static from staticfiles %}
+{% block body %}
+
+    <body class="no-skin">
+    <!-- #section:basics/navbar.layout -->
+    <div id="navbar" class="navbar navbar-default          ace-save-state">
+        <div class="navbar-container ace-save-state" id="navbar-container">
+            <!-- #section:basics/sidebar.mobile.toggle -->
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+                <span class="sr-only">Toggle sidebar</span>
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- /section:basics/sidebar.mobile.toggle -->
+            <div class="navbar-header pull-left">
+                <!-- #section:basics/navbar.layout.brand -->
+                <a href="#" class="navbar-brand">
+                    <small>
+                        <i class="fa fa-leaf"></i>
+                        管理后台
+                    </small>
+                </a>
+
+                <!-- /section:basics/navbar.layout.brand -->
+
+                <!-- #section:basics/navbar.toggle -->
+
+                <!-- /section:basics/navbar.toggle -->
+            </div>
+
+            <!-- #section:basics/navbar.dropdown -->
+            <div class="navbar-buttons navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav">
+                    <!-- #section:basics/navbar.user_menu -->
+                    <li class="light-blue dropdown-modal">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                            <!--<img class="nav-user-photo" src="" alt="Jason's Photo" />-->
+								<span class="user-info">
+									<small>Welcome,</small>
+                                    {{ request.user.username }}
+								</span>
+
+                            <i class="ace-icon fa fa-caret-down"></i>
+                        </a>
+
+                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                            <li class="divider"></li>
+                            <li>
+                                <a href="{% url 'logout' %}">
+                                    <i class="ace-icon fa fa-power-off"></i>
+                                    Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- /section:basics/navbar.user_menu -->
+                </ul>
+            </div>
+
+            <!-- /section:basics/navbar.dropdown -->
+        </div><!-- /.navbar-container -->
+    </div>
+
+    <!-- /section:basics/navbar.layout -->
+    <div class="main-container ace-save-state" id="main-container">
+        <script type="text/javascript">
+            try{ace.settings.loadState('main-container')}catch(e){}
+        </script>
+
+        <!-- #section:basics/sidebar -->
+        <div id="sidebar" class="sidebar                  responsive                    ace-save-state">
+            <script type="text/javascript">
+                try{ace.settings.loadState('sidebar')}catch(e){}
+            </script>
+
+
+            <ul class="nav nav-list">
+
+                <li class="">
+                    <a href="{% url 'home' %}">
+                        <i class="menu-icon fa fa-tachometer"></i>
+                        <span class="menu-text"> 主页 </span>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+
+
+                <li class="" id="nav_blog">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-list"></i>
+                        <span class="menu-text"> 博客 </span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+
+                        <li class="">
+                            <a href="{% url 'admin_tag' %}"><i class="menu-icon fa fa-caret-right"></i> 标签 </a><b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="{% url 'admin_category' %}"><i class="menu-icon fa fa-caret-right"></i> 分类 </a><b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="{% url 'admin_article' %}"><i class="menu-icon fa fa-caret-right"></i> 文章 </a><b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="{% url 'admin_picture' %}"><i class="menu-icon fa fa-caret-right"></i> 图片 </a><b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="{% url 'admin_comment' %}"><i class="menu-icon fa fa-caret-right"></i> 评论 </a><b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="{% url 'admin_suggest' %}"><i class="menu-icon fa fa-caret-right"></i> 留言 </a><b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="{% url 'admin_log' %}"><i class="menu-icon fa fa-caret-right"></i> 操作日志 </a><b class="arrow"></b>
+                        </li>
+
+                    </ul>
+                </li>
+
+
+                <li class="" id="nav_setting">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-list"></i>
+                        <span class="menu-text"> 设置 </span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+
+                        <li class="">
+                            <a href="{% url 'system_set' %}"><i class="menu-icon fa fa-caret-right"></i> 系统设置 </a><b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="{% url 'cfilter_set' %}"><i class="menu-icon fa fa-caret-right"></i> 邮件过滤 </a><b class="arrow"></b>
+                        </li>
+
+                    </ul>
+                </li>
+
+
+                <li class="" id="nav_log">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-list"></i>
+                        <span class="menu-text"> 日志 </span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+                        <li class="">
+                            <a href="{% url 'admin:django_logtail_log_changelist' %}"><i class="menu-icon fa fa-caret-right"></i> 日志 </a><b class="arrow"></b>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li class="" id="nav_rest">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-list"></i>
+                        <span class="menu-text"> Restful API </span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+
+                        <li class="">
+                            <a href="{% url 'api-root' %}" target="_blank"><i class="menu-icon fa fa-caret-right"></i> Api Root </a><b class="arrow"></b>
+                        </li>
+
+                    </ul>
+                </li>
+
+                {% comment %}
+                {% endcomment %}
+
+            </ul><!-- /.nav-list -->
+
+
+            <!-- #section:basics/sidebar.layout.minimize -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+            </div>
+
+            <!-- /section:basics/sidebar.layout.minimize -->
+        </div>
+
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+            <div class="main-content-inner">
+                <!-- #section:basics/content.breadcrumbs -->
+                <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="ace-icon fa fa-home home-icon"></i>
+                            <a href="{% url 'home' %}">主页</a>
+                        </li>
+
+                        {% block breadcrumb %}
+                        {% endblock %}
+
+                    </ul><!-- /.breadcrumb -->
+
+                </div>
+
+                <!-- /section:basics/content.breadcrumbs -->
+                <div class="page-content">
+                    {% if messages %}
+                        <div class="row">
+                            <article class="col-sm-12">
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }} fade in">
+                                        <button class="close" data-dismiss="alert">
+                                            ×
+                                        </button>
+                                        <i class="fa-fw fa fa-{{ message.tags }}"></i>
+                                        <strong>{{ message.tags|capfirst }}</strong> {{ message }}
+                                    </div>
+                                {% endfor %}
+                            </article>
+                        </div>
+                    {% endif %}
+                    {% block page-content %}
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <!-- PAGE CONTENT BEGINS -->
+
+                                <!-- PAGE CONTENT ENDS -->
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                    {% endblock %}
+
+                </div><!-- /.page-content -->
+
+
+            </div>
+        </div><!-- /.main-content -->
+
+        <div class="footer">
+            <div class="footer-inner">
+                <!-- #section:basics/footer -->
+                <div class="footer-content">
+						<span class="bigger-120">
+							<span class="blue bolder">Django 1.11</span>
+							Application &copy; 2017
+						</span>
+                </div>
+
+                <!-- /section:basics/footer -->
+            </div>
+        </div>
+
+        <a href="{% url 'home' %}" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
+    </body>
+{% endblock %}
+
+{% block jsblock %}
+    <!-- basic scripts -->
+
+    <!--[if !IE]> -->
+    <script src="{% static 'admin/components/jquery/dist/jquery.js' %}"></script>
+
+    <!-- <![endif]-->
+
+    <!--[if IE]>
+<script src="{% static 'admin/components/jquery.1x/dist/jquery.js' %}"></script>
+<![endif]-->
+    <script type="text/javascript">
+        if('ontouchstart' in document.documentElement) document.write("<script src='{% static 'admin/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js' %}'>"+"<"+"/script>");
+
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        $(function(){
+            var path = window.location.pathname;
+            if ( path.indexOf('/core/set/')==0 ){
+                $('#nav_setting').addClass('active open');
+            } else if ( path.indexOf('/core/blog/')==0 ){
+                $('#nav_blog').addClass('active open');
+            } else {
+                $('#nav_blog').addClass('active open');
+            };
+            $('#sidebar').find("[href^='"+path+"']").parent().first().addClass('active');
+        });
+
+    </script>
+    <script src="{% static 'admin/components/bootstrap/dist/js/bootstrap.js' %}"></script>
+
+    <!-- page specific plugin scripts -->
+    <script src="{% static 'admin/assets/js/src/ace.js' %}"></script>
+    <script src="{% static 'admin/assets/js/src/ace.basics.js' %}"></script>
+    <script src="{% static 'admin/assets/js/src/ace.sidebar.js' %}"></script>
+
+
+    {% comment %}
+        <!-- ace scripts -->
+        <script src="{% static 'admin/assets/js/src/elements.scroller.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/elements.colorpicker.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/elements.fileinput.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/elements.typeahead.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/elements.wysiwyg.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/elements.spinner.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/elements.treeview.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/elements.wizard.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/elements.aside.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/ace.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/ace.basics.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/ace.scrolltop.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/ace.ajax-content.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/ace.touch-drag.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/ace.sidebar.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/ace.sidebar-scroll-1.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/ace.submenu-hover.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/ace.widget-box.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/ace.settings.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/ace.settings-rtl.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/ace.settings-skin.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/ace.widget-on-reload.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/ace.searchbox-autocomplete.js' %}"></script>
+        <!-- inline scripts related to this page -->
+        <!-- the following scripts are used in demo only for onpage help and you don't need them -->
+        <link rel="stylesheet" href="{% static 'admin/assets/css/ace.onpage-help.css' %}" />
+        <script type="text/javascript"> ace.vars['base'] = '..'; </script>
+        <script src="{% static 'admin/assets/js/src/elements.onpage-help.js' %}"></script>
+        <script src="{% static 'admin/assets/js/src/ace.onpage-help.js' %}"></script>
+    {% endcomment %}
+    {% block my_jsblock %}{% endblock %}
+
+{% endblock %}

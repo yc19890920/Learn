@@ -1,0 +1,25 @@
+<td>{{ number }}</td>
+<td>{{ d.name|default_if_none:'' }}</td>
+<td>{{ d.get_type_display }}</td>
+<td>{{ d.get_logic_display }}</td>
+<td>
+    <a data-toggle="modal" href="{% url 'cfilter_view_set' d.id %}?status=option" data-target="#myModal" data-whatever="" title="查看条件" class="btn btn-minier btn-primary">查看条件</a>
+</td>
+<td>
+    <a data-toggle="modal" href="{% url 'cfilter_view_set' d.id %}?status=action" data-target="#myModal" data-whatever="" title="查看条件" class="btn btn-minier btn-primary">查看动作</a>
+</td>
+<td>{{ d.sequence }}</td>
+<td>
+    <span class="label label-xlg {% if d.disabled == 1 %} label-light {% else %} label-yellow {% endif %} arrowed-in arrowed-in-right">
+        {{ d.get_disabled_display }}
+    </span>
+</td>
+<td>
+    <a type="button" class="btn btn-minier btn-primary" href="{% url 'cfilter_modify_set' d.id %}">修改</a>
+    {% if d.disabled == 1 %}
+        <a type="button" class="btn btn-minier btn-info" href="Javascript: setStatus({{ d.id }}, 'active')">启用</a>
+    {% elif d.disabled == -1 %}
+        <a type="button" class="btn btn-minier btn-grey" href="Javascript: setStatus({{ d.id }}, 'disabled')">禁用</a>
+    {% endif %}
+    <a type="button" class="btn btn-minier btn-danger" href="Javascript: setStatus({{ d.id }}, 'delete')">删除</a>
+</td>

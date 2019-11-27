@@ -1,0 +1,45 @@
+{% extends 'admin/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "退出" %}{% endblock %}
+{% block body %}
+    <body class="login-layout">
+    <div class="main-container">
+        <div class="main-content">
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <div class="login-container">
+                        <div class="center">
+                            <span class="text-success">{% trans "您已成功退出Django 博客管理平台, 感谢使用!" %}</span>
+                            <br/>
+                            <span class="text-info" id="totalSecond">0</span>{% trans "秒后，跳转回首页.或者" %}<a href="/core/login">{% trans "点击这里" %}</a>{% trans "重新登录" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script language="javascript" type="text/javascript">
+        var second = document.getElementById('totalSecond').textContent;
+
+        if (navigator.appName.indexOf("Explorer") > -1)  {
+            second = document.getElementById('totalSecond').innerText;
+        } else {
+            second = document.getElementById('totalSecond').textContent;
+        }
+
+        setInterval("redirect()", 1000);
+        function redirect() {
+            if (second < 0) {
+                location.href = '/core/login';
+            } else {
+                if (navigator.appName.indexOf("Explorer") > -1) {
+                    document.getElementById('totalSecond').innerText = second--;
+                } else {
+                    document.getElementById('totalSecond').textContent = second--;
+                }
+            }
+        }
+    </script>
+    </body>
+{% endblock %}

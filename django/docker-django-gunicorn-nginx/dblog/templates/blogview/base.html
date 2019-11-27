@@ -1,0 +1,113 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'blogview/src/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'blogview/src/bootstrap-responsive.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'blogview/src/framework.min.css' %}">
+    <link rel="stylesheet" href="{% static 'blogview/src/framework-responsive.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'blogview/src/customize.min.css' %}">
+    <link rel="stylesheet" href="{% static 'blogview/src/customize-responsive.min.css' %}">
+
+    <!-- googleapis-ajax-libs-jquery-2.2.4-jquery.min.js  debug_toolbar 使用-->
+    <link rel="stylesheet" href="{% static 'debug_toolbar/googleapis-ajax-libs-jquery-2.2.4-jquery.min.js' %}">
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?86f05c8f06bfece7e8cfeacb93315f09";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+    {% block head_css %}{% endblock %}
+    {% block head_js %}{% endblock %}
+
+    <!--[if lt IE 9]><script src="{% static 'blogview/src/html5shiv.min.js' %}"></script><![endif]-->
+</head>
+
+<body data-exts-scrollup="1" data-spy="scroll">
+<header class="header topfix">
+    <nav class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="container">
+                <a class="brand" href="{% url 'index' %}">博客<br>Django</a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        <li id="nav_index" class=""><a href="{% url 'index' %}">活动日志</a></li>
+                        <li id="nav_about" class=""><a href="{% url 'about' %}">关于我</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="vessel">
+    <div class="container">
+
+        {% block page_content %}{% endblock %}
+
+    </div>
+</main>
+
+
+<footer class="footer">
+    <div class="container">
+        <!--<img class="qrcode pull-right" src="/assets/img/luokr.com.qrc.png">-->
+        <div class="row">
+            <div class="span8">
+                <div class="text-center">
+                    <p>Copyright©2017
+                        <a href="https://github.com/yc19890920" target="_blank">Github</a> |
+                        <a href="http://www.miitbeian.gov.cn/" target="_blank">粤ICP备18023960号</a>
+                    </p>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'index' %}" target="_blank">活动日志</a></li>
+                        <li><a href="{% url 'about' %}" target="_blank">关于我</a></li>
+                        <li><a href="{% url 'about' %}#email" target="_blank">留言反馈</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="{% static 'blogview/src/jquery-1.10.1.min.js' %}"></script>
+<script src="{% static 'blogview/src/jquery.form.min.js' %}"></script>
+<script src="{% static 'blogview/src/jquery.scrollUp.min.js' %}"></script>
+<script src="{% static 'blogview/src/bootstrap.min.js' %}"></script>
+<script src="{% static 'blogview/src/customize.min.js' %}"></script>
+
+{% block foot_js %}{% endblock %}
+
+<script type="text/javascript">
+    $(function(){
+        var path = window.location.pathname;
+        if (path.indexOf('/about/')==0){
+            $('#nav_about').addClass('active');
+        } else{
+            $('#nav_index').addClass('active');
+        };
+    });
+</script>
+
+</body>
+</html>

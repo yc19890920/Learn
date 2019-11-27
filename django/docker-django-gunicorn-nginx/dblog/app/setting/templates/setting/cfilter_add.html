@@ -1,0 +1,898 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% if form.instance %} {% trans "修改过滤规则" %}  {% else %} {% trans "添加过滤规则" %} {% endif %}{% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "功能设置" %}</a> </li>
+    <li> <a href="#">{% trans "邮件过滤" %}</a> </li>
+    <li class="active">{% if form.instance %} {% trans "修改过滤规则" %}  {% else %} {% trans "添加过滤规则" %} {% endif %}</li>
+{% endblock %}
+
+{% block page-content %}
+
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1>{% if form.instance %} {% trans "修改过滤规则" %}  {% else %} {% trans "添加过滤规则" %} {% endif %}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <form class="form-horizontal" role="form" action="" method="POST">
+                {% csrf_token %}
+
+                <div class="form-group {% if form.name.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_name"> 规则名称 </label>
+                    <div class="col-sm-9">
+                        <input type="text" name="name" id="id_name" value="{{ form.name.value }}" maxlength="250" class="col-xs-9 col-sm-9" required/>
+                        {% if form.name.error %}
+                            <div style="clear: both">
+                                <p class="errornote txt-color-red">{{ form.name.error }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!--<div class="hr hr-16 hr-dotted"></div>-->
+                <div class="">
+                    <div style="clear: both"></div>
+                    <label class="col-sm-2 control-label no-padding-right"></label>
+                    <div class="col-sm-9"><div class="hr hr-12"></div></div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_logic"> 条件关系 </label>
+                    <div class="col-sm-9">
+                        <label class="radio radio-inline padding-top-0 margin-top-0 form-inline">
+                            <label>
+                                <input type="radio" name="logic" value="all" {% if form.logic.value == "all"  %} checked="" {% endif %}><span>满足所有条件</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="logic" value="one" {% if form.logic.value != "all"  %} checked="" {% endif %}><span>满足一条即可</span>
+                            </label>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <div class="" id="id_cfilteroptions">
+
+                        {% for d in form.cfilteroption.value %}
+                            <div id="id_cfilteroption{{ d.id }}--{{ d.parent_id }}" class="{% if d.error %} has-error {% endif %}">
+                                <input id="id_cfilteroptions{{ d.id }}--{{ d.parent_id }}" name="cfilteroptions[]" value="{{ d.id }}--{{ d.parent_id }}" type="hidden">
+
+                                <label class="col-sm-3 control-label no-padding-right"> {% if forloop.counter == 1 %} 条件 {% endif %} </label>
+                                <div class="col-sm-9">
+
+                                    <select class="col-xs-1 col-sm-1" name="option_logic_type{{ d.id }}--{{ d.parent_id }}" id="option_logic_type{{ d.id }}--{{ d.parent_id }}" style="height: 34px;">
+                                        {% for k, v in form.COND_LOGIC %}
+                                            <option value="{{ k }}"  {% if k == d.logic %} selected {% endif %}>{{ v }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <select class="col-xs-2 col-sm-2" name="option_suboption{{ d.id }}--{{ d.parent_id }}"
+                                            id="option_suboption{{ d.id }}--{{ d.parent_id }}" style="height: 34px;" onchange="onchangeCfilterOptions(this.value, '{{ d.id }}--{{ d.parent_id }}')">
+                                        {% for k, v in form.ALL_CONDITION_SUBOPTION %}
+                                            <option value="{{ k }}"  {% if k == d.suboption %} selected {% endif %}>{{ v }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <!-- 部门下拉选择 -->
+                                    <select class="col-xs-2 col-sm-2 {% if d.suboption not in form.G_COND_OPTION_IN  %} display-none {% endif %}"
+                                            name="option_action_dpt{{ d.id }}--{{ d.parent_id }}" id="option_action_dpt{{ d.id }}--{{ d.parent_id }}" style="height: 34px;">
+                                        {% for k, v in form.G_COND_ACTION_IN_T %}
+                                            <option value="{{ k }}"  {% if k == d.action %} selected {% endif %}>{{ v }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <!-- 邮件大小 -->
+                                    <select class="col-xs-2 col-sm-2 {% if d.suboption not in form.G_COND_OPTION_GTE  %} display-none {% endif %}"
+                                            name="option_action_size{{ d.id }}--{{ d.parent_id }}" id="option_action_size{{ d.id }}--{{ d.parent_id }}" style="height: 34px;">
+                                        {% for k, v in form.G_COND_ACTION_GTE_T %}
+                                            <option value="{{ k }}"  {% if k == d.action %} selected {% endif %}>{{ v }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <!-- 所有邮件 附件 -->
+                                    <select class="col-xs-2 col-sm-2 {% if d.suboption not in form.G_COND_OPTION_EQ  %} display-none {% endif %}"
+                                            name="option_action_disabled{{ d.id }}--{{ d.parent_id }}" id="option_action_disabled{{ d.id }}--{{ d.parent_id }}" style="height: 34px;">
+                                        {% for k, v in form.G_COND_ACTION_EQ_T %}
+                                            <option value="{{ k }}"  {% if k == d.action %} selected {% endif %}>{{ v }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <!-- 通用 -->
+                                    <select class="col-xs-2 col-sm-2 {% if d.suboption not in form.G_COND_OPTION_OTHER  %} display-none {% endif %}"
+                                            name="option_action_other{{ d.id }}--{{ d.parent_id }}" id="option_action_other{{ d.id }}--{{ d.parent_id }}" style="height: 34px;">
+                                        {% for k, v in form.G_COND_ACTION_OTHER_T %}
+                                            <option value="{{ k }}"  {% if k == d.action %} selected {% endif %}>{{ v }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <div class="input-group col-xs-4 col-sm-4">
+                                        <!-- 部门下拉选择 -->
+                                        <select class="col-xs-12 col-sm-12 {% if d.suboption not in form.G_COND_OPTION_IN  %} display-none {% endif %}"
+                                                name="option_value_dpt{{ d.id }}--{{ d.parent_id }}" id="option_value_dpt{{ d.id }}--{{ d.parent_id }}" style="height: 34px;">
+                                            {% for dpt in form.DepartMent %}
+                                                <option value="{{ dpt.id }}"  {% if dpt.id == d.value %} selected {% endif %}>{{ dpt.name }}</option>
+                                            {% endfor %}
+                                        </select>
+
+                                        <!-- 邮件大小 -->
+                                        <input type="number" name="option_value_size{{ d.id }}--{{ d.parent_id }}" id="option_value_size{{ d.id }}--{{ d.parent_id }}" value="{{ d.value }}"
+                                               class="col-xs-12 col-sm-12 {% if d.suboption not in form.G_COND_OPTION_GTE  %} display-none {% endif %}" />
+
+                                        <!-- 所有邮件 附件 -->
+                                        <select class="col-xs-12 col-sm-12 {% if d.suboption not in form.G_COND_OPTION_EQ  %} display-none {% endif %}"
+                                                name="option_value_disabled{{ d.id }}--{{ d.parent_id }}" id="option_value_disabled{{ d.id }}--{{ d.parent_id }}" style="height: 34px;">
+                                            {% for k, v in form.G_COND_ACTION_EQ_VALUE %}
+                                                <option value="{{ k }}"  {% if k == d.value %} selected {% endif %}>{{ v }}</option>
+                                            {% endfor %}
+                                        </select>
+
+                                        <!-- 通用 -->
+                                        <input type="text" maxlength="200" name="option_value_other{{ d.id }}--{{ d.parent_id }}" id="option_value_other{{ d.id }}--{{ d.parent_id }}" value="{{ d.value }}"
+                                               class="col-xs-12 col-sm-12 {% if d.suboption not in form.G_COND_OPTION_OTHER  %} display-none {% endif %}" />
+
+                                        <span class="input-group-btn">
+                                            <a class="btn btn-sm btn-primary" type="button" title="增条件" href="Javascript: addCfilterSuboptions('{{ d.id }}')">子条件</a>
+                                            {% if forloop.counter != 1 %}
+                                                <a class="btn btn-sm btn-danger" type="button" title="删除条件" href="Javascript: removeCfilterSuboptions('{{ d.id }}--{{ d.parent_id }}')">删除</a>
+                                            {% endif %}
+                                        </span>
+                                    </div>
+
+                                    {% if d.error %}
+                                        <div style="clear: both"></div>
+                                        <label class="col-sm-3 control-label no-padding-right"></label>
+                                        <div class="col-sm-9">
+                                            <p class="errornote txt-color-red">Error：{{ d.error }}</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- 子条件 -->
+                                <div id="id_cfilteroption_childs{{ d.id }}--{{ d.parent_id }}" class="">
+                                    {% for dd in d.childs %}
+                                        <div id="id_cfilteroption_child{{ dd.id }}--{{ dd.parent_id }}" class="">
+                                            <div style="clear: both; margin-top: 5px;"></div>
+                                            <input id="id_cfilteroptionchilds{{ dd.id }}--{{ dd.parent_id }}" name="cfilteroptionchilds[]" value="{{ dd.id }}--{{ dd.parent_id }}" type="hidden">
+                                            <label class="col-sm-3 control-label no-padding-right"> </label>
+                                            <div class="col-sm-9">
+                                                <label class="col-xs-1 col-sm-1"></label>
+
+                                                <select class="col-xs-2 col-sm-2" name="option_suboption{{ dd.id }}--{{ dd.parent_id }}"
+                                                        id="option_suboption{{ dd.id }}--{{ dd.parent_id }}" style="height: 34px;" onchange="onchangeCfilterOptions(this.value, '{{ dd.id }}--{{ dd.parent_id }}')">
+                                                    {% for k, v in form.ALL_CONDITION_SUBOPTION %}
+                                                        <option value="{{ k }}"  {% if k == dd.suboption %} selected {% endif %}>{{ v }}</option>
+                                                    {% endfor %}
+                                                </select>
+
+                                                <!-- 部门下拉选择 -->
+                                                <select class="col-xs-2 col-sm-2 {% if dd.suboption not in form.G_COND_OPTION_IN  %} display-none {% endif %}"
+                                                        name="option_action_dpt{{ dd.id }}--{{ dd.parent_id }}" id="option_action_dpt{{ dd.id }}--{{ dd.parent_id }}" style="height: 34px;">
+                                                    {% for k, v in form.G_COND_ACTION_IN_T %}
+                                                        <option value="{{ k }}"  {% if k == dd.action %} selected {% endif %}>{{ v }}</option>
+                                                    {% endfor %}
+                                                </select>
+
+                                                <!-- 邮件大小 -->
+                                                <select class="col-xs-2 col-sm-2 {% if dd.suboption not in form.G_COND_OPTION_GTE  %} display-none {% endif %}"
+                                                        name="option_action_size{{ dd.id }}--{{ dd.parent_id }}" id="option_action_size{{ dd.id }}--{{ dd.parent_id }}" style="height: 34px;">
+                                                    {% for k, v in form.G_COND_ACTION_GTE_T %}
+                                                        <option value="{{ k }}"  {% if k == dd.action %} selected {% endif %}>{{ v }}</option>
+                                                    {% endfor %}
+                                                </select>
+
+                                                <!-- 所有邮件 附件 -->
+                                                <select class="col-xs-2 col-sm-2 {% if dd.suboption not in form.G_COND_OPTION_EQ  %} display-none {% endif %}"
+                                                        name="option_action_disabled{{ dd.id }}--{{ dd.parent_id }}" id="option_action_disabled{{ dd.id }}--{{ dd.parent_id }}" style="height: 34px;">
+                                                    {% for k, v in form.G_COND_ACTION_EQ_T %}
+                                                        <option value="{{ k }}"  {% if k == dd.action %} selected {% endif %}>{{ v }}</option>
+                                                    {% endfor %}
+                                                </select>
+
+                                                <!-- 通用 -->
+                                                <select class="col-xs-2 col-sm-2 {% if dd.suboption not in form.G_COND_OPTION_OTHER  %} display-none {% endif %}"
+                                                        name="option_action_other{{ dd.id }}--{{ dd.parent_id }}" id="option_action_other{{ dd.id }}--{{ dd.parent_id }}" style="height: 34px;">
+                                                    {% for k, v in form.G_COND_ACTION_OTHER_T %}
+                                                        <option value="{{ k }}"  {% if k == dd.action %} selected {% endif %}>{{ v }}</option>
+                                                    {% endfor %}
+                                                </select>
+
+                                                <div class="input-group col-xs-4 col-sm-4">
+                                                    <!-- 部门下拉选择 -->
+                                                    <select class="col-xs-12 col-sm-12 {% if dd.suboption not in form.G_COND_OPTION_IN  %} display-none {% endif %}"
+                                                            name="option_value_dpt{{ dd.id }}--{{ dd.parent_id }}" id="option_value_dpt{{ dd.id }}--{{ dd.parent_id }}" style="height: 34px;">
+                                                        {% for dpt in form.DepartMent %}
+                                                            <option value="{{ dpt.id }}"  {% if dpt.id == dd.value %} selected {% endif %}>{{ dpt.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+
+                                                    <!-- 邮件大小 -->
+                                                    <input type="number" name="option_value_size{{ dd.id }}--{{ dd.parent_id }}" id="option_value_size{{ dd.id }}--{{ dd.parent_id }}" value="{{ dd.value }}"
+                                                           class="col-xs-12 col-sm-12 {% if dd.suboption not in form.G_COND_OPTION_GTE  %} display-none {% endif %}" />
+
+                                                    <!-- 所有邮件 附件 -->
+                                                    <select class="col-xs-12 col-sm-12 {% if dd.suboption not in form.G_COND_OPTION_EQ  %} display-none {% endif %}"
+                                                            name="option_value_disabled{{ dd.id }}--{{ dd.parent_id }}" id="option_value_disabled{{ dd.id }}--{{ dd.parent_id }}" style="height: 34px;">
+                                                        {% for k, v in form.G_COND_ACTION_EQ_VALUE %}
+                                                            <option value="{{ k }}"  {% if k == dd.value %} selected {% endif %}>{{ v }}</option>
+                                                        {% endfor %}
+                                                    </select>
+
+                                                    <!-- 通用 -->
+                                                    <input type="text" maxlength="200" name="option_value_other{{ dd.id }}--{{ dd.parent_id }}" id="option_value_other{{ dd.id }}--{{ dd.parent_id }}" value="{{ dd.value }}"
+                                                           class="col-xs-12 col-sm-12 {% if dd.suboption not in form.G_COND_OPTION_OTHER  %} display-none {% endif %}" />
+
+                                                    <span class="input-group-btn">
+                                                        <a class="btn btn-sm btn-danger" type="button" title="删除条件" href="Javascript: removeCfilterSubSuboptions('{{ dd.id }}--{{ dd.parent_id }}')">删除</a>
+                                                    </span>
+                                                </div>
+
+                                                {% if dd.error %}
+                                                    <div style="clear: both"></div>
+                                                    <label class="col-sm-3 control-label no-padding-right"></label>
+                                                    <div class="col-sm-9">
+                                                        <p class="errornote txt-color-red">Error：{{ dd.error }}</p>
+                                                    </div>
+                                                {% endif %}
+
+                                            </div>
+
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+
+                                <!-- 分隔行 -->
+                                <div class="">
+                                    <div style="clear: both"></div>
+                                    <label class="col-sm-3 control-label no-padding-right"></label>
+                                    <div class="col-sm-8"><div class="hr hr-6 hr-dotted"></div></div>
+                                    <div style="clear: both"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div class="">
+                        <label class="col-sm-3 control-label no-padding-right"></label>
+                        <span class="help-inline col-xs-9 col-sm-9">
+                            <div class="">
+                                <input value="{% trans "新增条件" %}" onclick="addCfilterOptions()" type="button" class="btn btn-primary btn-minier">
+                            </div>
+                            <div class="">
+                                <span class="middle text-success">邮件大小单位：MB。</span>
+                            </div>
+                            <div class="">
+                                <span class="middle text-success">支持多个条件，同时每个条件下可以添加子条件。</span>
+                            </div>
+                        </span>
+                    </div>
+
+                </div>
+
+
+
+                <!--<div class="hr hr-16 hr-dotted"></div>-->
+                <div class="">
+                    <div style="clear: both"></div>
+                    <label class="col-sm-2 control-label no-padding-right"></label>
+                    <div class="col-sm-9"><div class="hr hr-12"></div></div>
+                    <div style="clear: both"></div>
+                </div>
+
+                <div class="form-group ">
+                    <div class="" id="id_cfilteractions">
+                        {% for d in form.cfilteraction.value %}
+
+                            <div id="id_cfilteraction{{ d.id }}" class="{% if d.error %} has-error {% endif %}">
+                                <input id="id_cfilteractionids{{ d.id }}" name="cfilteractionids[]" value="{{ d.id }}" type="hidden">
+
+                                <label class="col-sm-3 control-label no-padding-right"> {% if forloop.counter == 1 %} 动作 {% endif %} </label>
+                                <div class="col-sm-9">
+
+                                    <select class="col-xs-2 col-sm-2" name="action_type{{ d.id }}" id="action_type{{ d.id }}" style="height: 34px;" onchange="onchangeCfilterActions(this.value, '{{ d.id }}')">
+                                        {% for k, v in form.ACTION_TYPE %}
+                                            <option value="{{ k }}"  {% if k == d.action %} selected {% endif %}>{{ v }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <!-- 字段 -->
+                                    <input type="text" name="action_field{{ d.id }}" id="action_field{{ d.id }}" value="{{ d.field }}" maxlength="200"
+                                           class="col-xs-2 col-sm-2 {% if d.action not in form.Action_has_all %} display-none {% endif %} "/>
+
+                                    <!-- 值 -->
+                                    <input type="text" name="action_value_a{{ d.id }}" id="action_value_a{{ d.id }}" value="{{ d.value }}" maxlength="200"
+                                           class="col-xs-3 col-sm-3 {% if d.action not in form.Action_has_all %} display-none {% endif %} "/>
+
+
+                                    <input type="text" name="action_value_b{{ d.id }}" id="action_value_b{{ d.id }}" value="{{ d.value }}" maxlength="200"
+                                           class="col-xs-5 col-sm-5 {% if d.action not in form.Action_only_str %} display-none {% endif %} "/>
+
+                                    <input type="number" name="action_value_int{{ d.id }}" id="action_value_int{{ d.id }}" value="{{ d.value }}"
+                                           class="col-xs-5 col-sm-5 {% if d.action not in form.Action_only_int %} display-none {% endif %} "/>
+
+                                    <select name="action_value_select{{ d.id }}" id="action_value_select{{ d.id }}" style="height: 34px;"
+                                            class="col-xs-5 col-sm-5 {% if d.action not in form.Action_only_select %} display-none {% endif %} ">
+                                        {% for k, v in form.Action_only_slect_value %}
+                                            <option value="{{ k }}"  {% if k == d.value %} selected {% endif %}>{{ v }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <div class="input-group {% if d.action in form.Action_only or d.action in form.Action_only_mail or d.action in form.Action_only_edit %} col-xs-2 col-sm-2 {% else %} col-xs-7 col-sm-7 {% endif %}"
+                                         id="input-group-{{ d.id }}">
+                                        <input type="number" name="action_sequence{{ d.id }}" id="action_sequence{{ d.id }}" value="{{ d.sequence }}" class="col-xs-12 col-sm-12 " placeholder="动作优先级"/>
+                                        {% if forloop.counter != 1 %}
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-sm btn-danger" type="button" title="删除动作" href="Javascript: removeCfilterActions('{{ d.id }}')">删除</a>
+                                            </span>
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+
+                                <!-- 追加邮件内容 -->
+                                <div style="clear: both"></div>
+                                <label class="col-sm-3 control-label no-padding-right"></label>
+                                <div class="col-sm-9">
+                                    <div id="action_value_edit_div{{ d.id }}" class="{% if d.action not in form.Action_only_edit %} display-none {% endif %} ">
+                                        <textarea  rows="5" class="col-xs-4 col-sm-4 kinde-ditor" id="action_value_edit{{ d.id }}" name="action_value_edit{{ d.id }}">{{ d.value }}</textarea>
+                                        <script>
+                                            KindEditor.ready(function(K){var options={width:"540",minHeight:"100",afterBlur:function(){this.sync();},items:["lineheight","formatblock","fontname","fontsize","|","undo","redo","|","cut","copy","paste","plainpaste","wordpast","|","justifyleft","justifycenter","justifyright","justifyfull","|","insertorderedlist","insertunorderedlist","indent","outdent","|","/","clearhtml","quickformat","selectall","|","forecolor","hilitecolor","bold","italic","underline","strikethrough","linehieght","removeformat","|","table","hr","link","unlink"],filterMode:false,wellFormatMode:false,allowImageUpload:false,allowFlashUpload:false,allowMediaUpload:false,allowFileUpload:false,resizeType:2,maillist:[],imagelist:[],langType:"zh_CN",syncType:"",urlType:"",colorTable:[["#F8E0E0","#F8E6E0","#F8ECE0","#F7F2E0","#F7F8E0","#F1F8E0","#ECF8E0","#E6F8E0","#E0F8E0","#E0F8E6","#E0F8EC","#E0F8F1","#E0F8F7","#E0F2F7","#E0ECF8","#E0E6F8","#E0E0F8","#E6E0F8","#ECE0F8","#F2E0F7","#F8E0F7","#F8E0F1","#F8E0EC","#F8E0E6","#FAFAFA"],["#F6CECE","#F6D8CE","#F6E3CE","#F5ECCE","#F5F6CE","#ECF6CE","#E3F6CE","#D8F6CE","#CEF6CE","#CEF6D8","#CEF6E3","#CEF6EC","#CEF6F5","#CEECF5","#CEE3F6","#CED8F6","#CECEF6","#D8CEF6","#E3CEF6","#ECCEF5","#F6CEF5","#F6CEEC","#F6CEE3","#F6CED8","#F2F2F2"],["#F5A9A9","#F5BCA9","#F5D0A9","#F3E2A9","#F2F5A9","#E1F5A9","#D0F5A9","#BCF5A9","#A9F5A9","#A9F5BC","#A9F5D0","#A9F5E1","#A9F5F2","#A9E2F3","#A9D0F5","#A9BCF5","#A9A9F5","#BCA9F5","#D0A9F5","#E2A9F3","#F5A9F2","#F5A9E1","#F5A9D0","#F5A9BC","#E6E6E6"],["#F78181","#F79F81","#F7BE81","#F5DA81","#F3F781","#D8F781","#BEF781","#9FF781","#81F781","#81F79F","#81F7BE","#81F7D8","#81F7F3","#81DAF5","#81BEF7","#819FF7","#8181F7","#9F81F7","#BE81F7","#DA81F5","#F781F3","#F781D8","#F781BE","#F7819F","#D8D8D8"],["#FA5858","#FA8258","#FAAC58","#F7D358","#F4FA58","#D0FA58","#ACFA58","#82FA58","#58FA58","#58FA82","#58FAAC","#58FAD0","#58FAF4","#58D3F7","#58ACFA","#5882FA","#5858FA","#8258FA","#AC58FA","#D358F7","#FA58F4","#FA58D0","#FA58AC","#FA5882","#BDBDBD"],["#FE2E2E","#FE642E","#FE9A2E","#FACC2E","#F7FE2E","#C8FE2E","#9AFE2E","#64FE2E","#2EFE2E","#2EFE64","#2EFE9A","#2EFEC8","#2EFEF7","#2ECCFA","#2E9AFE","#2E64FE","#2E2EFE","#642EFE","#9A2EFE","#CC2EFA","#FE2EF7","#FE2EC8","#FE2E9A","#FE2E64","#A4A4A4"],["#FF0000","#FF4000","#FF8000","#FFBF00","#FFFF00","#BFFF00","#80FF00","#40FF00","#00FF00","#00FF40","#00FF80","#00FFBF","#00FFFF","#00BFFF","#0080FF","#0040FF","#0000FF","#4000FF","#8000FF","#BF00FF","#FF00FF","#FF00BF","#FF0080","#FF0040","#848484"],["#DF0101","#DF3A01","#DF7401","#DBA901","#D7DF01","#A5DF00","#74DF00","#3ADF00","#01DF01","#01DF3A","#01DF74","#01DFA5","#01DFD7","#01A9DB","#0174DF","#013ADF","#0101DF","#3A01DF","#7401DF","#A901DB","#DF01D7","#DF01A5","#DF0174","#DF013A","#6E6E6E"],["#B40404","#B43104","#B45F04","#B18904","#AEB404","#86B404","#5FB404","#31B404","#04B404","#04B431","#04B45F","#04B486","#04B4AE","#0489B1","#045FB4","#0431B4","#0404B4","#3104B4","#5F04B4","#8904B1","#B404AE","#B40486","#B4045F","#B40431","#585858"],["#8A0808","#8A2908","#8A4B08","#886A08","#868A08","#688A08","#4B8A08","#298A08","#088A08","#088A29","#088A4B","#088A68","#088A85","#086A87","#084B8A","#08298A","#08088A","#29088A","#4B088A","#6A0888","#8A0886","#8A0868","#8A084B","#8A0829","#424242"],["#610B0B","#61210B","#61380B","#5F4C0B","#5E610B","#4B610B","#38610B","#21610B","#0B610B","#0B6121","#0B6138","#0B614B","#0B615E","#0B4C5F","#0B3861","#0B2161","#0B0B61","#210B61","#380B61","#4C0B5F","#610B5E","#610B4B","#610B38","#610B21","#2E2E2E"],["#3B0B0B","#3B170B","#3B240B","#3A2F0B","#393B0B","#2E3B0B","#243B0B","#173B0B","#0B3B0B","#0B3B17","#0B3B24","#0B3B2E","#0B3B39","#0B2F3A","#0B243B","#0B173B","#0B0B3B","#170B3B","#240B3B","#2F0B3A","#3B0B39","#3B0B2E","#3B0B24","#3B0B17","#1C1C1C"],["#2A0A0A","#2A120A","#2A1B0A","#29220A","#292A0A","#222A0A","#1B2A0A","#122A0A","#0A2A0A","#0A2A12","#0A2A1B","#0A2A22","#0A2A29","#0A2229","#0A1B2A","#0A122A","#0A0A2A","#120A2A","#1B0A2A","#220A29","#2A0A29","#2A0A22","#2A0A1B","#2A0A12","#151515"],["#190707","#190B07","#191007","#181407","#181907","#141907","#101907","#0B1907","#071907","#07190B","#071910","#071914","#071918","#071418","#071019","#070B19","#070719","#0B0719","#100719","#140718","#190718","#190714","#190710","#19070B","#000000"]]};editor=K.create("#action_value_edit{{ d.id }}",options)});
+                                        </script>
+                                    </div>
+                                </div>
+
+                                <!-- 发送邮件 -->
+                                <div style="clear: both"></div>
+                                <label class="col-sm-3 control-label no-padding-right"></label>
+                                <div class="col-sm-9">
+                                    <div id="action_value_mail{{ d.id }}" class="{% if d.action not in form.Action_only_mail %} display-none {% endif %} ">
+
+                                        <div class="col-sm-12">
+                                            <label class="control-label pull-left" for="id_action_value_mail_sender{{ d.id }}" style="width: 60px;margin-right: 5px;">发信人</label>
+                                            <input type="text" maxlength="100" id="id_action_value_mail_sender{{ d.id }}" name="action_value_mail_sender{{ d.id }}" value="{{ d.mail_sender }}" class="col-xs-8 col-sm-4"/>
+                                        </div>
+                                        <div class="col-sm-12" style="margin-top: 5px;">
+                                            <label class="control-label pull-left" for="id_action_value_mail_recipient{{ d.id }}" style="width: 60px;margin-right: 5px;">收信人</label>
+                                            <input type="text" maxlength="100" id="id_action_value_mail_recipient{{ d.id }}" name="action_value_mail_recipient{{ d.id }}" value="{{ d.mail_recipient }}" class="col-xs-8 col-sm-4"/>
+                                        </div>
+                                        <div class="col-sm-12" style="margin-top: 5px;">
+                                            <label class="control-label pull-left" for="id_action_value_mail_subject{{ d.id }}" style="width: 60px;margin-right: 5px;">主题</label>
+                                            <input type="text" maxlength="100" id="id_action_value_mail_subject{{ d.id }}" name="action_value_mail_subject{{ d.id }}" value="{{ d.mail_subject }}" class="col-xs-8 col-sm-4"/>
+                                        </div>
+                                        <div class="col-sm-12" style="margin-top: 5px;">
+                                            <label class="control-label pull-left" for="id_action_value_mail_type{{ d.id }}" style="width: 60px; margin-right: 5px;">发送类型</label>
+                                            <select name="action_value_mail_type{{ d.id }}" id="id_action_value_mail_type{{ d.id }}" style="height: 34px;" class="col-xs-8 col-sm-4" onchange="onchangeMailType(this.value, '{{ d.id }}');">
+                                                {% for k, v in form.Action_only_mail_type %}
+                                                    <option value="{{ k }}"  {% if k == d.mail_type %} selected {% endif %}>{{ v }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-12" style="margin-top: 5px;">
+                                            <label class="control-label pull-left" style="width: 60px; margin-right: 5px;">内容</label>
+                                            <div id="id_action_value_mail_content_html_div{{ d.id }}" class="{% if d.mail_type == 'html' %} display-none{% endif %}" >
+                                                <textarea  rows="5" class="col-xs-4 col-sm-4" id="id_action_value_mail_content_html{{ d.id }}" name="action_value_mail_content_html{{ d.id }}">{{ d.mail_content_html }}</textarea>
+                                                <script>KindEditor.ready(function(K){var options={width:"540",minHeight:"100",afterBlur:function(){this.sync();},items:["lineheight","formatblock","fontname","fontsize","|","undo","redo","|","cut","copy","paste","plainpaste","wordpast","|","justifyleft","justifycenter","justifyright","justifyfull","|","insertorderedlist","insertunorderedlist","indent","outdent","|","/","clearhtml","quickformat","selectall","|","forecolor","hilitecolor","bold","italic","underline","strikethrough","linehieght","removeformat","|","table","hr","link","unlink"],filterMode:false,wellFormatMode:false,allowImageUpload:false,allowFlashUpload:false,allowMediaUpload:false,allowFileUpload:false,resizeType:2,maillist:[],imagelist:[],langType:"zh_CN",syncType:"",urlType:"",colorTable:[["#F8E0E0","#F8E6E0","#F8ECE0","#F7F2E0","#F7F8E0","#F1F8E0","#ECF8E0","#E6F8E0","#E0F8E0","#E0F8E6","#E0F8EC","#E0F8F1","#E0F8F7","#E0F2F7","#E0ECF8","#E0E6F8","#E0E0F8","#E6E0F8","#ECE0F8","#F2E0F7","#F8E0F7","#F8E0F1","#F8E0EC","#F8E0E6","#FAFAFA"],["#F6CECE","#F6D8CE","#F6E3CE","#F5ECCE","#F5F6CE","#ECF6CE","#E3F6CE","#D8F6CE","#CEF6CE","#CEF6D8","#CEF6E3","#CEF6EC","#CEF6F5","#CEECF5","#CEE3F6","#CED8F6","#CECEF6","#D8CEF6","#E3CEF6","#ECCEF5","#F6CEF5","#F6CEEC","#F6CEE3","#F6CED8","#F2F2F2"],["#F5A9A9","#F5BCA9","#F5D0A9","#F3E2A9","#F2F5A9","#E1F5A9","#D0F5A9","#BCF5A9","#A9F5A9","#A9F5BC","#A9F5D0","#A9F5E1","#A9F5F2","#A9E2F3","#A9D0F5","#A9BCF5","#A9A9F5","#BCA9F5","#D0A9F5","#E2A9F3","#F5A9F2","#F5A9E1","#F5A9D0","#F5A9BC","#E6E6E6"],["#F78181","#F79F81","#F7BE81","#F5DA81","#F3F781","#D8F781","#BEF781","#9FF781","#81F781","#81F79F","#81F7BE","#81F7D8","#81F7F3","#81DAF5","#81BEF7","#819FF7","#8181F7","#9F81F7","#BE81F7","#DA81F5","#F781F3","#F781D8","#F781BE","#F7819F","#D8D8D8"],["#FA5858","#FA8258","#FAAC58","#F7D358","#F4FA58","#D0FA58","#ACFA58","#82FA58","#58FA58","#58FA82","#58FAAC","#58FAD0","#58FAF4","#58D3F7","#58ACFA","#5882FA","#5858FA","#8258FA","#AC58FA","#D358F7","#FA58F4","#FA58D0","#FA58AC","#FA5882","#BDBDBD"],["#FE2E2E","#FE642E","#FE9A2E","#FACC2E","#F7FE2E","#C8FE2E","#9AFE2E","#64FE2E","#2EFE2E","#2EFE64","#2EFE9A","#2EFEC8","#2EFEF7","#2ECCFA","#2E9AFE","#2E64FE","#2E2EFE","#642EFE","#9A2EFE","#CC2EFA","#FE2EF7","#FE2EC8","#FE2E9A","#FE2E64","#A4A4A4"],["#FF0000","#FF4000","#FF8000","#FFBF00","#FFFF00","#BFFF00","#80FF00","#40FF00","#00FF00","#00FF40","#00FF80","#00FFBF","#00FFFF","#00BFFF","#0080FF","#0040FF","#0000FF","#4000FF","#8000FF","#BF00FF","#FF00FF","#FF00BF","#FF0080","#FF0040","#848484"],["#DF0101","#DF3A01","#DF7401","#DBA901","#D7DF01","#A5DF00","#74DF00","#3ADF00","#01DF01","#01DF3A","#01DF74","#01DFA5","#01DFD7","#01A9DB","#0174DF","#013ADF","#0101DF","#3A01DF","#7401DF","#A901DB","#DF01D7","#DF01A5","#DF0174","#DF013A","#6E6E6E"],["#B40404","#B43104","#B45F04","#B18904","#AEB404","#86B404","#5FB404","#31B404","#04B404","#04B431","#04B45F","#04B486","#04B4AE","#0489B1","#045FB4","#0431B4","#0404B4","#3104B4","#5F04B4","#8904B1","#B404AE","#B40486","#B4045F","#B40431","#585858"],["#8A0808","#8A2908","#8A4B08","#886A08","#868A08","#688A08","#4B8A08","#298A08","#088A08","#088A29","#088A4B","#088A68","#088A85","#086A87","#084B8A","#08298A","#08088A","#29088A","#4B088A","#6A0888","#8A0886","#8A0868","#8A084B","#8A0829","#424242"],["#610B0B","#61210B","#61380B","#5F4C0B","#5E610B","#4B610B","#38610B","#21610B","#0B610B","#0B6121","#0B6138","#0B614B","#0B615E","#0B4C5F","#0B3861","#0B2161","#0B0B61","#210B61","#380B61","#4C0B5F","#610B5E","#610B4B","#610B38","#610B21","#2E2E2E"],["#3B0B0B","#3B170B","#3B240B","#3A2F0B","#393B0B","#2E3B0B","#243B0B","#173B0B","#0B3B0B","#0B3B17","#0B3B24","#0B3B2E","#0B3B39","#0B2F3A","#0B243B","#0B173B","#0B0B3B","#170B3B","#240B3B","#2F0B3A","#3B0B39","#3B0B2E","#3B0B24","#3B0B17","#1C1C1C"],["#2A0A0A","#2A120A","#2A1B0A","#29220A","#292A0A","#222A0A","#1B2A0A","#122A0A","#0A2A0A","#0A2A12","#0A2A1B","#0A2A22","#0A2A29","#0A2229","#0A1B2A","#0A122A","#0A0A2A","#120A2A","#1B0A2A","#220A29","#2A0A29","#2A0A22","#2A0A1B","#2A0A12","#151515"],["#190707","#190B07","#191007","#181407","#181907","#141907","#101907","#0B1907","#071907","#07190B","#071910","#071914","#071918","#071418","#071019","#070B19","#070719","#0B0719","#100719","#140718","#190718","#190714","#190710","#19070B","#000000"]]};editor=K.create("#id_action_value_mail_content_html{{ d.id }}",options)});</script>
+                                            </div>
+                                            <div id="id_action_value_mail_content_plain_div{{ d.id }}" class="{% if d.mail_type == 'plain' %} display-none{% endif %}">
+                                                <textarea  rows="5" class="col-xs-8 col-sm-4" id="id_action_value_mail_content_plain{{ d.id }}" name="action_value_mail_content_plain{{ d.id }}">{{ d.mail_content_plain }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                {% if d.error %}
+                                    <div style="clear: both"></div>
+                                    <label class="col-sm-3 control-label no-padding-right"></label>
+                                    <div class="col-sm-9">
+                                        <p class="errornote txt-color-red">Error：{{ d.error }}</p>
+                                    </div>
+                                {% endif %}
+
+                                <div style="clear: both"></div>
+                                <label class="col-sm-3 control-label no-padding-right"></label>
+                                <div class="col-sm-8"><div class="hr hr-6 hr-dotted"></div></div>
+                                <div style="clear: both"></div>
+                            </div>
+
+                        {% endfor %}
+                    </div>
+
+                    <div class="">
+                        <label class="col-sm-3 control-label no-padding-right"></label>
+                        <span class="help-inline col-xs-9 col-sm-7">
+                            <div class="">
+                                <input value="{% trans "新增动作" %}" onclick="addCfilterActions()" type="button" class="btn btn-primary btn-minier">
+                            </div>
+                            <div class="">
+                                <span class="middle text-success">转发：可以设置多个邮箱，以 , 号隔开。</span>
+                            </div>
+                            <div class="">
+                                <span class="middle text-success">优先级：优先级越小动作越先处理，默认999，最后一个空格填写该值。</span>
+                            </div>
+                            <div class="">
+                                <span class="middle text-success">支持多个动作，优先级控制。</span>
+                            </div>
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <!--<div class="hr hr-16 hr-dotted"></div>-->
+                <div class="">
+                    <div style="clear: both"></div>
+                    <label class="col-sm-1 control-label no-padding-right"></label>
+                    <div class="col-sm-10"><div class="hr hr-12"></div></div>
+                    <div style="clear: both"></div>
+                </div>
+
+                <div class="form-group {% if form.sequence.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_sequence"> 优先级 </label>
+                    <div class="col-sm-9">
+                        <input type="number" id="id_sequence" name="sequence" value="{{ form.sequence.value }}" class="col-xs-9 col-sm-9" required/>
+                        {% if form.sequence.error %}
+                            <div style="clear: both"><p class="errornote txt-color-red">{{ form.sequence.error }}</p></div>
+                        {% endif %}
+                    </div>
+                    <div class="">
+                        <label class="col-sm-3 control-label no-padding-right"></label>
+                        <span class="help-inline col-xs-9 col-sm-9">
+                            <span class="middle text-success">优先级越小级别越高</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_type"> 规则用于 </label>
+                    <div class="col-sm-9">
+                        <label class="radio radio-inline padding-top-0 margin-top-0 form-inline">
+                            <label>
+                                <input type="radio" name="type" value="-1" {% if form.type.value == -1  %} checked="" {% endif %}><span>外发</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="type" value="1" {% if form.type.value != -1  %} checked="" {% endif %}><span>接收</span>
+                            </label>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_disabled"> 状态 </label>
+                    <div class="col-sm-9">
+                        <label class="radio radio-inline padding-top-0 margin-top-0 form-inline">
+                            <label>
+                                <input type="radio" name="disabled" value="-1" {% if form.disabled.value == -1  %} checked="" {% endif %}><span>启用</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="disabled" value="1" {% if form.disabled.value != -1  %} checked="" {% endif %}><span>禁用</span>
+                            </label>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button class="btn btn-info" type="submit">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            保存
+                        </button>
+                        <button class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>
+                            重置
+                        </button>
+
+                        <a type="button" class="btn btn-link" href="{% url 'cfilter_set' %}">取消</a>
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'admin/editor/css/default.css' %}" />
+{% endblock %}
+
+{% block js_block %}
+    <script charset="utf-8" src="{% static 'admin/editor/kindeditor.js' %}"></script>
+    <script charset="utf-8" src="{% static 'admin/editor/lang/zh_CN.js' %}"></script>
+{% endblock %}
+
+{% block my_jsblock %}
+
+    <script>
+        {% for d in form.cfilteraction.value %}
+            $(function () {
+                onchangeCfilterActions('{{ d.action }}', '{{ d.id }}');
+                onchangeMailType("html", '{{ d.id }}');
+            });
+        {% endfor %}
+
+        {% for d in form.cfilteroption.value %}
+            $(function () {
+                onchangeCfilterOptions('{{ d.suboption }}', '{{ d.id }}--{{ d.parent_id }}');
+            });
+            {% for dd in d.childs %}
+                $(function () {
+                    onchangeCfilterOptions('{{ dd.suboption }}', '{{ dd.id }}--{{ dd.parent_id }}');
+                });
+            {% endfor %}
+        {% endfor %}
+
+        function S4(){ return (((1+Math.random())*0x10000)|0).toString(16).substring(1); }
+        function GenerateGuid(){ return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4()); }
+
+        // 新增条件
+        function addCfilterOptions(){
+            var rule_id = GenerateGuid();
+            var subhtml = '<div id="id_cfilteroption'+rule_id+'--" class=""><input id="id_cfilteroptions'+rule_id+'--" name="cfilteroptions[]" value="'+rule_id+'--" type="hidden">' +
+                    '<label class="col-sm-3 control-label no-padding-right"> </label><div class="col-sm-9">' +
+                    '<select class="col-xs-1 col-sm-1" name="option_logic_type'+rule_id+'--" id="option_logic_type'+rule_id+'--" style="height: 34px;">' +
+                    {% for k, v in form.COND_LOGIC %}
+                        '<option value="{{ k }}">{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<select class="col-xs-2 col-sm-2" name="option_suboption'+rule_id+'--" id="option_suboption'+rule_id+'--" style="height: 34px;" onchange="onchangeCfilterOptions(this.value, \''+rule_id+'--\')">' +
+                    {% for k, v in form.ALL_CONDITION_SUBOPTION %}
+                        '<option value="{{ k }}"  {% if k == 'all_mail' %} selected {% endif %}>{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<select class="col-xs-2 col-sm-2 display-none" name="option_action_dpt'+rule_id+'--" id="option_action_dpt'+rule_id+'--" style="height: 34px;">' +
+                    {% for k, v in form.G_COND_ACTION_IN_T %}
+                        '<option value="{{ k }}">{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<select class="col-xs-2 col-sm-2 display-none" name="option_action_size'+rule_id+'--" id="option_action_size'+rule_id+'--" style="height: 34px;">' +
+                    {% for k, v in form.G_COND_ACTION_GTE_T %}
+                        '<option value="{{ k }}">{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<select class="col-xs-2 col-sm-2" name="option_action_disabled'+rule_id+'--" id="option_action_disabled'+rule_id+'--" style="height: 34px;">' +
+                    {% for k, v in form.G_COND_ACTION_EQ_T %}
+                        '<option value="{{ k }}">{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<select class="col-xs-2 col-sm-2 display-none" name="option_action_other'+rule_id+'--" id="option_action_other'+rule_id+'--" style="height: 34px;">' +
+                    {% for k, v in form.G_COND_ACTION_OTHER_T %}
+                        '<option value="{{ k }}">{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<div class="input-group col-xs-4 col-sm-4">' +
+                    '<select class="col-xs-12 col-sm-12 display-none" name="option_value_dpt'+rule_id+'--" id="option_value_dpt'+rule_id+'--" style="height: 34px;">' +
+                    {% for dpt in form.DepartMent %}
+                        '<option value="{{ dpt.id }}">{{ dpt.name }}</option> ' +
+                    {% endfor %}
+                    '</select>' +
+                    '<input type="number" name="option_value_size'+rule_id+'--" id="option_value_size'+rule_id+'--" value="'+rule_id+'--" class="col-xs-12 col-sm-12 display-none" />' +
+                    '<select class="col-xs-12 col-sm-12" name="option_value_disabled'+rule_id+'--" id="option_value_disabled'+rule_id+'--" style="height: 34px;">' +
+                    {% for k, v in form.G_COND_ACTION_EQ_VALUE %}
+                        '<option value="{{ k }}">{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<input type="text" maxlength="200" name="option_value_other'+rule_id+'--" id="option_value_other'+rule_id+'--" value="" class="col-xs-12 col-sm-12 display-none" />' +
+                    '<span class="input-group-btn">' +
+                    '<a class="btn btn-sm btn-primary" type="button" title="增条件" href="Javascript: addCfilterSuboptions(\''+rule_id+'\')">子条件</a>' +
+                    '<a class="btn btn-sm btn-danger" type="button" title="删除条件" href="Javascript: removeCfilterSuboptions(\''+rule_id+'--\')">删除</a>' +
+                    '</span>' +
+                    '</div></div>' +
+                    '<div id="id_cfilteroption_childs'+rule_id+'--" class=""></div>' +
+                    '<div class=""> <div style="clear: both"></div> <label class="col-sm-3 control-label no-padding-right"></label> <div class="col-sm-8"><div class="hr hr-6 hr-dotted"></div></div> <div style="clear: both"></div> </div> </div>';
+            $("#id_cfilteroptions").append(subhtml);
+        }
+
+
+        // 新增子条件
+        function addCfilterSuboptions(parent_id){
+            var rule_id = GenerateGuid();
+            var subhtml = '<div id="id_cfilteroption_child'+rule_id+'--'+parent_id+'" class=""><div style="clear: both; margin-top: 5px;"></div>' +
+                    '<input id="id_cfilteroptionchilds'+rule_id+'--'+parent_id+'" name="cfilteroptionchilds[]" value="'+rule_id+'--'+parent_id+'" type="hidden">' +
+                    '<label class="col-sm-3 control-label no-padding-right"> </label><div class="col-sm-9"><label class="col-xs-1 col-sm-1"></label>' +
+                    '<select class="col-xs-2 col-sm-2" name="option_suboption'+rule_id+'--'+parent_id+'" id="option_suboption'+rule_id+'--'+parent_id+'" style="height: 34px;" onchange="onchangeCfilterOptions(this.value, \''+rule_id+'--'+parent_id+'\')">' +
+                    {% for k, v in form.ALL_CONDITION_SUBOPTION %}
+                        '<option value="{{ k }}"  {% if k == 'all_mail' %} selected {% endif %}>{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<select class="col-xs-2 col-sm-2 display-none" name="option_action_dpt'+rule_id+'--'+parent_id+'" id="option_action_dpt'+rule_id+'--'+parent_id+'" style="height: 34px;">' +
+                    {% for k, v in form.G_COND_ACTION_IN_T %}
+                        '<option value="{{ k }}">{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<select class="col-xs-2 col-sm-2 display-none" name="option_action_size'+rule_id+'--'+parent_id+'" id="option_action_size'+rule_id+'--'+parent_id+'" style="height: 34px;">' +
+                    {% for k, v in form.G_COND_ACTION_GTE_T %}
+                        '<option value="{{ k }}" >{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<select class="col-xs-2 col-sm-2" name="option_action_disabled'+rule_id+'--'+parent_id+'" id="option_action_disabled'+rule_id+'--'+parent_id+'" style="height: 34px;">' +
+                    {% for k, v in form.G_COND_ACTION_EQ_T %}
+                        '<option value="{{ k }}">{{ v }}</option> ' +
+                    {% endfor %}
+                    '</select>' +
+                    '<select class="col-xs-2 col-sm-2 display-none" name="option_action_other'+rule_id+'--'+parent_id+'" id="option_action_other'+rule_id+'--'+parent_id+'" style="height: 34px;">' +
+                    {% for k, v in form.G_COND_ACTION_OTHER_T %}
+                        '<option value="{{ k }}" >{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<div class="input-group col-xs-4 col-sm-4">' +
+                    '<select class="col-xs-12 col-sm-12 display-none" name="option_value_dpt'+rule_id+'--'+parent_id+'" id="option_value_dpt'+rule_id+'--'+parent_id+'" style="height: 34px;">' +
+                    {% for dpt in form.DepartMent %}
+                        '<option value="{{ dpt.id }}" >{{ dpt.name }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<input type="number" name="option_value_size'+rule_id+'--'+parent_id+'" id="option_value_size'+rule_id+'--'+parent_id+'" value="" class="col-xs-12 col-sm-12 display-none" />' +
+                    '<select class="col-xs-12 col-sm-12" name="option_value_disabled'+rule_id+'--'+parent_id+'" id="option_value_disabled'+rule_id+'--'+parent_id+'" style="height: 34px;">' +
+                    {% for k, v in form.G_COND_ACTION_EQ_VALUE %}
+                        '<option value="{{ k }}" >{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    ' <input type="text" maxlength="200" name="option_value_other'+rule_id+'--'+parent_id+'" id="option_value_other'+rule_id+'--'+parent_id+'" value="{{ dd.value }}" class="col-xs-12 col-sm-12 display-none" />' +
+                    '<span class="input-group-btn"> <a class="btn btn-sm btn-danger" type="button" title="删除条件" href="Javascript: removeCfilterSubSuboptions(\''+rule_id+'--'+parent_id+'\')">删除</a> </span>' +
+                    '</div></div> </div>';
+            $("#id_cfilteroption_childs"+parent_id+"--").append(subhtml);
+        }
+
+
+        // 条件
+        function removeCfilterSuboptions(parent_id){
+            $("#id_cfilteroption"+parent_id).remove();
+        }
+
+        function removeCfilterSubSuboptions(rule_id){
+            $("#id_cfilteroption_child"+rule_id).remove();
+        }
+
+        function onchangeCfilterOptions(value, rule_id){
+            if ( value == "sender" || value == "cc" || value == "recipient" || value == "subject" || value == "body" ){
+                $("#option_action_size"+rule_id).addClass("display-none");
+                $("#option_value_size"+rule_id).addClass("display-none");
+                $("#option_action_dpt"+rule_id).addClass("display-none");
+                $("#option_value_dpt"+rule_id).addClass("display-none");
+                $("#option_action_disabled"+rule_id).addClass("display-none");
+                $("#option_value_disabled"+rule_id).addClass("display-none");
+
+                $("#option_action_other"+rule_id).removeClass("display-none");
+                $("#option_value_other"+rule_id).removeClass("display-none");
+            } else if ( value == "sender_dept" || value == "cc_dept" || value == "rcpt_dept" ){
+                $("#option_action_size"+rule_id).addClass("display-none");
+                $("#option_value_size"+rule_id).addClass("display-none");
+                $("#option_action_disabled"+rule_id).addClass("display-none");
+                $("#option_value_disabled"+rule_id).addClass("display-none");
+                $("#option_action_other"+rule_id).addClass("display-none");
+                $("#option_value_other"+rule_id).addClass("display-none");
+
+                $("#option_action_dpt"+rule_id).removeClass("display-none");
+                $("#option_value_dpt"+rule_id).removeClass("display-none");
+            } else if ( value == "mail_size" ) {
+                $("#option_action_dpt"+rule_id).addClass("display-none");
+                $("#option_value_dpt"+rule_id).addClass("display-none");
+                $("#option_action_disabled"+rule_id).addClass("display-none");
+                $("#option_value_disabled"+rule_id).addClass("display-none");
+                $("#option_action_other"+rule_id).addClass("display-none");
+                $("#option_value_other"+rule_id).addClass("display-none");
+
+                $("#option_action_size"+rule_id).removeClass("display-none");
+                $("#option_value_size"+rule_id).removeClass("display-none");
+            } else if (value == "all_mail" || value == "has_attach") {
+                $("#option_action_size"+rule_id).addClass("display-none");
+                $("#option_value_size"+rule_id).addClass("display-none");
+                $("#option_action_dpt"+rule_id).addClass("display-none");
+                $("#option_value_dpt"+rule_id).addClass("display-none");
+                $("#option_action_other"+rule_id).addClass("display-none");
+                $("#option_value_other"+rule_id).addClass("display-none");
+
+                $("#option_action_disabled"+rule_id).removeClass("display-none");
+                $("#option_value_disabled"+rule_id).removeClass("display-none");
+            } else {
+                $("#option_action_size"+rule_id).addClass("display-none");
+                $("#option_value_size"+rule_id).addClass("display-none");
+                $("#option_action_disabled"+rule_id).addClass("display-none");
+                $("#option_value_disabled"+rule_id).addClass("display-none");
+                $("#option_action_other"+rule_id).addClass("display-none");
+                $("#option_value_other"+rule_id).addClass("display-none");
+
+                $("#option_action_dpt"+rule_id).addClass("display-none");
+                $("#option_value_dpt"+rule_id).addClass("display-none");
+            }
+        }
+
+        // 动作
+        function removeCfilterActions(rule_id){
+            $("#id_cfilteraction"+rule_id).remove();
+        }
+
+        function addCfilterActions(){
+            var rule_id = GenerateGuid();
+            var rule_html = '<div id="id_cfilteraction'+rule_id+'" class=""><input id="id_cfilteractionids'+rule_id+'" name="cfilteractionids[]" value="'+rule_id+'" type="hidden">' +
+                    '<label class="col-sm-3 control-label no-padding-right"></label><div class="col-sm-9">' +
+                    '<select class="col-xs-2 col-sm-2" name="action_type'+rule_id+'" id="action_type'+rule_id+'" style="height: 34px;" onchange="onchangeCfilterActions(this.value, \''+rule_id+'\')">'+
+                    {% for k, v in form.ACTION_TYPE %}
+                        '<option value="{{ k }}" {% if k == 'break' %} selected {% endif %}>{{ v }}</option>'+
+                    {% endfor %}
+                    '</select>' +
+                    '<input type="text" name="action_field'+rule_id+'" id="action_field'+rule_id+'" value="" maxlength="200" class="col-xs-2 col-sm-2 display-none"/>' +
+                    '<input type="text" name="action_value_a'+rule_id+'" id="action_value_a'+rule_id+'" value="" maxlength="200" class="col-xs-3 col-sm-3 display-none "/>' +
+                    '<input type="text" name="action_value_b'+rule_id+'" id="action_value_b'+rule_id+'" value="" maxlength="200" class="col-xs-5 col-sm-5 display-none"/>' +
+                    '<input type="number" name="action_value_int'+rule_id+'" id="action_value_int'+rule_id+'" value="" class="col-xs-5 col-sm-5 display-none"/>' +
+                    '<select name="action_value_select'+rule_id+'" id="action_value_select'+rule_id+'" style="height: 34px;" class="col-xs-5 col-sm-5 display-none ">' +
+                    {% for k, v in form.Action_only_slect_value %}
+                        '<option value="{{ k }}">{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<div class="input-group col-xs-7 col-sm-7" id="input-group-'+rule_id+'">' +
+                    '<input type="number" name="action_sequence'+rule_id+'" id="action_sequence'+rule_id+'" value="999" class="col-xs-12 col-sm-12 " placeholder="动作优先级"/>' +
+                    '<span class="input-group-btn">' +
+                    '<a class="btn btn-sm btn-danger" type="button" title="删除动作" href="Javascript: removeCfilterActions(\''+rule_id+'\')">删除</a>' +
+                    '</span></div></div><div style="clear: both"></div><label class="col-sm-3 control-label no-padding-right"></label><div class="col-sm-9">' +
+                    '<div id="action_value_edit_div'+rule_id+'" class="display-none ">' +
+                    '<textarea  rows="5" class="col-xs-4 col-sm-4 kinde-ditor" id="action_value_edit'+rule_id+'" name="action_value_edit'+rule_id+'"></textarea>' +
+                    '<script>'+
+                    'KindEditor.ready(function(K){var options={width:"540",minHeight:"100",afterBlur:function(){this.sync();},items:["lineheight","formatblock","fontname","fontsize","|","undo","redo","|","cut","copy","paste","plainpaste","wordpast","|","justifyleft","justifycenter","justifyright","justifyfull","|","insertorderedlist","insertunorderedlist","indent","outdent","|","/","clearhtml","quickformat","selectall","|","forecolor","hilitecolor","bold","italic","underline","strikethrough","linehieght","removeformat","|","table","hr","link","unlink"],filterMode:false,wellFormatMode:false,allowImageUpload:false,allowFlashUpload:false,allowMediaUpload:false,allowFileUpload:false,resizeType:2,maillist:[],imagelist:[],langType:"zh_CN",syncType:"",urlType:"",colorTable:[["#F8E0E0","#F8E6E0","#F8ECE0","#F7F2E0","#F7F8E0","#F1F8E0","#ECF8E0","#E6F8E0","#E0F8E0","#E0F8E6","#E0F8EC","#E0F8F1","#E0F8F7","#E0F2F7","#E0ECF8","#E0E6F8","#E0E0F8","#E6E0F8","#ECE0F8","#F2E0F7","#F8E0F7","#F8E0F1","#F8E0EC","#F8E0E6","#FAFAFA"],["#F6CECE","#F6D8CE","#F6E3CE","#F5ECCE","#F5F6CE","#ECF6CE","#E3F6CE","#D8F6CE","#CEF6CE","#CEF6D8","#CEF6E3","#CEF6EC","#CEF6F5","#CEECF5","#CEE3F6","#CED8F6","#CECEF6","#D8CEF6","#E3CEF6","#ECCEF5","#F6CEF5","#F6CEEC","#F6CEE3","#F6CED8","#F2F2F2"],["#F5A9A9","#F5BCA9","#F5D0A9","#F3E2A9","#F2F5A9","#E1F5A9","#D0F5A9","#BCF5A9","#A9F5A9","#A9F5BC","#A9F5D0","#A9F5E1","#A9F5F2","#A9E2F3","#A9D0F5","#A9BCF5","#A9A9F5","#BCA9F5","#D0A9F5","#E2A9F3","#F5A9F2","#F5A9E1","#F5A9D0","#F5A9BC","#E6E6E6"],["#F78181","#F79F81","#F7BE81","#F5DA81","#F3F781","#D8F781","#BEF781","#9FF781","#81F781","#81F79F","#81F7BE","#81F7D8","#81F7F3","#81DAF5","#81BEF7","#819FF7","#8181F7","#9F81F7","#BE81F7","#DA81F5","#F781F3","#F781D8","#F781BE","#F7819F","#D8D8D8"],["#FA5858","#FA8258","#FAAC58","#F7D358","#F4FA58","#D0FA58","#ACFA58","#82FA58","#58FA58","#58FA82","#58FAAC","#58FAD0","#58FAF4","#58D3F7","#58ACFA","#5882FA","#5858FA","#8258FA","#AC58FA","#D358F7","#FA58F4","#FA58D0","#FA58AC","#FA5882","#BDBDBD"],["#FE2E2E","#FE642E","#FE9A2E","#FACC2E","#F7FE2E","#C8FE2E","#9AFE2E","#64FE2E","#2EFE2E","#2EFE64","#2EFE9A","#2EFEC8","#2EFEF7","#2ECCFA","#2E9AFE","#2E64FE","#2E2EFE","#642EFE","#9A2EFE","#CC2EFA","#FE2EF7","#FE2EC8","#FE2E9A","#FE2E64","#A4A4A4"],["#FF0000","#FF4000","#FF8000","#FFBF00","#FFFF00","#BFFF00","#80FF00","#40FF00","#00FF00","#00FF40","#00FF80","#00FFBF","#00FFFF","#00BFFF","#0080FF","#0040FF","#0000FF","#4000FF","#8000FF","#BF00FF","#FF00FF","#FF00BF","#FF0080","#FF0040","#848484"],["#DF0101","#DF3A01","#DF7401","#DBA901","#D7DF01","#A5DF00","#74DF00","#3ADF00","#01DF01","#01DF3A","#01DF74","#01DFA5","#01DFD7","#01A9DB","#0174DF","#013ADF","#0101DF","#3A01DF","#7401DF","#A901DB","#DF01D7","#DF01A5","#DF0174","#DF013A","#6E6E6E"],["#B40404","#B43104","#B45F04","#B18904","#AEB404","#86B404","#5FB404","#31B404","#04B404","#04B431","#04B45F","#04B486","#04B4AE","#0489B1","#045FB4","#0431B4","#0404B4","#3104B4","#5F04B4","#8904B1","#B404AE","#B40486","#B4045F","#B40431","#585858"],["#8A0808","#8A2908","#8A4B08","#886A08","#868A08","#688A08","#4B8A08","#298A08","#088A08","#088A29","#088A4B","#088A68","#088A85","#086A87","#084B8A","#08298A","#08088A","#29088A","#4B088A","#6A0888","#8A0886","#8A0868","#8A084B","#8A0829","#424242"],["#610B0B","#61210B","#61380B","#5F4C0B","#5E610B","#4B610B","#38610B","#21610B","#0B610B","#0B6121","#0B6138","#0B614B","#0B615E","#0B4C5F","#0B3861","#0B2161","#0B0B61","#210B61","#380B61","#4C0B5F","#610B5E","#610B4B","#610B38","#610B21","#2E2E2E"],["#3B0B0B","#3B170B","#3B240B","#3A2F0B","#393B0B","#2E3B0B","#243B0B","#173B0B","#0B3B0B","#0B3B17","#0B3B24","#0B3B2E","#0B3B39","#0B2F3A","#0B243B","#0B173B","#0B0B3B","#170B3B","#240B3B","#2F0B3A","#3B0B39","#3B0B2E","#3B0B24","#3B0B17","#1C1C1C"],["#2A0A0A","#2A120A","#2A1B0A","#29220A","#292A0A","#222A0A","#1B2A0A","#122A0A","#0A2A0A","#0A2A12","#0A2A1B","#0A2A22","#0A2A29","#0A2229","#0A1B2A","#0A122A","#0A0A2A","#120A2A","#1B0A2A","#220A29","#2A0A29","#2A0A22","#2A0A1B","#2A0A12","#151515"],["#190707","#190B07","#191007","#181407","#181907","#141907","#101907","#0B1907","#071907","#07190B","#071910","#071914","#071918","#071418","#071019","#070B19","#070719","#0B0719","#100719","#140718","#190718","#190714","#190710","#19070B","#000000"]]};editor=K.create("#action_value_edit'+rule_id+'",options)});' +
+                    '<\/script>' +
+                    '</div></div><div style="clear: both"></div><label class="col-sm-3 control-label no-padding-right"></label>' +
+                    '<div class="col-sm-9"><div id="action_value_mail'+rule_id+'" class="display-none">' +
+                    '<div class="col-sm-12"><label class="control-label pull-left" for="id_action_value_mail_sender'+rule_id+'" style="width: 60px;margin-right: 5px;">发信人</label><input type="text" maxlength="100" id="id_action_value_mail_sender'+rule_id+'" name="action_value_mail_sender'+rule_id+'" value="" class="col-xs-8 col-sm-4"/> </div>' +
+                    '<div class="col-sm-12" style="margin-top: 5px;"><label class="control-label pull-left" for="id_action_value_mail_recipient'+rule_id+'" style="width: 60px;margin-right: 5px;">收信人</label><input type="text" maxlength="100" id="id_action_value_mail_recipient'+rule_id+'" name="action_value_mail_recipient'+rule_id+'" value="" class="col-xs-8 col-sm-4"/></div>' +
+                    '<div class="col-sm-12" style="margin-top: 5px;"><label class="control-label pull-left" for="id_action_value_mail_subject'+rule_id+'" style="width: 60px;margin-right: 5px;">主题</label><input type="text" maxlength="100" id="id_action_value_mail_subject'+rule_id+'" name="action_value_mail_subject'+rule_id+'" value="" class="col-xs-8 col-sm-4"/></div>' +
+                    '<div class="col-sm-12" style="margin-top: 5px;"><label class="control-label pull-left" for="id_action_value_mail_type'+rule_id+'" style="width: 60px; margin-right: 5px;">发送类型</label>' +
+                    '<select name="action_value_mail_type'+rule_id+'" id="id_action_value_mail_type'+rule_id+'" style="height: 34px;" class="col-xs-8 col-sm-4" onchange="onchangeMailType(this.value, \''+rule_id+'\');">' +
+                    {% for k, v in form.Action_only_mail_type %}
+                        '<option value="{{ k }}">{{ v }}</option>' +
+                    {% endfor %}
+                    '</select></div>' +
+                    '<div class="col-sm-12" style="margin-top: 5px;"><label class="control-label pull-left" style="width: 60px; margin-right: 5px;">内容</label>' +
+                    '<div id="id_action_value_mail_content_html_div'+rule_id+'" class="" >' +
+                    '<textarea  rows="5" class="col-xs-4 col-sm-4" id="id_action_value_mail_content_html'+rule_id+'" name="action_value_mail_content_html'+rule_id+'"></textarea>' +
+                    '<script>'+
+                    'KindEditor.ready(function(K){var options={width:"540",minHeight:"100",afterBlur:function(){this.sync();},items:["lineheight","formatblock","fontname","fontsize","|","undo","redo","|","cut","copy","paste","plainpaste","wordpast","|","justifyleft","justifycenter","justifyright","justifyfull","|","insertorderedlist","insertunorderedlist","indent","outdent","|","/","clearhtml","quickformat","selectall","|","forecolor","hilitecolor","bold","italic","underline","strikethrough","linehieght","removeformat","|","table","hr","link","unlink"],filterMode:false,wellFormatMode:false,allowImageUpload:false,allowFlashUpload:false,allowMediaUpload:false,allowFileUpload:false,resizeType:2,maillist:[],imagelist:[],langType:"zh_CN",syncType:"",urlType:"",colorTable:[["#F8E0E0","#F8E6E0","#F8ECE0","#F7F2E0","#F7F8E0","#F1F8E0","#ECF8E0","#E6F8E0","#E0F8E0","#E0F8E6","#E0F8EC","#E0F8F1","#E0F8F7","#E0F2F7","#E0ECF8","#E0E6F8","#E0E0F8","#E6E0F8","#ECE0F8","#F2E0F7","#F8E0F7","#F8E0F1","#F8E0EC","#F8E0E6","#FAFAFA"],["#F6CECE","#F6D8CE","#F6E3CE","#F5ECCE","#F5F6CE","#ECF6CE","#E3F6CE","#D8F6CE","#CEF6CE","#CEF6D8","#CEF6E3","#CEF6EC","#CEF6F5","#CEECF5","#CEE3F6","#CED8F6","#CECEF6","#D8CEF6","#E3CEF6","#ECCEF5","#F6CEF5","#F6CEEC","#F6CEE3","#F6CED8","#F2F2F2"],["#F5A9A9","#F5BCA9","#F5D0A9","#F3E2A9","#F2F5A9","#E1F5A9","#D0F5A9","#BCF5A9","#A9F5A9","#A9F5BC","#A9F5D0","#A9F5E1","#A9F5F2","#A9E2F3","#A9D0F5","#A9BCF5","#A9A9F5","#BCA9F5","#D0A9F5","#E2A9F3","#F5A9F2","#F5A9E1","#F5A9D0","#F5A9BC","#E6E6E6"],["#F78181","#F79F81","#F7BE81","#F5DA81","#F3F781","#D8F781","#BEF781","#9FF781","#81F781","#81F79F","#81F7BE","#81F7D8","#81F7F3","#81DAF5","#81BEF7","#819FF7","#8181F7","#9F81F7","#BE81F7","#DA81F5","#F781F3","#F781D8","#F781BE","#F7819F","#D8D8D8"],["#FA5858","#FA8258","#FAAC58","#F7D358","#F4FA58","#D0FA58","#ACFA58","#82FA58","#58FA58","#58FA82","#58FAAC","#58FAD0","#58FAF4","#58D3F7","#58ACFA","#5882FA","#5858FA","#8258FA","#AC58FA","#D358F7","#FA58F4","#FA58D0","#FA58AC","#FA5882","#BDBDBD"],["#FE2E2E","#FE642E","#FE9A2E","#FACC2E","#F7FE2E","#C8FE2E","#9AFE2E","#64FE2E","#2EFE2E","#2EFE64","#2EFE9A","#2EFEC8","#2EFEF7","#2ECCFA","#2E9AFE","#2E64FE","#2E2EFE","#642EFE","#9A2EFE","#CC2EFA","#FE2EF7","#FE2EC8","#FE2E9A","#FE2E64","#A4A4A4"],["#FF0000","#FF4000","#FF8000","#FFBF00","#FFFF00","#BFFF00","#80FF00","#40FF00","#00FF00","#00FF40","#00FF80","#00FFBF","#00FFFF","#00BFFF","#0080FF","#0040FF","#0000FF","#4000FF","#8000FF","#BF00FF","#FF00FF","#FF00BF","#FF0080","#FF0040","#848484"],["#DF0101","#DF3A01","#DF7401","#DBA901","#D7DF01","#A5DF00","#74DF00","#3ADF00","#01DF01","#01DF3A","#01DF74","#01DFA5","#01DFD7","#01A9DB","#0174DF","#013ADF","#0101DF","#3A01DF","#7401DF","#A901DB","#DF01D7","#DF01A5","#DF0174","#DF013A","#6E6E6E"],["#B40404","#B43104","#B45F04","#B18904","#AEB404","#86B404","#5FB404","#31B404","#04B404","#04B431","#04B45F","#04B486","#04B4AE","#0489B1","#045FB4","#0431B4","#0404B4","#3104B4","#5F04B4","#8904B1","#B404AE","#B40486","#B4045F","#B40431","#585858"],["#8A0808","#8A2908","#8A4B08","#886A08","#868A08","#688A08","#4B8A08","#298A08","#088A08","#088A29","#088A4B","#088A68","#088A85","#086A87","#084B8A","#08298A","#08088A","#29088A","#4B088A","#6A0888","#8A0886","#8A0868","#8A084B","#8A0829","#424242"],["#610B0B","#61210B","#61380B","#5F4C0B","#5E610B","#4B610B","#38610B","#21610B","#0B610B","#0B6121","#0B6138","#0B614B","#0B615E","#0B4C5F","#0B3861","#0B2161","#0B0B61","#210B61","#380B61","#4C0B5F","#610B5E","#610B4B","#610B38","#610B21","#2E2E2E"],["#3B0B0B","#3B170B","#3B240B","#3A2F0B","#393B0B","#2E3B0B","#243B0B","#173B0B","#0B3B0B","#0B3B17","#0B3B24","#0B3B2E","#0B3B39","#0B2F3A","#0B243B","#0B173B","#0B0B3B","#170B3B","#240B3B","#2F0B3A","#3B0B39","#3B0B2E","#3B0B24","#3B0B17","#1C1C1C"],["#2A0A0A","#2A120A","#2A1B0A","#29220A","#292A0A","#222A0A","#1B2A0A","#122A0A","#0A2A0A","#0A2A12","#0A2A1B","#0A2A22","#0A2A29","#0A2229","#0A1B2A","#0A122A","#0A0A2A","#120A2A","#1B0A2A","#220A29","#2A0A29","#2A0A22","#2A0A1B","#2A0A12","#151515"],["#190707","#190B07","#191007","#181407","#181907","#141907","#101907","#0B1907","#071907","#07190B","#071910","#071914","#071918","#071418","#071019","#070B19","#070719","#0B0719","#100719","#140718","#190718","#190714","#190710","#19070B","#000000"]]};editor=K.create("#id_action_value_mail_content_html'+rule_id+'",options)});' +
+                    '<\/script>' +
+                    '</div>' +
+                    '<div id="id_action_value_mail_content_plain_div'+rule_id+'" class="display-none">' +
+                    '<textarea  rows="5" class="col-xs-8 col-sm-4" id="id_action_value_mail_content_plain'+rule_id+'" name="action_value_mail_content_plain'+rule_id+'"></textarea>' +
+                    '</div></div></div> </div>' +
+                    '<div style="clear: both"></div> <label class="col-sm-3 control-label no-padding-right"></label> <div class="col-sm-8"><div class="hr hr-6 hr-dotted"></div></div> <div style="clear: both"></div> </div>';
+            $("#id_cfilteractions").append(rule_html);
+        }
+
+        function onchangeCfilterActions(value, rule_id){
+            if ( value == "move_to" || value == "copy_to" ){
+                $("#action_field"+rule_id).addClass("display-none");
+                $("#action_value_a"+rule_id).addClass("display-none");
+                $("#action_value_b"+rule_id).addClass("display-none");
+                $("#action_value_int"+rule_id).addClass("display-none");
+                $("#action_value_edit_div"+rule_id).addClass("display-none");
+                $("#action_value_mail"+rule_id).addClass("display-none");
+                $("#action_value_select"+rule_id).removeClass("display-none");
+                actionRemoveClass7(rule_id);
+            } else if (value == "jump_to"){
+                $("#action_field"+rule_id).addClass("display-none");
+                $("#action_value_a"+rule_id).addClass("display-none");
+                $("#action_value_b"+rule_id).addClass("display-none");
+                $("#action_value_edit_div"+rule_id).addClass("display-none");
+                $("#action_value_select"+rule_id).addClass("display-none");
+                $("#action_value_mail"+rule_id).addClass("display-none");
+                $("#action_value_int"+rule_id).removeClass("display-none");
+                actionRemoveClass7(rule_id);
+            } else if (value == "forward" || value == "delete_header"){
+                $("#action_value_int"+rule_id).addClass("display-none");
+                $("#action_field"+rule_id).addClass("display-none");
+                $("#action_value_a"+rule_id).addClass("display-none");
+                $("#action_value_edit_div"+rule_id).addClass("display-none");
+                $("#action_value_select"+rule_id).addClass("display-none");
+                $("#action_value_mail"+rule_id).addClass("display-none");
+                $("#action_value_b"+rule_id).removeClass("display-none");
+                actionRemoveClass7(rule_id);
+            } else if (value == "append_body"){
+                $("#action_field"+rule_id).addClass("display-none");
+                $("#action_value_a"+rule_id).addClass("display-none");
+                $("#action_value_b"+rule_id).addClass("display-none");
+                $("#action_value_select"+rule_id).addClass("display-none");
+                $("#action_value_int"+rule_id).addClass("display-none");
+                $("#action_value_mail"+rule_id).addClass("display-none");
+                $("#action_value_edit_div"+rule_id).removeClass("display-none");
+                actionRemoveClass2(rule_id);
+            } else if (value == "append_header"){
+                $("#action_value_select"+rule_id).addClass("display-none");
+                $("#action_value_int"+rule_id).addClass("display-none");
+                $("#action_value_edit_div"+rule_id).addClass("display-none");
+                $("#action_value_b"+rule_id).addClass("display-none");
+                $("#action_field"+rule_id).removeClass("display-none");
+                $("#action_value_mail"+rule_id).addClass("display-none");
+                $("#action_value_a"+rule_id).removeClass("display-none");
+                actionRemoveClass7(rule_id);
+            } else if ( value == "mail" ){
+                $("#action_field"+rule_id).addClass("display-none");
+                $("#action_value_a"+rule_id).addClass("display-none");
+                $("#action_value_b"+rule_id).addClass("display-none");
+                $("#action_value_int"+rule_id).addClass("display-none");
+                $("#action_value_edit_div"+rule_id).addClass("display-none");
+                $("#action_value_select"+rule_id).addClass("display-none");
+                $("#action_value_mail"+rule_id).removeClass("display-none");
+                actionRemoveClass2(rule_id);
+                onchangeMailType("html", rule_id);
+            } else {
+                $("#action_field"+rule_id).addClass("display-none");
+                $("#action_value_a"+rule_id).addClass("display-none");
+                $("#action_value_b"+rule_id).addClass("display-none");
+                $("#action_value_int"+rule_id).addClass("display-none");
+                $("#action_value_mail"+rule_id).addClass("display-none");
+                $("#action_value_edit_div"+rule_id).addClass("display-none");
+                $("#action_value_select"+rule_id).addClass("display-none");
+                actionRemoveClass2(rule_id);
+            }
+        }
+
+        function actionRemoveClass2(rule_id){
+            $("#input-group-"+rule_id).removeClass("col-xs-2").removeClass("col-sm-2").addClass("col-xs-7").addClass("col-sm-7");
+        }
+        function actionRemoveClass7(rule_id){
+            $("#input-group-"+rule_id).removeClass("col-xs-7").removeClass("col-sm-7").addClass("col-xs-2").addClass("col-sm-2");
+        }
+
+        function onchangeMailType(value, rule_id){
+            if (value == "html"){
+                $("#id_action_value_mail_content_plain_div"+rule_id).addClass("display-none");
+                $("#id_action_value_mail_content_html_div"+rule_id).removeClass("display-none");
+            } else {
+                $("#id_action_value_mail_content_html_div"+rule_id).addClass("display-none");
+                $("#id_action_value_mail_content_plain_div"+rule_id).removeClass("display-none");
+            }
+        }
+
+        /*
+         KindEditor.ready(function(K) {
+         var options = {
+         width: '540', minHeight: '100',
+         items: [
+         'lineheight', 'formatblock', 'fontname', 'fontsize', '|',
+         // 'source', 'preview', 'fullscreen', '|',
+         'undo', 'redo', '|',
+         'cut', 'copy', 'paste', 'plainpaste', 'wordpast', '|',
+         'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', '|',
+         'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', '|', '/',
+         'clearhtml', 'quickformat', 'selectall', '|',
+         'forecolor', 'hilitecolor', 'bold', 'italic', 'underline', 'strikethrough', 'linehieght', 'removeformat', '|',
+         // 'localimage',
+         'table', 'hr', 'link', 'unlink'],
+         // 'localimage', 'flash', 'media', 'insertfile', 'table', 'hr', 'link', 'unlink', '|', 'umail_link','var_tag', 'common_var'],
+         filterMode: false, wellFormatMode: false, allowImageUpload: false, allowFlashUpload: false, allowMediaUpload: false, allowFileUpload: false, resizeType: 2,
+         maillist: [], imagelist: [], langType: 'zh_CN', syncType: "", urlType: '',
+
+         // afterBlur:function(){this.sync();},
+         colorTable: [
+         ["#F8E0E0", "#F8E6E0", "#F8ECE0", "#F7F2E0", "#F7F8E0", "#F1F8E0", "#ECF8E0", "#E6F8E0", "#E0F8E0", "#E0F8E6", "#E0F8EC", "#E0F8F1", "#E0F8F7", "#E0F2F7", "#E0ECF8", "#E0E6F8", "#E0E0F8", "#E6E0F8", "#ECE0F8", "#F2E0F7", "#F8E0F7", "#F8E0F1", "#F8E0EC", "#F8E0E6", "#FAFAFA"],
+         ["#F6CECE", "#F6D8CE", "#F6E3CE", "#F5ECCE", "#F5F6CE", "#ECF6CE", "#E3F6CE", "#D8F6CE", "#CEF6CE", "#CEF6D8", "#CEF6E3", "#CEF6EC", "#CEF6F5", "#CEECF5", "#CEE3F6", "#CED8F6", "#CECEF6", "#D8CEF6", "#E3CEF6", "#ECCEF5", "#F6CEF5", "#F6CEEC", "#F6CEE3", "#F6CED8", "#F2F2F2"],
+         ["#F5A9A9", "#F5BCA9", "#F5D0A9", "#F3E2A9", "#F2F5A9", "#E1F5A9", "#D0F5A9", "#BCF5A9", "#A9F5A9", "#A9F5BC", "#A9F5D0", "#A9F5E1", "#A9F5F2", "#A9E2F3", "#A9D0F5", "#A9BCF5", "#A9A9F5", "#BCA9F5", "#D0A9F5", "#E2A9F3", "#F5A9F2", "#F5A9E1", "#F5A9D0", "#F5A9BC", "#E6E6E6"],
+         ["#F78181", "#F79F81", "#F7BE81", "#F5DA81", "#F3F781", "#D8F781", "#BEF781", "#9FF781", "#81F781", "#81F79F", "#81F7BE", "#81F7D8", "#81F7F3", "#81DAF5", "#81BEF7", "#819FF7", "#8181F7", "#9F81F7", "#BE81F7", "#DA81F5", "#F781F3", "#F781D8", "#F781BE", "#F7819F", "#D8D8D8"],
+         ["#FA5858", "#FA8258", "#FAAC58", "#F7D358", "#F4FA58", "#D0FA58", "#ACFA58", "#82FA58", "#58FA58", "#58FA82", "#58FAAC", "#58FAD0", "#58FAF4", "#58D3F7", "#58ACFA", "#5882FA", "#5858FA", "#8258FA", "#AC58FA", "#D358F7", "#FA58F4", "#FA58D0", "#FA58AC", "#FA5882", "#BDBDBD"],
+         ["#FE2E2E", "#FE642E", "#FE9A2E", "#FACC2E", "#F7FE2E", "#C8FE2E", "#9AFE2E", "#64FE2E", "#2EFE2E", "#2EFE64", "#2EFE9A", "#2EFEC8", "#2EFEF7", "#2ECCFA", "#2E9AFE", "#2E64FE", "#2E2EFE", "#642EFE", "#9A2EFE", "#CC2EFA", "#FE2EF7", "#FE2EC8", "#FE2E9A", "#FE2E64", "#A4A4A4"],
+         ["#FF0000", "#FF4000", "#FF8000", "#FFBF00", "#FFFF00", "#BFFF00", "#80FF00", "#40FF00", "#00FF00", "#00FF40", "#00FF80", "#00FFBF", "#00FFFF", "#00BFFF", "#0080FF", "#0040FF", "#0000FF", "#4000FF", "#8000FF", "#BF00FF", "#FF00FF", "#FF00BF", "#FF0080", "#FF0040", "#848484"],
+         ["#DF0101", "#DF3A01", "#DF7401", "#DBA901", "#D7DF01", "#A5DF00", "#74DF00", "#3ADF00", "#01DF01", "#01DF3A", "#01DF74", "#01DFA5", "#01DFD7", "#01A9DB", "#0174DF", "#013ADF", "#0101DF", "#3A01DF", "#7401DF", "#A901DB", "#DF01D7", "#DF01A5", "#DF0174", "#DF013A", "#6E6E6E"],
+         ["#B40404", "#B43104", "#B45F04", "#B18904", "#AEB404", "#86B404", "#5FB404", "#31B404", "#04B404", "#04B431", "#04B45F", "#04B486", "#04B4AE", "#0489B1", "#045FB4", "#0431B4", "#0404B4", "#3104B4", "#5F04B4", "#8904B1", "#B404AE", "#B40486", "#B4045F", "#B40431", "#585858"],
+         ["#8A0808", "#8A2908", "#8A4B08", "#886A08", "#868A08", "#688A08", "#4B8A08", "#298A08", "#088A08", "#088A29", "#088A4B", "#088A68", "#088A85", "#086A87", "#084B8A", "#08298A", "#08088A", "#29088A", "#4B088A", "#6A0888", "#8A0886", "#8A0868", "#8A084B", "#8A0829", "#424242"],
+         ["#610B0B", "#61210B", "#61380B", "#5F4C0B", "#5E610B", "#4B610B", "#38610B", "#21610B", "#0B610B", "#0B6121", "#0B6138", "#0B614B", "#0B615E", "#0B4C5F", "#0B3861", "#0B2161", "#0B0B61", "#210B61", "#380B61", "#4C0B5F", "#610B5E", "#610B4B", "#610B38", "#610B21", "#2E2E2E"],
+         ["#3B0B0B", "#3B170B", "#3B240B", "#3A2F0B", "#393B0B", "#2E3B0B", "#243B0B", "#173B0B", "#0B3B0B", "#0B3B17", "#0B3B24", "#0B3B2E", "#0B3B39", "#0B2F3A", "#0B243B", "#0B173B", "#0B0B3B", "#170B3B", "#240B3B", "#2F0B3A", "#3B0B39", "#3B0B2E", "#3B0B24", "#3B0B17", "#1C1C1C"],
+         ["#2A0A0A", "#2A120A", "#2A1B0A", "#29220A", "#292A0A", "#222A0A", "#1B2A0A", "#122A0A", "#0A2A0A", "#0A2A12", "#0A2A1B", "#0A2A22", "#0A2A29", "#0A2229", "#0A1B2A", "#0A122A", "#0A0A2A", "#120A2A", "#1B0A2A", "#220A29", "#2A0A29", "#2A0A22", "#2A0A1B", "#2A0A12", "#151515"],
+         ["#190707", "#190B07", "#191007", "#181407", "#181907", "#141907", "#101907", "#0B1907", "#071907", "#07190B", "#071910", "#071914", "#071918", "#071418", "#071019", "#070B19", "#070719", "#0B0719", "#100719", "#140718", "#190718", "#190714", "#190710", "#19070B", "#000000"]
+         ]
+         };
+         editor = K.create('#AAAA', options);
+         });
+         */
+
+    </script>
+{% endblock %}

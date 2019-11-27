@@ -1,0 +1,116 @@
+{% extends 'blogview/base.html' %}
+{% load staticfiles %}
+{% load bootstrap %}
+
+{% block title %} 博客 - 关于我 {% endblock %}
+
+{% block head_css %}
+    <style>
+        .control-group.has-error .control-label, .control-group.has-error .help-block, .control-group.has-error .help-inline {
+            color: #D16E6C;
+        }
+        .control-group.has-error input, .control-group.has-error select, .control-group.has-error textarea, .has-error {
+            border-color: #f2a696;
+            color: #D68273;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+    </style>
+
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="span8">
+            <p>
+                <a href="http://djangoblog.com/">Django Blog </a>最初的版本（<a href="https://github.com/yc19890920/dblog" target="_blank" title="源代码">源代码</a>）是在2017年5月由<a>Y.C</a>开发，
+                基于<a href="http://python.org/" target="_blank" rel="external nofollow">Python</a> 服务端框架 <a href="https://www.djangoproject.com/" target="_blank" rel="external nofollow">Django</a>，
+                前端框架使用 <a href="http://getbootstrap.com/" target="_blank" rel="external nofollow">Bootstrap</a>。
+                该 Blog 集成了可视化后台管理，redis缓存，restful API，celery，gevent等技术。
+            </p>
+            <p>
+                顺便说一句，我熟悉Python，Django，Gevent，Tornado，Flask，Mysql，Redis，MongoDB，PostgreSQL，RabbitMQ，jQuery，CSS，HTML.etc。
+                我的GitHub地址：<a href="https://github.com/yc19890920?tab=repositories" target="_blank"><strong>Y.c.GitHub</strong>。</a>
+            </p>
+            <p>
+                如果您有什么好的想法要告诉我，或者希望与我交换链接，我都表示荣幸以及对提供帮助的您的满怀感激。
+            </p>
+
+
+            <div id="email" style="padding-top: 50px">
+                {% if messages %}
+                    <article class="col-sm-12">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} fade in">
+                                <button class="close" data-dismiss="alert">
+                                    ×
+                                </button>
+                                <i class="fa-fw fa fa-{{ message.tags }}"></i>
+                                <strong>{{ message.tags|capfirst }}</strong> {{ message }}
+                            </div>
+                        {% endfor %}
+                    </article>
+                {% endif %}
+
+                <form class="form-horizontal" method="POST">
+                    {% csrf_token %}
+
+                    <fieldset>
+                        <legend>留言反馈</legend>
+
+                        <div class="control-group {% if form.username.errors %}has-error{% endif %}">
+                            <label class="control-label" for="id_username">你的名称：</label>
+                            <div class="controls">
+                                <input id="id_username" name="username" type="text" value="{{ form.cleaned_data.username|default_if_none:"" }}" class="span3" minlength="3" maxlength="64" required>
+                                {% if form.username.errors %}
+                                    {% for error in form.username.errors %}
+                                        <p class="has-error">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="control-group {% if form.email.errors %}has-error{% endif %}">
+                            <label class="control-label" for="id_email">你的邮箱：</label>
+                            <div class="controls">
+                                <input id="id_email" name="email" type="email" value="{{ form.cleaned_data.email|default_if_none:"" }}" class="span3" minlength="6" maxlength="64" required>
+                                {% if form.email.errors %}
+                                    {% for error in form.email.errors %}
+                                        <p class="has-error">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="control-group {% if form.content.errors %}has-error{% endif %}">
+                            <label class="control-label" for="id_content">留言反馈：</label>
+                            <div class="controls">
+                                <textarea id="id_content" name="content" rows="8" class="span5" required>{{ form.cleaned_data.content|default_if_none:"" }}</textarea>
+                                {% if form.content.errors %}
+                                    {% for error in form.content.errors %}
+                                        <p class="has-error">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class="captcha span3" style="margin-left:0"></div>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <div class="controls">
+                                <button type="submit" class="btn btn-success input-large">发送内容</button>
+                                <span class="help-inline"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

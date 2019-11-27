@@ -1,0 +1,33 @@
+<td>{{ d.id }}</td>
+<td>{{ d.actor }}</td>
+<td>
+    {% if d.is_extend %}
+        <span class="text-info">{{ d.get_extend_type_display }}</span>
+    {% else %}
+        <span class="text-info">{{ d.model_class }}</span>
+    {% endif %}
+</td>
+<td>
+    {% if d.action == 2 %}
+        <span class="text-danger">删除</span>
+    {% elif d.action == 1 %}
+        <span class="text-warning">更新</span>
+    {% else %}
+        <span class="text-success">添加</span>
+    {% endif %}
+</td>
+<td>
+    {% if d.is_extend %}
+        {{ d.extend_content|default_if_none:'' }}
+    {% else %}
+        {% for k, v in d.changes_display_dict.iteritems %}
+            <span class="text-info">{{ k }}</span> (
+            {% for i in v %}
+                {% if forloop.last %}<span class="text-warning"> {{ i }}</span>{% else %}{{ i }} ---->{% endif %}
+            {% endfor %})</br>
+        {% endfor %}
+    {% endif %}
+</td>
+<td>{{ d.remote_addr }}</td>
+<td>{{ d.timestamp|date:"Y-m-d H:i:s" }}</td>
+
