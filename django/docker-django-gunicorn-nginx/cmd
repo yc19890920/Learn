@@ -50,6 +50,7 @@ rebak_data(){
     echo "还原(导入)数据"
     docker cp ${DIR}/dblog/doc/data.sql dblog-mysql:/tmp
     # docker-compose -f docker-compose.prod.yml exec -T db mysql -u root -p dblog < $DIR/dblog/doc/data.sql
+    # docker-compose -f docker-compose.prod.yml exec -T db mysql -u root -p dblog < /tmp/data.sql
     docker cp $DIR/dblog/doc/data.sql dblog-mysql:/tmp
     docker cp $DIR/mysql/password.txt dblog-mysql:/tmp
     docker-compose -f docker-compose.prod.yml exec -T db mysql --defaults-extra-file=/tmp/password.txt < /tmp/data.sql
