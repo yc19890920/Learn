@@ -1,0 +1,27 @@
+- [TiDB 简介](https://pingcap.com/docs-cn/stable/overview/)
+- [使用 Docker Compose 快速构建 TiDB 集群](https://pingcap.com/docs-cn/stable/how-to/get-started/deploy-tidb-from-docker-compose/)
+- [TiDB Docker 部署方案](https://pingcap.com/docs-cn/stable/how-to/deploy/orchestrated/docker/)
+- [Docker Compose 快速一键部署 TiDB 测试集群](https://blog.csdn.net/Buster_ZR/article/details/81985374)
+- [TiDB 部署及数据同步](https://dudashuang.com/tidb/)
+- [遇见 TiDB，放弃MySQL](https://blog.csdn.net/uisoul/article/details/85219016)
+- [优秀的数据工程师，怎么用 Spark 在 TiDB 上做 OLAP 分析](https://segmentfault.com/a/1190000018335230)
+- [TiDB 的正确使用姿势](http://www.10tiao.com/html/421/201703/2247484541/1.html)
+- [遇见 TiDB](https://www.cnblogs.com/xibuhaohao/p/10734870.html)
+- [为分布式监控系统Zabbix配置TiDB数据库](https://blog.csdn.net/Lockey23/article/details/78221323)
+
+- [Tidb常见的问题](https://www.cnblogs.com/liujiliang/p/11138579.html)
+- [大规模线上应用TiDB会遇到的坑，本文都帮你排除好了](https://dbaplus.cn/news-160-2821-1.html)
+- [tidb使用坑记录](https://blog.csdn.net/weixin_34194359/article/details/85971513)
+
+- [黄东旭：TiDB 数据库的四大应用场景分析](http://www.10tiao.com/html/421/201806/2247486286/2.html)
+- [关于 TiDB 的正确使用姿势](https://zhuanlan.zhihu.com/p/25574778)
+- [TiDB 适用场景 不适用场景 及其被替代的产品](https://blog.csdn.net/vkingnew/article/details/88355977)
+- [TiDB适用和不适用场景](https://blog.csdn.net/u011782423/article/details/80940766)
+- [畅想TiDB应用场景和HTAP演进之路](https://juejin.im/entry/5ae9281bf265da0ba17c4f22)
+- [十问 TiDB ：关于架构设计的一些思考](https://juejin.im/entry/5b29bde4518825749725c28f)
+- [黄东旭：TiDB 数据库的四大应用场景分析](https://cloud.tencent.com/developer/news/256652)
+- [新一代数据库TiDB在美团的实践](https://tech.meituan.com/2018/11/22/mysql-pingcap-practice.html)
+
+
+- [django-tidb](http://git.linkerplus.com/yangck/django-tidb)
+- [django_tidb](https://github.com/blacktear23/django_tidb)
