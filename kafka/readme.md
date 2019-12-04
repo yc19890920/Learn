@@ -5,3 +5,5 @@
 - [Kafka史上最详细原理总结](https://blog.csdn.net/weixin_34205076/article/details/92488763)
 - [通过python操作kafka](https://juejin.im/entry/5ae16ea76fb9a07aa7675b19)
 - [kafka-python基本使用](https://zhuanlan.zhihu.com/p/38330574)
+
+- [python操作kafka实践](https://www.cnblogs.com/small-office/p/9399907.html)
