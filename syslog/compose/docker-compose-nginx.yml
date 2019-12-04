@@ -1,0 +1,14 @@
+version: "2"
+
+services:
+  app:
+    image: nginx:alpine # 下面截图里用了我的rtmp镜像，效果相同
+    container_name: rsyslog-nginx
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://192.168.1.24:514" # 内网IP
+        tag: "{{.Name}}.{{.ID}}"
+    ports:
+      - "8009:80"
+    restart: always
