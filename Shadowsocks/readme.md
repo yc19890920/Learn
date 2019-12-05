@@ -1,0 +1,2 @@
+- [Linux搭建Shadowsocks服务器](https://www.chenshaowen.com/blog/shadowsocks-server-linux.html)
+- [K8s折腾日记(零) -- 基于 Ubuntu 18.04 安装部署K8s集群](https://tomoyadeng.github.io/blog/2018/10/12/k8s-in-ubuntu18.04/index.html)
