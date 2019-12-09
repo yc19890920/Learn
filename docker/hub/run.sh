@@ -10,13 +10,18 @@ docker run -d \
     -e "REGISTRY_AUTH=htpasswd" \
     -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
     -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
-    -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/myrepo.crt \
-    -e REGISTRY_HTTP_TLS_KEY=/certs/myrepo.key \
     registry
+
+#    -v `pwd`/certs:/certs \
+#    -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/myrepo.crt \
+#    -e REGISTRY_HTTP_TLS_KEY=/certs/myrepo.key \
 
 
 echo "用 curl 查看仓库中的镜像:"
-curl 127.0.0.1:7000/v2/_catalog
+docker login -u yc -p 1qaz@WSX 127.0.0.1:7000
+# curl http://127.0.0.1:7000/v2/_catalog
+docker logout 127.0.0.1:7000
+# curl 127.0.0.1:7000/v2/_catalog
 # 192.168.181.135:7000/v2/_catalog
 
 
