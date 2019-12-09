@@ -1,0 +1,46 @@
+version: '3'
+services:
+  hub:
+    image: registry
+    restart: always
+    container_name: docker-hub
+    expose:
+      - 5000
+    volumes:
+      - ./registry:/var/lib/registry
+#    environment:
+#          MYSQL_DATABASE: 'dblog'
+#          MYSQL_USER: 'dblog'
+#          MYSQL_PASSWORD: '123456'
+#          MYSQL_ROOT_PASSWORD: '123456'
+    networks:
+      - docker-hub-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+  nginx:
+    build: ./nginx
+    image: docker-hub-nginx:1.17.4
+    container_name: docker-hub-nginx
+    ports:
+      - 7000:80
+    depends_on:
+      - hub
+    networks:
+      - docker-hub-network
+    volumes:
+      - ./certs:/certs
+      - ./auth:/auth
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+networks:
+    docker-hub-network:
+      driver: bridge
