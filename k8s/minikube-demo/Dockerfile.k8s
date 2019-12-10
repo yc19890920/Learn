@@ -1,0 +1,2 @@
+FROM nginx
+RUN echo "<h1>Hello, k8s!</h1>" > /usr/share/nginx/html/index.html
