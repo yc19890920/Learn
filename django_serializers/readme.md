@@ -1,5 +1,6 @@
-https://blog.csdn.net/qq_34374753/article/details/84941953
+https://www.jianshu.com/p/82df4bc4ff27
 https://blog.csdn.net/l_vip/article/details/79156113
+https://blog.csdn.net/qq_34374753/article/details/84941953
 
 
 /home/python/pyenv/versions/opene/bin/python
@@ -20,6 +21,13 @@ admin/1qaz@WSX
 
 关闭防火墙： sudo ufw disable
 /home/python/pyenv/versions/opene/bin/python /home/python/Learn/django_serializers/opene/manage.py runserver 0.0.0.0:8069
+
+## 备份数据库
+mysqldump -uroot -p123456 test > ~/Learn/django_serializers/opene/data.sql
+
+## 数据还原
+mysql -uroot -p123456 test < ~/Learn/django_serializers/opene/data.sql
+
 
 验证错误返回格式
 

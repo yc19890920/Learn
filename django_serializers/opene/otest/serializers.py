@@ -3,6 +3,7 @@ from rest_framework.validators import UniqueTogetherValidator, UniqueValidator
 from otest.models import Test
 from django.utils.translation import ugettext_lazy as _
 
+# 测试Serializer
 class IdsSerializer(serializers.Serializer):
     ids = serializers.ListField(required=False, allow_empty=True, allow_null=True, help_text=u'ID列表')
 
@@ -12,6 +13,7 @@ class IdsSerializer(serializers.Serializer):
             attrs["ids"] = []
         return attrs
 
+# 测试Serializer
 class IdsActionSerializer(serializers.Serializer):
     ids = serializers.ListField(required=False, allow_empty=True, allow_null=True, help_text=u'ID列表')
     action = serializers.ChoiceField(choices=(
@@ -28,7 +30,9 @@ class IdsActionSerializer(serializers.Serializer):
             attrs["ids"] = []
         return attrs
 
+# 测试ModelSerializer
 class TestSerializer(serializers.ModelSerializer):
+    # user_id = serializers.HiddenField()
     name = serializers.CharField(
         required=True, max_length=50,
         error_messages={
@@ -57,6 +61,7 @@ class TestSerializer(serializers.ModelSerializer):
                 message=_(u"邮箱和订单号唯一")
             ),
         ]
+        # validators = []  # Remove a default "unique together" constraint.
 
     def validate_province(self, province):
         if not self.partial and not province:
