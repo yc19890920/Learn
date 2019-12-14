@@ -65,5 +65,4 @@ class JSONRenderer(renderers.JSONRenderer):
                 'data': data,
                 'code': code,
             }
-
         return super().render(data, accepted_media_type, renderer_context)

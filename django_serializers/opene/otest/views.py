@@ -43,8 +43,8 @@ class TestViewset(viewsets.ModelViewSet):
         """ 创建 """
         print(request.content_type)
         print("===================")
-        print(request.data, type(request.data))
         data = request.data
+        print(data, type(data))
         import pprint
         pprint.pprint(data)
         # user = self.request.user
@@ -73,7 +73,12 @@ class TestViewset(viewsets.ModelViewSet):
     def test_actions(self, request):
         """ 批量禁用SMTP外发代理 """
         # user = request.user
-        serializer = self.get_serializer(data=request.data)
+        print("===================")
+        data = request.data
+        print(data, type(data))
+        import pprint
+        pprint.pprint(data)
+        serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         detail = serializer.save()
         return Response(detail, status=status.HTTP_204_NO_CONTENT)

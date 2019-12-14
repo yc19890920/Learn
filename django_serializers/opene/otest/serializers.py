@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from opene.rest_framework.validators import UniqueTogetherValidator
+from opene.rest_framework.fields import IdsSplitField
 from otest.models import Test
 from django.utils.translation import ugettext_lazy as _
 
@@ -16,6 +17,7 @@ class IdsSerializer(serializers.Serializer):
 
 # 测试Serializer
 class IdsActionSerializer(serializers.Serializer):
+    # ids = IdsSplitField( required=False, help_text=u'ID列表,以英文逗号分割')
     ids = serializers.ListField(required=False, allow_empty=True, allow_null=True, help_text=u'ID列表')
     action = serializers.ChoiceField(choices=(
         ('disable', u'批量禁用id列表'),
@@ -27,6 +29,7 @@ class IdsActionSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         ids = attrs.get('ids', None)
+        print(attrs)
         if not ids:
             attrs["ids"] = []
         return attrs
