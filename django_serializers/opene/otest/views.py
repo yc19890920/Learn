@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 
 from otest.models import Test
-from otest.serializers import TestSerializer, IdsSerializer, IdsActionSerializer
+from otest.serializers import TestSerializer, IdsSerializer, IdsActionSerializer, TestActionSerializer
 
 class TestViewset(viewsets.ModelViewSet):
     queryset = Test.objects.all()
@@ -21,7 +21,7 @@ class TestViewset(viewsets.ModelViewSet):
         elif self.action in ("disable_test", "enable_test"):
             return IdsSerializer
         elif self.action == "test_actions":
-            return IdsActionSerializer
+            return TestActionSerializer
         return TestSerializer
 
     def get_queryset(self):
@@ -41,7 +41,12 @@ class TestViewset(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         """ 创建 """
+        print(request.content_type)
+        print("===================")
+        print(request.data, type(request.data))
         data = request.data
+        import pprint
+        pprint.pprint(data)
         # user = self.request.user
         # data.update(mailbox=user, email=user.username, type='out')
         serializer = self.get_serializer(data=data)
@@ -64,17 +69,14 @@ class TestViewset(viewsets.ModelViewSet):
             instance._prefetched_objects_cache = {}
         return Response(serializer.data)
 
-    @action(detail=False, methods=['post'], url_path='disable', permission_classes=(), serializer_class=IdsActionSerializer)
+    @action(detail=False, methods=['post'], url_path='actions', permission_classes=(), serializer_class=IdsActionSerializer)
     def test_actions(self, request):
         """ 批量禁用SMTP外发代理 """
         # user = request.user
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        ids = serializer.validated_data['ids']
-        action = serializer.validated_data['action']
-        if ids:
-            Test.objects.filter(id__in=ids).update(disabled="1")
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        detail = serializer.save()
+        return Response(detail, status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=False, methods=['post'], url_path='disable', permission_classes=(), serializer_class=IdsSerializer)
     def disable_test(self, request):

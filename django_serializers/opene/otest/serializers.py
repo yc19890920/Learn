@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator, UniqueValidator
+from rest_framework.validators import UniqueValidator
+from opene.rest_framework.validators import UniqueTogetherValidator
 from otest.models import Test
 from django.utils.translation import ugettext_lazy as _
 
@@ -30,6 +31,26 @@ class IdsActionSerializer(serializers.Serializer):
             attrs["ids"] = []
         return attrs
 
+# 自定义 Serializer 保存逻辑
+class TestActionSerializer(IdsActionSerializer):
+
+    def save(self):
+        validated_data = self.validated_data
+        ids = validated_data['ids']
+        action = validated_data['action']
+        message = None
+        if ids:
+            if action == 'delete':
+                Test.objects.filter(id__in=ids).delete()
+                message = _("批量删除成功")
+            elif action == 'disable':
+                Test.objects.filter(id__in=ids).update(disabled="1")
+                message = _("批量禁用成功")
+            elif action == 'enable':
+                Test.objects.filter(id__in=ids).update(disabled="-1")
+                message = _("批量启用成功成功")
+        return message
+
 # 测试ModelSerializer
 class TestSerializer(serializers.ModelSerializer):
     # user_id = serializers.HiddenField()
@@ -46,7 +67,18 @@ class TestSerializer(serializers.ModelSerializer):
                 queryset=Test.objects.all(),
                 message=_("名称已存在！")
             )
-        ]
+        ],
+        label=_("名称"), help_text=_("名称")
+    )
+    order_no = serializers.CharField(
+        required=True, max_length=50,
+        error_messages={
+            "blank": _("请输入订单号"),
+            "required": _("请输入订单号"),
+            "max_length": _("订单号已超过50个字符。"),
+            "min_length": _("订单号少于1个字符。"),
+        },
+        label=_("订单号"), help_text=_("订单号")
     )
     # created = serializers.DateTimeField(write_only=True)
     # updated = serializers.DateTimeField(write_only=True)
@@ -58,7 +90,7 @@ class TestSerializer(serializers.ModelSerializer):
             UniqueTogetherValidator(
                 queryset=Test.objects.all(),
                 fields=('email', 'order_no'),
-                message=_(u"邮箱和订单号唯一")
+                message={"order_no": _(u"邮箱和订单号唯一")}
             ),
         ]
         # validators = []  # Remove a default "unique together" constraint.
@@ -74,11 +106,31 @@ class TestSerializer(serializers.ModelSerializer):
         return name2
 
     def validate(self, attrs):
-        province = attrs.get("province", None)
-        name2 = attrs.get("name2", None)
-        if not self.partial:
-            if not name2:
-                raise serializers.ValidationError({'name2': _("name2不能为空！")})
-            if not province:
-                raise serializers.ValidationError({'province': _("省/州不能为空！")})
+        print("===================partial", self.partial)
+        print(attrs)
+        # province = attrs.get("province", None)
+        # name2 = attrs.get("name2", None)
+        # if not self.partial:
+        #     if not name2:
+        #         raise serializers.ValidationError({'name2': _("name2不能为空！")})
+        #     if not province:
+        #         raise serializers.ValidationError({'province': _("省/州不能为空！")})
         return attrs
+
+    def create(self, validated_data):
+        """
+        传入验证过的数据, 创建并返回`Tag`实例。
+        """
+        name = validated_data['name']
+        if Test.objects.filter(name=name).exists():
+            raise serializers.ValidationError({"name": '名称 %(name)s 已存在！' % {'name': name}})
+        return super().create(validated_data)
+        # instance = Test.objects.create(**validated_data)
+        # return instance
+
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
+        # if validated_data['name']:
+        #     instance.name = validated_data['name']
+        # instance.save()
+        # return instance

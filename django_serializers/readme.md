@@ -126,9 +126,9 @@ umail:
     "status": 400,
     "msg": "name2不能为空！",
     "data": {
-    "name2": [
-        "name2不能为空！"
-    ]
+        "name2": [
+            "name2不能为空！"
+        ]
     },
     "code": "invalid"
 }
