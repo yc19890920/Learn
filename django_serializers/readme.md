@@ -1,3 +1,5 @@
+https://www.django-rest-framework.org/api-guide/relations/
+https://www.django-rest-framework.org/api-guide/fields/
 https://www.jianshu.com/p/82df4bc4ff27
 https://blog.csdn.net/l_vip/article/details/79156113
 https://blog.csdn.net/qq_34374753/article/details/84941953

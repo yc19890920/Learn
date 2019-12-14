@@ -19,3 +19,6 @@ class Test(models.Model):
         db_table = 'test'
         unique_together = (('email', 'order_no'),)
         verbose_name = u'测试'
+
+
+
