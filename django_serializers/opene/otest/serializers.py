@@ -68,7 +68,7 @@ class TestSerializer(serializers.ModelSerializer):
                 message=_("名称已存在！")
             )
         ],
-        label=_("名称"), help_text=_("名称")
+        label="名称", help_text="名称"
     )
 
     order_no = serializers.CharField(
@@ -79,7 +79,7 @@ class TestSerializer(serializers.ModelSerializer):
             "max_length": _("订单号已超过50个字符。"),
             "min_length": _("订单号少于1个字符。"),
         },
-        label=_("订单号"), help_text=_("订单号")
+        label="订单号", help_text="订单号"
     )
 
     # created = serializers.DateTimeField(write_only=True)
@@ -145,7 +145,7 @@ class TestSerializer(serializers.ModelSerializer):
         """
         name = validated_data['name']
         if Test.objects.filter(name=name).exists():
-            raise serializers.ValidationError({"name": '名称 %(name)s 已存在！' % {'name': name}})
+            raise serializers.ValidationError({"name": _('名称 %(name)s 已存在！') % {'name': name}})
         return super().create(validated_data)
         # instance = Test.objects.create(**validated_data)
         # return instance
