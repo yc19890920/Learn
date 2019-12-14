@@ -54,32 +54,34 @@ class TestActionSerializer(IdsActionSerializer):
 # 测试ModelSerializer
 class TestSerializer(serializers.ModelSerializer):
     # user_id = serializers.HiddenField()
-    name = serializers.CharField(
-        required=True, max_length=50,
-        error_messages={
-            "blank": _("请输入名称"),
-            "required": _("请输入名称"),
-            "max_length": _("名称已超过50个字符。"),
-            "min_length": _("名称少于1个字符。"),
-        },
-        validators=[
-            UniqueValidator(
-                queryset=Test.objects.all(),
-                message=_("名称已存在！")
-            )
-        ],
-        label=_("名称"), help_text=_("名称")
-    )
-    order_no = serializers.CharField(
-        required=True, max_length=50,
-        error_messages={
-            "blank": _("请输入订单号"),
-            "required": _("请输入订单号"),
-            "max_length": _("订单号已超过50个字符。"),
-            "min_length": _("订单号少于1个字符。"),
-        },
-        label=_("订单号"), help_text=_("订单号")
-    )
+    # name = serializers.CharField(
+    #     required=True, max_length=50,
+    #     error_messages={
+    #         "blank": _("请输入名称"),
+    #         "required": _("请输入名称"),
+    #         "max_length": _("名称已超过50个字符。"),
+    #         "min_length": _("名称少于1个字符。"),
+    #     },
+    #     validators=[
+    #         UniqueValidator(
+    #             queryset=Test.objects.all(),
+    #             message=_("名称已存在！")
+    #         )
+    #     ],
+    #     label=_("名称"), help_text=_("名称")
+    # )
+
+    # order_no = serializers.CharField(
+    #     required=True, max_length=50,
+    #     error_messages={
+    #         "blank": _("请输入订单号"),
+    #         "required": _("请输入订单号"),
+    #         "max_length": _("订单号已超过50个字符。"),
+    #         "min_length": _("订单号少于1个字符。"),
+    #     },
+    #     label=_("订单号"), help_text=_("订单号")
+    # )
+
     # created = serializers.DateTimeField(write_only=True)
     # updated = serializers.DateTimeField(write_only=True)
 
@@ -94,6 +96,20 @@ class TestSerializer(serializers.ModelSerializer):
             ),
         ]
         # validators = []  # Remove a default "unique together" constraint.
+        error_messages = {
+            "name": {
+                "blank": _("请输入名称"),
+                "required": _("请输入名称"),
+                "max_length": _("名称已超过50个字符。"),
+                "min_length": _("名称少于1个字符。"),
+            },
+            "order_no": {
+                "blank": _("请输入订单号"),
+                "required": _("请输入订单号"),
+                "max_length": _("订单号已超过50个字符。"),
+                "min_length": _("订单号少于1个字符。"),
+            }
+        }
 
     def validate_province(self, province):
         if not self.partial and not province:
