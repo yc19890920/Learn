@@ -8,12 +8,17 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 
 from otest.models import Test
-from otest.serializers import TestSerializer, IdsSerializer, IdsActionSerializer, TestActionSerializer
+from otest.serializers import TestSerializer, IdsSerializer, IdsActionSerializer, TestActionSerializer, TestDListSerializer
+from otest.filters import TestFilter
 
 class TestViewset(viewsets.ModelViewSet):
     queryset = Test.objects.all()
     serializer_class = TestSerializer
     permission_classes = ()
+    # parser_classes = (JSONParser, FormParser, MultiPartParser, FileUploadParser)
+    # filter_backends = (DjangoFilterBackend, rest_filters.SearchFilter)
+    # search_fields = ('filename',)
+    # filter_class = filters.AttachFilter
 
     def get_serializer_class(self):
         if self.action in ("create", "update", "partial_update"):
@@ -22,6 +27,8 @@ class TestViewset(viewsets.ModelViewSet):
             return IdsSerializer
         elif self.action == "test_actions":
             return TestActionSerializer
+        elif self.action == "goods":
+            return TestDListSerializer
         return TestSerializer
 
     def get_queryset(self):
@@ -44,7 +51,7 @@ class TestViewset(viewsets.ModelViewSet):
         print(request.content_type)
         print("===================")
         data = request.data
-        print(data, type(data))
+        print("===================r", data, type(data))
         import pprint
         pprint.pprint(data)
         # user = self.request.user
@@ -104,6 +111,22 @@ class TestViewset(viewsets.ModelViewSet):
         if ids:
             Test.objects.filter(id__in=ids).update(disabled="-1")
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=False, methods=['get', 'post', 'delete'], url_path='goods', permission_classes=(), serializer_class=TestDListSerializer)
+    def goods(self, request):
+        """  商品列表保存 """
+        if request.method == "POST":
+            print("=====================post goods")
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            data = serializer.save()
+            return Response(data, status=status.HTTP_200_OK)
+        if request.method == "GET":
+            print("=====================get goods")
+            return Response(None, status=status.HTTP_200_OK)
+        if request.method == 'DELETE':
+            print("=====================delete goods")
+            return Response(None, status=status.HTTP_200_OK)
 
 
 

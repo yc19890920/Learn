@@ -159,3 +159,18 @@ class TestSerializer(serializers.ModelSerializer):
         #     instance.name = validated_data['name']
         # instance.save()
         # return instance
+
+
+# 测试字典列表 Serializer
+class TestDListSerializer(serializers.Serializer):
+    goods = serializers.ListField(required=False, child=serializers.DictField())  # 列表不需要转化姓名
+
+    def validate(self, attrs):
+        return attrs
+
+    def save(self, **kwargs):
+        v = self.validated_data
+        goods = v.get("goods", [])
+        import pprint
+        pprint.pprint(goods)
+        return None

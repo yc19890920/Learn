@@ -165,5 +165,40 @@ umail:
     },
     "code": "0004"
 }
+
+## postman
+postman 指定 Content-Type： application/json, Accept： application/json
+Body 指定 raw, 并且 JSON, 每个字段必须以双引号，不能为单引号。
+
+{
+	"email": "1248644045@qq.com",
+	"name": "杨向晴",
+	"name": "aa",
+	"order_no": "aa",
+	"province": "aa"
+}   
+
+postman 指定 Content-Type： multipart/form-data, Accept： application/json
+Body 指定 form-data，维护数据键值对。
+
+
+## http://192.168.181.135:8069/api/test/goods/
+postman 指定 Content-Type： application/json, Accept： application/json
+Body 指定 raw, 并且 JSON, 每个字段必须以双引号，不能为单引号。
+
+{
+    "goods": [
+        {
+            "name": "aa",
+            "amount": 10.5
+        },
+        {
+            "name": "bb",
+            "amount": 0.5
+        }
+    ]
+}
+
+
     
 
