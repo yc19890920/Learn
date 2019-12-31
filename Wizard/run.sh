@@ -39,13 +39,15 @@ bak_data(){
 EOF
 
     echo "备份数据"
-    mysqldump -u wizard -P 3306 -pwizard wizard_2 > $(pwd)/my-wizard.sql
+    echo " mysqldump -u wizard -P 3306 -p wizard_2 > $(pwd)/my-wizard.sql"
+    mysqldump -u wizard -P 3306 -p wizard_2 > $(pwd)/my-wizard.sql
 
 }
 
 reset_data(){
     echo "还原数据"
-    mysql -u root -pwizard wizard_2 < $(pwd)/my-wizard.sql
+    echo " mysql -u root -p wizard_2 < $(pwd)/my-wizard.sql"
+    mysql -u root -p wizard_2 < $(pwd)/my-wizard.sql
 }
 
 case "$1" in

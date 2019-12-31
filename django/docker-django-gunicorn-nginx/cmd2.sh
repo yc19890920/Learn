@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+
+DIR="/home/python/Learn/django/docker-django-gunicorn-nginx"
+
+install(){
+    echo "容器安装"
+    # docker-compose up -d
+    docker-compose -f docker-c.yml up -d --build
+    docker-compose  -f docker-c.yml ps
+}
+
+
+stop(){
+    echo "停止容器"
+    # /usr/bin/supervisorctl -c /home/umail/edm_sender/es_supervisord.conf stop es_service:*
+    docker-compose -f docker-c.yml down -v
+}
+
+start(){
+    echo "启动容器"
+    # /usr/bin/supervisorctl -c /home/umail/edm_sender/es_supervisord.conf start es_service:*
+    docker-compose -f docker-c.yml up -d --build
+}
+
+status(){
+    echo "查看容器状态"
+    docker-compose  -f docker-c.yml ps
+}
+
+remove(){
+    echo "停止并删除容器......"
+    docker-compose -f docker-c.yml down -v
+
+    # echo "删除镜像"
+    # docker rmi docker-django-gunicorn-nginx_web
+
+    echo "清除无效容器......"
+    echo 'y' | docker container prune
+    echo 'y' | docker system prune
+
+    # rm -rf /home/umail/elasticsearch/logs
+}
+
+bak_data(){
+    echo "备份数据"
+    docker-compose -f docker-c.yml exec db mysqldump -u dblog -P 3306 -p dblog > /tmp/data.sql
+}
+
+rebak_data(){
+    echo "还原(导入)数据"
+    docker cp ${DIR}/dblog/doc/data.sql dblog-mysql:/tmp
+    # docker-compose -f docker-c.yml exec -T db mysql -u root -p dblog < $DIR/dblog/doc/data.sql
+    # docker-compose -f docker-c.yml exec -T db mysql -u root -p dblog < /tmp/data.sql
+    docker cp $DIR/dblog/doc/data.sql dblog-mysql:/tmp
+    docker cp $DIR/mysql/password.txt dblog-mysql:/tmp
+    docker-compose -f docker-c.yml exec -T db mysql --defaults-extra-file=/tmp/password.txt < /tmp/data.sql
+}
+
+case "$1" in
+    "install"|"i")
+        install;
+        ;;
+    "start")
+        start;
+        ;;
+    "stop")
+        stop;
+        ;;
+    "status"|"s")
+        status;
+        ;;
+    "restart")
+        stop;
+        start;
+        ;;
+    "removeaaaaaaaaaaaaaaaaaaaaaaaaa")
+        remove;
+        ;;
+    "rebakaaaaaaaaaaaaaaaaaaaaaaaaa")
+        rebak_data;
+        ;;
+    "bakaaaaaaaaaaaaaaaaaaaaaaaaa")
+        bak_data;
+        ;;
+    *)
+        echo "Usage: $basename {install|start|stop|status|restart}" ;
+        ;;
+esac
