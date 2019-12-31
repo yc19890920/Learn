@@ -87,6 +87,14 @@ class TestSerializer(serializers.ModelSerializer):
 
     # created = serializers.DateTimeField(write_only=True)
     # updated = serializers.DateTimeField(write_only=True)
+    problem_details = serializers.SerializerMethodField(required=False, label=u"问题件")
+
+    def get_problem_details(self, obj):
+        return {
+            "a": 1,
+            "b": 2,
+        }
+
 
     class Meta:
         model = Test
