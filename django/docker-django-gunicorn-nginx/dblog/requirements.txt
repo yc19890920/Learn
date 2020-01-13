@@ -9,7 +9,7 @@ cryptography
 Django==1.11.3
 django-debug-toolbar==1.9.1
 django-redis==4.8.0
-djangorestframework==3.7.3
+djangorestframework==3.9.1
 enum34==1.1.6
 gevent==1.2.2
 greenlet==0.4.12
