@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 build(){
+    cd /home/microk8s/code/Learn/Wizard
     echo "构建镜像"
     docker build -t my-wizard .
 }
@@ -12,6 +13,7 @@ init(){
 }
 
 start(){
+    cd /home/microk8s/code/Learn/Wizard
     docker run -d \
         --name my-wizard \
         -p 0.0.0.0:8080:80 \
@@ -53,7 +55,7 @@ reset_data(){
 case "$1" in
     "start"|"s")
         build;
-        init;
+        # init;
         start;
         ;;
     "bak")

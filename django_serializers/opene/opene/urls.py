@@ -18,7 +18,8 @@ from django.urls import path, include
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    path(r'api/', include('otest.urls')),
+    # path(r'api/', include('otest.urls')),
+    path(r'ms/', include('ms.urls')),
 ]
 
 from django.conf import settings

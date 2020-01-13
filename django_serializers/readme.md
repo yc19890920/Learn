@@ -13,6 +13,8 @@ cd /home/python/git/django2
 
 mysql -uroot -p123456
 CREATE DATABASE test DEFAULT CHARACTER SET UTF8;
+create user 'test'@'%' identified by '123456';
+GRANT ALL ON test.* TO 'test'@'%';
 flush  privileges;
 
 /home/python/pyenv/versions/opene/bin/python /home/python/Learn/django_serializers/opene/manage.py startapp test

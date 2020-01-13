@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # 'rest_framework_swagger',
 
     'otest',
+    'ms',
 ]
 
 MIDDLEWARE = [
@@ -94,12 +95,22 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'test',                      # Or path to database file if using sqlite3.
-        'USER': 'root',                      # Not used with sqlite3.
+        'USER': 'opene',                      # Not used with sqlite3.
         'PASSWORD': '123456',                  # Not used with sqlite3.
         'HOST': '127.0.0.1',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '3306',                      # Set to empty string for default. Not used with sqlite3.
     },
+    'slave': {
+        'ENGINE': 'django.db.backends.mysql',
+        # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'test',  # Or path to database file if using sqlite3.
+        'USER': 'opene',  # Not used with sqlite3.
+        'PASSWORD': '123456',  # Not used with sqlite3.
+        'HOST': '127.0.0.1',  # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '6033',  # Set to empty string for default. Not used with sqlite3.
+    },
 }
+DATABASE_ROUTERS = ['opene.router.MyRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
