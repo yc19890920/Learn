@@ -1,3 +1,75 @@
+- [Django DB router for stateful master-slave replication](https://github.com/yandex/django_replicated)
+
+重写了 django_replicated 装饰器方法，其他还是使用默认的即可。 
+改写了方法，支持django rest 增加装饰器（支持函数、rest视图），控制主备使用。
+```
+"""
+"""
+扩展了 django_replicated 方式，支持django rest 增加装饰器（支持函数、rest视图），控制主备使用。
+其他设置还是参考 django_replicated 进行设置即可。
+参考链接：  https://github.com/yandex/django_replicated
+"""
+from django.utils.decorators import method_decorator
+from django_replicated.decorators import use_master, use_slave
+
+# 默认不支持有写的操作，一般不会用到整个装饰器，默认就是使用master
+use_master = method_decorator(use_master)
+# 只有整个函数或视图是涉及到只有查询操作才使用，或者部分走这个装饰器, 
+# 假如被装饰的函数或视图包含 transaction.atomic()， 则 此处里面的还是走 master(or default).
+use_slave = method_decorator(use_slave)
+
+# 使用： 
+@use_master
+def func(*args, **kw):
+    pass
+    
+@use_slave
+def func(*args, **kw):
+    pass
+```
+
+settings设置：
+```
+# setting文件开头引入
+from django_replicated.settings import *
+
+DATABASES {
+    'default': {
+        # ENGINE, HOST, etc.
+    },
+    'slave': {
+        # ENGINE, HOST, etc.
+    },
+}
+
+# List of slave database aliases. Default database is always master
+REPLICATED_DATABASE_SLAVES = ['slave']
+# Enable or disable state checking on writes
+REPLICATED_CHECK_STATE_ON_WRITE = True
+DATABASE_ROUTERS = ['django_replicated.router.ReplicationRouter']
+# ------------------------------------
+```
+
+假如使用全局的设置，则增加：
+```
+MIDDLEWARE_CLASSES = [
+    ...
+    'django_replicated.middleware.ReplicationMiddleware',
+    ...
+]
+```
+
+查看使用是否生效：
+```
+# 主库
+tcpdump -i lo -nnA "host 127.0.0.1 and port 3306"
+# 备库
+tcpdump -i lo -nnA "host 127.0.0.1 and port 6033"
+```
+
+
+
+
 ## 数据读写分离，总结以下5种情况需要注意（使用了主从数据库主要注意前面3点， 其他可以在代码中意识到，是不是需要考虑）。
 ### 1. 边写边读：
 边写边读，即先create之后，再filter查询当前记录，然后更新查询的当前记录会报错（NoneType）。 查询时指定 using('default') 不会报错。————因为从数据库还没有更新数据库。
@@ -11,7 +83,7 @@ with transaction.atomic():
     tag = Tag.objects.create(name=str(random.randint(1,10000)))
     # 此处 tag.save() 会报错， 查询当前记录使用 slave 数据库, 会报NoneType错误。 ————因为从数据库还没有更新数据库。
     # 处理这种情况时，直接注释下面这行代码，或者指定  using('default')
-    tag = Tag.objects.filter(pk=tag.id).first()
+    # tag = Tag.objects.filter(pk=tag.id).first()
     tag.name = str(random.randint(1,10000))
     tag.save()
     print(tag.name)
@@ -19,7 +91,7 @@ with transaction.atomic():
 
 ### 2. 更新关联对象：
 ```
-print("6. 跨数据库更新关系。会报错。查询加了 using('default')不会报错。")
+print("6. 跨数据库更新关系。会报错。查询加了 using('default')不会报错。")  或者 不是以对象的方式更新，而是关联ID
 tags = Tag.objects.filter(name__icontains="杨城").using("default")
 # tags = Tag.objects.filter(name__icontains="杨城")
 with transaction.atomic():
@@ -31,6 +103,7 @@ with transaction.atomic():
     # File "/home/python/pyenv/versions/opene/lib/python3.6/site-packages/django/db/models/fields/related_descriptors.py", line 219, in __set__
     # raise ValueError('Cannot assign "%r": the current database router prevents this relation.' % value)
     a.tag = tags[0]
+    # a.tag_id = tags[0].id
     a.save()
     for tag in tags:
         tag.count = F("count") - 1

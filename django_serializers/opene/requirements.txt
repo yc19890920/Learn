@@ -19,3 +19,4 @@ redis==2.10.6
 requests==2.22.0
 uritemplate==3.0.0
 urllib3==1.25.7
+django-replicated==2.6.1

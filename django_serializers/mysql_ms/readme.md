@@ -39,13 +39,13 @@ read_only = on
 \#super_read_only = on
 \#tx_read_only = on
 
-让此台mysql运行在8306端口上，且mysql编号为2
+让此台mysql运行在 6033 端口上，且mysql编号为2
 
 创建docker容器
 docker run --name mysql-slave -e MYSQL_ROOT_PASSWORD=123456 -d \
     --network=host \
-    -v /home/python/Learn/django_serializers/mysql_ms/mysql_slave/data:/var/lib/mysql \
-    -v /home/python/Learn/django_serializers/mysql_ms/mysql_slave/mysql.conf.d:/etc/mysql/mysql.conf.d  mysql:5.7.28
+    -v /home/microk8s/code/Learn/django_serializers/mysql_ms/mysql_slave/data:/var/lib/mysql \
+    -v /home/microk8s/code/Learn/django_serializers/mysql_ms/mysql_slave/mysql.conf.d:/etc/mysql/mysql.conf.d  mysql:5.7.28
     
 MYSQL_ROOT_PASSWORD 是创建mysql root用户的密码
 测试，在ubuntu中使用mysql命令尝试连接docker容器中的mysql
@@ -91,7 +91,7 @@ File为使用的日志文件名字，Position为使用的文件位置，这两�
 进入docker中的mysql
 mysql -uroot -p123456 -h 127.0.0.1 --port=6033
 执行
-change master to master_host='127.0.0.1', master_user='slave', master_password='slave',master_log_file='mysql-bin.000002', master_log_pos=10925;
+change master to master_host='127.0.0.1', master_user='slave', master_password='slave',master_log_file='mysql-bin.000002', master_log_pos=127828;
 
 master_host：主服务器Ubuntu的ip地址
 master_log_file: 前面查询到的主服务器日志文件名

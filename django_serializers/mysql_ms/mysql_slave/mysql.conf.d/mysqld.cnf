@@ -15,7 +15,7 @@
 # This will be passed to all mysql clients
 # It has been reported that passwords should be enclosed with ticks/quotes
 # escpecially if they contain "#" chars...
-# Remember to edit /etc/mysql/debian.cnf when chportanging the socket location.
+# Remember to edit /etc/mysql/debian.cnf when changing the socket location.
 
 # Here is entries for some specific programs
 # The following values assume you have at least 32M ram
@@ -37,12 +37,14 @@ datadir		= /var/lib/mysql
 tmpdir		= /tmp
 lc-messages-dir	= /usr/share/mysql
 skip-external-locking
+collation-server = utf8_unicode_ci
+init-connect='SET NAMES utf8'
+character-set-server = utf8
 #
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
-# bind-address		= 127.0.0.1
-bind-address          = 0.0.0.0
-
+#bind-address		= 127.0.0.1
+bind-address           = 0.0.0.0
 #
 # * Fine Tuning
 #
@@ -54,7 +56,7 @@ thread_cache_size       = 8
 # the first time they are touched
 myisam-recover-options  = BACKUP
 #max_connections        = 100
-#table_cache            = 64
+#table_open_cache       = 64
 #thread_concurrency     = 10
 #
 # * Query Cache Configuration
@@ -67,15 +69,17 @@ query_cache_size        = 16M
 # Both location gets rotated by the cronjob.
 # Be aware that this log type is a performance killer.
 # As of 5.1 you can enable the log at runtime!
-#general_log_file        = /var/log/mysql/mysql.log
-general_log             = 0
+general_log_file        = /var/log/mysql/mysql.log
+#general_log             = 1
+# general_log_file        = 0
 #
 # Error log - should be very few entries.
 #
 log_error = /var/log/mysql/error.log
 #
 # Here you can see queries with especially long duration
-#log_slow_queries	= /var/log/mysql/mysql-slow.log
+#slow_query_log		= 1
+#slow_query_log_file	= /var/log/mysql/mysql-slow.log
 #long_query_time = 2
 #log-queries-not-using-indexes
 #
@@ -104,9 +108,3 @@ max_binlog_size   = 100M
 # ssl-ca=/etc/mysql/cacert.pem
 # ssl-cert=/etc/mysql/server-cert.pem
 # ssl-key=/etc/mysql/server-key.pem
-
-
-#数据库只读
-# read_only = on
-#super_read_only = on
-#tx_read_only = on

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from django_replicated.settings import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -95,22 +96,43 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'test',                      # Or path to database file if using sqlite3.
-        'USER': 'opene',                      # Not used with sqlite3.
+        'USER': 'root',                      # Not used with sqlite3.
         'PASSWORD': '123456',                  # Not used with sqlite3.
         'HOST': '127.0.0.1',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '3306',                      # Set to empty string for default. Not used with sqlite3.
+    },
+    'master': {
+        'ENGINE': 'django.db.backends.mysql',
+        # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'test',  # Or path to database file if using sqlite3.
+        'USER': 'root',  # Not used with sqlite3.
+        'PASSWORD': '123456',  # Not used with sqlite3.
+        'HOST': '127.0.0.1',  # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '3306',  # Set to empty string for default. Not used with sqlite3.
     },
     'slave': {
         'ENGINE': 'django.db.backends.mysql',
         # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'test',  # Or path to database file if using sqlite3.
-        'USER': 'opene',  # Not used with sqlite3.
+        'USER': 'root',  # Not used with sqlite3.
         'PASSWORD': '123456',  # Not used with sqlite3.
         'HOST': '127.0.0.1',  # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '6033',  # Set to empty string for default. Not used with sqlite3.
     },
 }
-DATABASE_ROUTERS = ['opene.router.MyRouter']
+# ------------------------------------
+# Cache backend name to store database state
+REPLICATED_CACHE_BACKEND = None
+# Timeout for dead databases alive check
+REPLICATED_DATABASE_DOWNTIME = 60
+# List of slave database aliases. Default database is always master
+REPLICATED_DATABASE_SLAVES = ['slave']
+# Enable or disable state checking on writes
+REPLICATED_CHECK_STATE_ON_WRITE = True
+REPLICATED_CHECK_STATE_ON_WRITE = False
+DATABASE_ROUTERS = ['django_replicated.router.ReplicationRouter']
+# ------------------------------------
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

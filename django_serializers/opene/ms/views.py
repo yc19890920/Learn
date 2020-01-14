@@ -8,6 +8,8 @@ from ms.serializers import TagSerializer, CategorySerializer, ArticleSerializer,
 import random
 import uuid
 from django.db import connections, connection
+# from django_replicated.decorators import use_master, use_slave
+from opene.multdb.decorators import use_master, use_slave
 
 class TagViewset(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
@@ -25,6 +27,7 @@ class ArticleViewset(viewsets.ModelViewSet):
     permission_classes = ()
 
     @action(detail=False, methods=['GET'], url_path='test', permission_classes=())
+    # @rest_use_slave
     def test(self, request):
         """  测试事物
 
@@ -72,9 +75,10 @@ class ArticleViewset(viewsets.ModelViewSet):
         """
 
         try:
-            Tag.objects.create(name="杨城11")
-        except:
-            pass
+            # Tag.objects.create(name="杨城11")
+            Category.objects.create(name="杨城aaa")
+        except Exception as e:
+            print(e)
 
         print("# 1. 不用事物的一个表的查询更新。")
         tag = Tag.objects.filter(id=1).first()
@@ -102,7 +106,7 @@ class ArticleViewset(viewsets.ModelViewSet):
             category = Category.objects.filter(name="杨城").first()
             Article.objects.filter(tag=tag, category=category).update(title="aaa")
 
-        print("5. 边写边读。会报错。")
+        print("5. 边写边读。会报错。直接用创建的对象再进行不会报错")
         with transaction.atomic():
             tag = Tag.objects.create(name=str(random.randint(1,10000)))
             # tag = Tag.objects.filter(pk=tag.id).first()
@@ -110,15 +114,16 @@ class ArticleViewset(viewsets.ModelViewSet):
             tag.save()
             print(tag.name)
 
-        print("6. 跨数据库更新关系。会报错。查询加了 using('default')不会报错。")
-        tags = Tag.objects.filter(name__icontains="杨城").using("default")
-        # tags = Tag.objects.filter(name__icontains="杨城")
+        print("6. 跨数据库更新关系。会报错。查询加了 using('default')不会报错。或者使用查询到的关联ID进行更新")
+        # tags = Tag.objects.filter(name__icontains="杨城").using("default")
+        tags = Tag.objects.filter(name__icontains="杨城")
         with transaction.atomic():
             a = Article.objects.create(
                 title="1", content="1"
             )
             a.count = F("count") + 1
             a.tag = tags[0]
+            # a.tag_id = tags[0].id
             a.save()
             for tag in tags:
                 tag.count = F("count") - 1
@@ -126,7 +131,7 @@ class ArticleViewset(viewsets.ModelViewSet):
 
         print("7. 跨数据库更新关系。不会会报错。")
         tags = Tag.objects.filter(name__icontains="杨城")
-        art = Article.objects.filter(id=1).first()
+        art = Article.objects.filter(id=2).first()
         art.tag = tags[0]
         art.save()
 
@@ -134,14 +139,15 @@ class ArticleViewset(viewsets.ModelViewSet):
         tags = Tag.objects.filter(name__icontains="杨城")
         Article.objects.filter(id=1).update(tag=tags[0])
 
-        print("9. 跨数据库更新关系。会报错。查询加了 using('default')不会报错。")
-        tags = Tag.objects.filter(name__icontains="杨城").using("default")
-        # tags = Tag.objects.filter(name__icontains="杨城")
+        print("9. 跨数据库更新关系。会报错。查询加了 using('default')不会报错。或者使用关联ID进行更新")
+        # tags = Tag.objects.filter(name__icontains="杨城").using("default")
+        tags = Tag.objects.filter(name__icontains="杨城")
         a = Article.objects.create(
             title="1", content="1"
         )
         a.count = F("count") + 1
         a.tag = tags[0]
+        # a.tag_id = tags[0].id
         a.save()
         for tag in tags:
             tag.count = F("count") - 1
@@ -155,7 +161,6 @@ class ArticleViewset(viewsets.ModelViewSet):
         update ms_tag set name='杨城a' where id=1;
         """
         cr.execute(sql)
-
         return Response("success", status=status.HTTP_200_OK)
 
 
