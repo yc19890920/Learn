@@ -4,7 +4,6 @@
 改写了方法，支持django rest 增加装饰器（支持函数、rest视图），控制主备使用。
 ```
 """
-"""
 扩展了 django_replicated 方式，支持django rest 增加装饰器（支持函数、rest视图），控制主备使用。
 其他设置还是参考 django_replicated 进行设置即可。
 参考链接：  https://github.com/yandex/django_replicated
@@ -26,6 +25,11 @@ def func(*args, **kw):
 @use_slave
 def func(*args, **kw):
     pass
+```
+
+requirements.txt:
+```
+django-replicated==2.6.1
 ```
 
 settings设置：
