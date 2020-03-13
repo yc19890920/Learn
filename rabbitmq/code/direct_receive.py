@@ -28,7 +28,7 @@ print queue_name
 severities = ['info']
 
 for severity in severities:
-    channel.queue_bind(exchange='direct_logs',queue=queue_name,routing_key=severity)
+    channel.queue_bind(exchange='direct_logs',queue=queue_name, routing_key=severity)
 
 print(' [*] Waiting for logs. To exit press CTRL+C')
 
