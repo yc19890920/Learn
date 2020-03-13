@@ -1,0 +1,2 @@
+- [zeromq的三种简单模式（python实现）](https://segmentfault.com/a/1190000012010573)
+ -[python zeromq 使用](https://www.cnblogs.com/skying555/p/8118770.html)
