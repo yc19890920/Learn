@@ -1,0 +1,19 @@
+/home/python/pyenv/versions/scrapy-python/bin/pip
+/home/python/pyenv/versions/scrapy-python/bin/python
+
+## 切换到虚拟环境
+pyenv activate scrapy-python
+
+## 创建项目：
+在scrapy-spider目录下创建tutorial项目
+scrapy startproject tutorial scrapy-spider
+
+or
+
+/home/python/pyenv/versions/2.7.12/envs/scrapy-python/bin/scrapy startproject tutorial scrapy-spider
+
+
+## 启动爬虫
+scrapy crawl huxiu
+or
+/home/python/pyenv/versions/2.7.12/envs/scrapy-python/bin/scrapy crawl huxiu
