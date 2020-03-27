@@ -1,0 +1,43 @@
+
+
+1. python 2.7.10
+/home/python/.pythonbrew/venvs/Python-2.7.10/proj_edm/bin/python
+
+2. 安装3.6.2
+pythonbrew list --know
+
+# pythonbrew install https://www.python.org/ftp/python/3.6.2/Python-3.6.2.tgz
+pythonbrew install /home/python/Python-3.6.2.tgz
+
+pythonbrew venv list
+
+pythonbrew list
+
+pythonbrew venv create python362 -p 3.4.3
+pythonbrew venv create python362 -p 3.6.2
+pythonbrew venv create python354 -p 3.5.4
+
+# 2.7.10
+###    /home/python/.pythonbrew/pythons/ Python-2.7.10/bin/python
+###    /home/python/.pythonbrew/pythons/ Python-2.7.10/bin/pip2.7
+
+# 3.4.3
+###    /home/python/.pythonbrew/pythons/Python-3.4.3/bin/python
+###    /home/python/.pythonbrew/pythons/Python-3.4.3/bin/pip3.4
+/home/python/.pythonbrew/venvs/Python-3.4.3/python343/bin/python
+/home/python/.pythonbrew/venvs/Python-3.4.3/python343/bin/pip
+
+# 3.5.4
+###   /home/python/.pythonbrew/pythons/Python-3.5.4/bin/python
+###   /home/python/.pythonbrew/pythons/Python-3.5.4/bin/pip3.4
+/home/python/.pythonbrew/venvs/Python-3.5.4/python354/bin/python
+/home/python/.pythonbrew/venvs/Python-3.5.4/python354/bin/pip
+
+# 3.6.2
+###    /home/python/.pythonbrew/pythons/Python-3.6.2/bin/python
+###    /home/python/.pythonbrew/pythons/Python-3.6.2/bin/pip3.6
+
+
+
+
+

@@ -1,0 +1,104 @@
+upstream test {
+    # server unix:///path/to/your/mysite/mysite.sock; # for a file socket
+    server 127.0.0.1:9091; # for a web port socket (we'll use this first)
+}
+
+# configuration of the server
+server {
+        # the port your site will be served on
+        listen      80;
+        server_name  bestedm.org www.bestedm.org;
+        rewrite ^ https://$http_host$request_uri? permanent;
+
+        access_log          /home/python/log/dblog_ng;
+        error_log           /home/python/log/dblog_ngerr;
+
+        proxy_connect_timeout    600;
+        proxy_read_timeout       600;
+        proxy_send_timeout       600;
+
+        # max upload size
+        client_max_body_size 50M;
+
+        location ^~ /static/ {
+        #    root /home/python/git/fido/;
+            root /home/python/git/u2f/;
+            if ($query_string) {
+                expires max;
+            }
+        }
+
+        location / {
+            proxy_pass_header Server;
+            proxy_set_header Host $http_host;
+            proxy_redirect off;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Scheme $scheme;
+            proxy_pass http://test;
+        }
+
+
+        #-- Error page setting ---------------------------
+        error_page          404              /404.html;
+        error_page          500 502 503 504  /50x.html;
+        location = /50x.html {
+                 root            /home/python/git/dblog/templates/errpage;
+        }
+        location = /404.html {
+                 root            /home/python/git/dblog/templates/errpage;
+        }
+}
+
+server {
+        # the port your site will be served on
+        listen 443 ssl;
+        ssl on;
+        server_name  bestedm.org www.bestedm.org;
+
+
+        ssl_certificate /etc/nginx/ssl/bestedm.pem;
+        ssl_certificate_key /etc/nginx/ssl/bestedm.key;
+        keepalive_timeout   70;
+
+
+
+        access_log          /home/python/log/dblog_ng;
+        error_log           /home/python/log/dblog_ngerr;
+
+        proxy_connect_timeout    600;
+        proxy_read_timeout       600;
+        proxy_send_timeout       600;
+
+        # max upload size
+        client_max_body_size 50M;
+
+        location ^~ /static/ {
+        #    root /home/python/git/fido/;
+        root /home/python/git/u2f/;
+            if ($query_string) {
+                expires max;
+            }
+        }
+
+        location / {
+            proxy_pass_header Server;
+            proxy_set_header Host $http_host;
+            proxy_redirect off;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Scheme $scheme;
+            proxy_pass http://test;
+        }
+
+
+        #-- Error page setting ---------------------------
+        error_page          404              /404.html;
+        error_page          500 502 503 504  /50x.html;
+        location = /50x.html {
+                 root            /home/python/git/dblog/templates/errpage;
+        }
+        location = /404.html {
+                 root            /home/python/git/dblog/templates/errpage;
+        }
+}
