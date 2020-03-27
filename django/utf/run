@@ -1,0 +1,73 @@
+
+/home/python/pyenv/versions/u2f/bin/python manage.py runserver 0.0.0.0:9091
+
+/home/python/pyenv/versions/u2f/bin/python manage.py makemigrations
+/home/python/pyenv/versions/u2f/bin/python manage.py migrate
+/home/python/pyenv/versions/u2f/bin/python manage.py createsuperuser
+admin/1qaz@WSX
+
+/home/python/pyenv/versions/u2f/bin/python manage.py runserver 0.0.0.0:9091
+
+mysql -h 127.0.0.1 -u root -P 3306 -p
+
+CREATE DATABASE u2f2 DEFAULT CHARACTER SET UTF8;
+create user 'u2f2'@'%' identified by '123456';
+GRANT ALL ON u2f2.* TO 'u2f2'@'%';
+flush  privileges;
+
+
+
+https://pypi.org/project/python-u2flib-server/#history
+https://github.com/khanzf/u2f-django-PoC
+https://developers.yubico.com/U2F/Libraries/Using_a_library.html
+https://developers.yubico.com/python-u2flib-server/
+https://demo.yubico.com/u2f?tab=register
+
+
+
+
+客户端错误代码
+这些是U2F客户端可以返回的错误代码：
+
+1 - OTHER_ERROR
+此处未列举的错误。
+
+2 - BAD_REQUEST
+其中一个原因：
+访问的URL与App ID不匹配。
+App ID不符合App ID的规则。
+使用错误的参数调用U2F API（例如u2f.register，以错误的顺序调用参数）。
+
+3 - CONFIGURATION_UNSUPPORTED
+不支持客户端配置。
+
+4 - DEVICE_INELIGIBLE
+提供的设备不符合此请求的条件。对于注册请求，这可能意味着令牌已经注册，并且对于签名请求，这可能意味着令牌不知道所呈现的密钥句柄。
+
+5 - 超时
+在满足请求之前达到超时。
+
+
+
+
+Client error codes
+These are the error codes that can be returned by a U2F client:
+
+1 - OTHER_ERROR
+An error otherwise not enumerated here.
+
+2 - BAD_REQUEST
+One of the following reasons:
+The visited URL doesn’t match the App ID.
+The App ID does not conform with the rules for App ID’s.
+The U2F API is called with bad parameters (e.g. calling u2f.register with the parameters in the wrong order).
+
+3 - CONFIGURATION_UNSUPPORTED
+Client configuration is not supported.
+
+4 - DEVICE_INELIGIBLE
+The presented device is not eligible for this request. For a registration request this may mean that the token is already registered, and for a sign request it may mean that the token does not know the presented key handle.
+
+5 - TIMEOUT
+Timeout reached before request could be satisfied.
+

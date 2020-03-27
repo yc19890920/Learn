@@ -1,0 +1,13 @@
+asn1crypto==0.24.0
+cffi==1.11.5
+cryptography==2.3
+Django==1.11
+django-argonauts==1.2.0
+enum34==1.1.6
+idna==2.7
+ipaddress==1.0.22
+MySQL-python==1.2.5
+pycparser==2.18
+python-u2flib-server==4.0.1
+pytz==2018.5
+six==1.11.0

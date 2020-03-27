@@ -1,0 +1,9 @@
+U2F（yubico）
+
+https://developers.yubico.com/U2F/Libraries/Using_a_library.html
+https://developers.yubico.com/python-u2flib-server/
+https://demo.yubico.com/u2f?tab=register
+
+目前
+只支持谷歌浏览器
+只支持https
