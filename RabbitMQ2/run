@@ -1,0 +1,23 @@
+管理服务
+可以使用 rabbitmqctl 或系统服务 service 或者 systemctl 来管理.
+
+sudo rabbitmqctl [status|start|stop|reset]
+sudo systemctl [status|start|stop|restart] rabbitmq-server
+sudo service rabbitmq-server [status|start|stop|restart]
+
+
+$ sudo rabbitmqctl help |grep user
+    add_user <username> <password>  # 创建用户
+    delete_user <username>          # 删除用户
+    change_password <username> <newpassword>  # 修改密码
+    clear_password <username>                 # 清楚密码，直接登录
+    authenticate_user <username> <password>   # 测试用户认证（我也不知道2333）
+    set_user_tags <username> <tag> ...        # 设置用户权限 []
+    list_users
+    set_permissions [-p <vhost>] <user> <conf> <write> <read>
+    clear_permissions [-p <vhost>] <username>
+    list_user_permissions <username>
+
+
+
+/home/python/pyenv/versions/rabbitmq/bin/python
