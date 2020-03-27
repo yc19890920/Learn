@@ -6,7 +6,7 @@ bs4==0.0.1
 celery==4.1.0
 cffi==1.11.4
 cryptography
-Django==1.11.3
+Django==1.11.28
 django-debug-toolbar==1.9.1
 django-redis==4.8.0
 djangorestframework==3.7.3
