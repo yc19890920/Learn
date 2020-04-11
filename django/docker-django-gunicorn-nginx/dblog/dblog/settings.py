@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = ')ld$-iyr13g_0%rw_^gi+$6y&-52!gj7zhh=%=(b8^#6b!vzc0'
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", ')ld$-iyr13g_0%rw_^gi+$6y&-52!gj7zhh=%=(b8^#6b!vzc0')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
@@ -30,7 +30,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 DEBUG = int(os.environ.get("DJANGO_DEBUG", 0))
 
 # ALLOWED_HOSTS = ["0.0.0.0", "192.168.181.130", "192.168.181.131", "192.168.1.24", "djangoblog.com", "gundjangoblog.com", "ychzp.top", 'www.ychzp.top', 'www.djangoblog.com']
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", '* 192.168.1.24 127.0.0.1').split(" ")
 
 # Application definition
 
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     # 'debug_toolbar',
     'auditlog',
     "rest_framework",
@@ -55,7 +55,7 @@ INSTALLED_APPS = [
 ]
 
 # debug_toolbar
-INTERNAL_IPS = ('127.0.0.1',) #测试环境是在本机
+INTERNAL_IPS = ('127.0.0.1',)  # 测试环境是在本机
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -65,7 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
+
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'middleware.x_forwarded_for.XForwardedForMiddleware',
     'auditlog.middleware.AuditlogMiddleware',
@@ -95,22 +95,20 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'dblog.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 DATABASES = {
     "default": {
-        "ENGINE":   os.environ.get( "SQL_ENGINE", "django.db.backends.sqlite3" ),
-        "NAME":     os.environ.get( "SQL_DATABASE", os.path.join( BASE_DIR, "db.sqlite3" ) ),
-        "USER":     os.environ.get( "SQL_USER", "user" ),
-        "PASSWORD": os.environ.get( "SQL_PASSWORD", "password" ),
-        "HOST":     os.environ.get( "SQL_HOST", "localhost" ),
-        "PORT":     os.environ.get( "SQL_PORT", "3306" ),
+        "ENGINE": os.environ.get("DB_DFT_ENGINE", "django.db.backends.mysql"),
+        "NAME": os.environ.get("DB_DFT_DATABASE", os.path.join(BASE_DIR, "dblog")),
+        "USER": os.environ.get("DB_DFT_USERNAME", "root"),
+        "PASSWORD": os.environ.get("DB_DFT_PASSWORD", "123456"),
+        "HOST": os.environ.get("DB_DFT_HOSTNAME", "192.168.1.24"),
+        "PORT": os.environ.get("DB_DFT_PORT", 3306),
     }
-    
+
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
     #     'NAME': 'dblog',                      # Or path to database file if using sqlite3.
@@ -127,7 +125,7 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         # "LOCATION": "redis://127.0.0.1:6379",
-        "LOCATION": os.environ.get( "REDIS_HOSTS", "redis://127.0.0.1:6379" ),
+        "LOCATION": os.environ.get("DJANGO_CACHE_REDIS", "redis://192.168.1.24:6379"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "PARSER_CLASS": "redis.connection.HiredisParser",
@@ -135,23 +133,22 @@ CACHES = {
     }
 }
 
-
 # ---------------------------
 # restful
 REST_FRAMEWORK = {
     ## Setting the pagination style  分页
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
-    
+
     # Use hyperlinked styles by default.
     # Only used if the `serializer_class` attribute is not set on a view.
     'DEFAULT_MODEL_SERIALIZER_CLASS':
-                                'rest_framework.serializers.HyperlinkedModelSerializer',
-    
+        'rest_framework.serializers.HyperlinkedModelSerializer',
+
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
         'rest_framework.permissions.IsAdminUser',
     ]
 }
@@ -195,8 +192,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-#USE_X_FORWARDED_HOST = True
-#FORCE_SCRIPT_NAME = '/operation'
+# USE_X_FORWARDED_HOST = True
+# FORCE_SCRIPT_NAME = '/operation'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -206,7 +203,7 @@ USE_TZ = True
 
 MEDIA_URL = '/media/'
 # MEDIA_URL = os.path.join(BASE_DIR,'media')
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/'
 # STATIC_PATH = os.path.join(BASE_DIR, 'static')
@@ -215,7 +212,6 @@ STATICFILES_DIRS = (
     # MEDIA_ROOT,
 )
 
-
 # ---------------------------
 
 
@@ -223,18 +219,18 @@ STATICFILES_DIRS = (
 
 # Celery settings
 # CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_BROKER_URL = os.environ.get( "CELERY_REDIS_HOSTS")
+CELERY_BROKER_URL = os.environ.get("CELERY_REDIS_HOSTS", "redis://192.168.1.24:6379/0")
 # CELERY_REDIS_HOSTS = os.environ.get( "CELERY_REDIS_HOSTS", "redis://localhost:6379/0" )
-CELERY_REDIS_HOSTS = os.environ.get( "CELERY_REDIS_HOSTS")
+CELERY_REDIS_HOSTS = os.environ.get("CELERY_REDIS_HOSTS", "redis://192.168.1.24:6379/0")
 #: Only add pickle to this list if your broker is secured
 #: from unwanted access (see userguide/security.html)
-CELERY_DEFAULT_QUEUE =  'dblog:celery' # 	默认队列
-CELERY_ACCEPT_CONTENT = ["json"]            # 指定任务接受的内容类型.
+CELERY_DEFAULT_QUEUE = 'dblog:celery'  # 默认队列
+CELERY_ACCEPT_CONTENT = ["json"]  # 指定任务接受的内容类型.
 # CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 # CELERY_RESULT_BACKEND = os.environ.get( "CELERY_REDIS_HOSTS", "redis://localhost:6379/0" )
-CELERY_RESULT_BACKEND = os.environ.get( "CELERY_REDIS_HOSTS")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_REDIS_HOSTS", "redis://192.168.1.24:6379/0")
 CELERY_TASK_SERIALIZER = 'json'
-CELERY_TASK_RESULT_EXPIRES = 60 * 5 * 1   # 指定任务过期时间 1小时
+CELERY_TASK_RESULT_EXPIRES = 60 * 5 * 1  # 指定任务过期时间 1小时
 CELERY_ENABLE_UTC = True
 CELERY_TIMEZONE = TIME_ZONE
 
@@ -250,7 +246,6 @@ EMAIL_PORT = 25
 EMAIL_USE_TLS = True
 
 """
-
 
 """
 # 编写日志配置
@@ -319,4 +314,3 @@ LOGGING = {
     }
 }
 """
-
