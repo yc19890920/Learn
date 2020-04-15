@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 build(){
-    cd /home/microk8s/code/Learn/Wizard
+    cd /home/microk8s/code/edm/Learn/Wizard
     echo "构建镜像"
     docker build -t my-wizard .
 }
@@ -13,7 +13,7 @@ init(){
 }
 
 start(){
-    cd /home/microk8s/code/Learn/Wizard
+    cd /home/microk8s/code/edm/Learn/Wizard
     docker run -d \
         --name my-wizard \
         -p 0.0.0.0:8080:80 \
@@ -39,7 +39,8 @@ bak_data(){
     启用修改
     flush  privileges;
 EOF
-
+    
+    cd /home/microk8s/code/edm/Learn/Wizard
     echo "备份数据"
     echo " mysqldump -u wizard -P 3306 -p wizard_2 > $(pwd)/my-wizard.sql"
     mysqldump -u wizard -P 3306 -p wizard_2 > $(pwd)/my-wizard.sql
@@ -47,6 +48,7 @@ EOF
 }
 
 reset_data(){
+    cd /home/microk8s/code/edm/Learn/Wizard
     echo "还原数据"
     echo " mysql -u root -p wizard_2 < $(pwd)/my-wizard.sql"
     mysql -u root -p wizard_2 < $(pwd)/my-wizard.sql
