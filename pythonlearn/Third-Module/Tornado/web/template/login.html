@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tor 运维管理平台</title>
+
+    <!-- Core CSS - Include with every page -->
+    <link rel="stylesheet" href="{{ static_url("admin/css/bootstrap.min.css") }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ static_url("admin/font-awesome/css/font-awesome.css") }}" type="text/css"/>
+    <!-- SB Admin CSS - Include with every page -->
+    <link rel="stylesheet" href="{{ static_url("admin/css/sb-admin.css") }}" type="text/css"/>
+
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">请登录</h3>
+                </div>
+                <div class="panel-body">
+                    <form action="/" method="post" accept-charset="utf-8" id="form_login">
+                        <fieldset>
+
+                            {% if error %}
+                            <div class="alert alert-danger">
+                                <a class="close" data-dismiss="alert">×</a>
+                                {{ handler.error_message[str(error)]}}
+                            </div>
+                            {% end %}
+
+                            {% raw xsrf_form_html() %}
+
+                            <div class="form-group">
+                                <input class="form-control" placeholder="用户名" name="username" autofocus>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="密码" name="password" type="password" value="">
+                            </div>
+                            <input type="submit" class="btn btn-lg btn-success btn-block" value="请登录">
+
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Core Scripts - Include with every page -->
+<script src="{{ static_url("admin/js/jquery-1.10.2.js") }}"></script>
+<script src="{{ static_url("admin/js/bootstrap.min.js") }}"></script>
+<script src="{{ static_url("admin/js/plugins/metisMenu/jquery.metisMenu.js") }}"></script>
+<script src="{{ static_url("admin/js/sb-admin.js") }}"></script>
+
+</body>
+
+</html>

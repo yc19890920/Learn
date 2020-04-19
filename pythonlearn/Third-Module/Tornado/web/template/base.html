@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Tor 运维管理平台{% end %}</title>
+
+    <!-- Core CSS - Include with every page -->
+    <link rel="stylesheet" href="{{ static_url("admin/css/bootstrap.min.css") }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ static_url("admin/font-awesome/css/font-awesome.css") }}" type="text/css"/>
+
+    {% block page-level-css %}{% end %}
+    {% block css-block %}{% end %}
+
+    <!-- SB Admin CSS - Include with every page -->
+    <link rel="stylesheet" href="{{ static_url("admin/css/sb-admin.css") }}" type="text/css"/>
+
+    <!-- Core Scripts - Include with every page -->
+    <script src="{{ static_url("admin/js/jquery-1.10.2.js") }}"></script>
+    <script src="{{ static_url("admin/js/bootstrap.min.js") }}"></script>
+    <script src="{{ static_url("admin/js/plugins/metisMenu/jquery.metisMenu.js") }}"></script>
+    <script src="{{ static_url("admin/js/notify.min.js") }}"></script>
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Tor 运维管理平台</a>
+            <div class="notifications top-left"></div>
+
+        </div>
+        <!-- /.navbar-header -->
+
+        <ul class="nav navbar-top-links navbar-right">
+
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i>退出登录</a></li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+        <!-- /.navbar-top-links -->
+
+        <div class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li {% block server_core_menu %}{% end %}>
+                        <a href="#"><i class="fa fa-wrench fa-fw"></i> 权限管理<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#">权限管理</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- /#side-menu -->
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
+
+
+    <!-- Page Content -->
+    <div id="page-wrapper">
+
+        <div class="container-fluid">
+
+            <!-- /.row -->
+            {% block content %}
+            {% end %}
+
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
+
+
+</div>
+<!-- /#wrapper -->
+
+<!-- Page-Level Plugin Scripts -->
+{% block page-level-js%}{% end %}
+
+{% block js-block %}{% end %}
+
+<!-- SB Admin Scripts - Include with every page -->
+<script src="{{ static_url("admin/js/sb-admin.js") }}"></script>
+
+{% block customjs %}   {% end %}
+
+
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>PBL_killer: IPS</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/offcanvas.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="/static/js/html5shiv.min.js"></script>
+      <script src="/static/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">PBL Killer</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/ips/umail">U-mail IP</a></li>
+                    <li class="active"><a href="/ips">客户IP</a></li>
+                    <li><a href="/report">反馈</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row row-offcanvas row-offcanvas-right">
+
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+          <div class="list-group">
+            <a href="#" class="list-group-item active">Link</a>
+            {%for company in data_list%}
+            <a class="list-group-item" href="#"><span class="badge">{{company['num']}}</span> {{company['name']}}</a>
+            {%end%}
+          </div>
+        </div><!--/span-->
+
+        <div class="col-xs-12 col-sm-9">
+            <div class="row">
+
+
+            </div>
+
+
+
+            <div class="row">
+                <form action="" id="id_form" method="POST">
+                        <input type="hidden" name="pool_id">
+                        <a class="btn btn-primary" href="http://202.103.191.86:8000/ms/pool_add">添加地址池</a>
+                        <a class="btn btn-primary" href="http://202.103.191.86:8000/ms/import_history">导入记录查询</a>
+                        <a class="btn btn-primary" href="http://202.103.191.86:8000/ms/unsubscribe_history_list">退订历史</a>
+                        <a class="btn btn-primary" href="Javascript:MergePool();">合并地址池</a>
+                        <a class="btn btn-danger" href="Javascript:BatchDelPool();">批量删除</a>
+
+                        <table class="table table-bordered table-hover">
+                            <caption><h3>IP列表</h3></caption>
+                            <tbody><tr>
+                                <th><input type="checkbox" id="checkall"></th>
+                                <th>IP</th>
+                                <th>创建时间</th>
+                                <th style="width: 350px;">操作</th>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="checkone" value="52b92292eb0a197c5ffe66fc" alt="edm研发团队"></td>
+                                <td>IP</td>
+                                <td>2013-12-24 13:58</td>
+                                <td>
+                                    <a class="btn btn-danger btn-small" href="Javascript:DelPool('52b92292eb0a197c5ffe66fc', 'edm研发团队');">删除</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="pagination-right">
+                            <p>总计：3</p>
+                        </div>
+                </form>
+            </div><!--/row-->
+        </div><!--/span-->
+
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>&copy; U-mail 2014</p>
+      </footer>
+
+    </div><!--/.container-->
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/dist/js/bootstrap.min.js"></script>
+    <script src="/static/js/offcanvas.js"></script>
+  </body>
+</html>
+

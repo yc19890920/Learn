@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>用户列表</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/offcanvas.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/static/js/html5shiv.min.js"></script>
+    <script src="/static/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">PBL Killer</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/ips/umail">U-mail IP</a></li>
+                <li class="active"><a href="/customer">客户IP</a></li>
+                <li><a href="/customer?a=add">添加客户</a></li>
+                <li><a href="/report">反馈</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="row row-offcanvas row-offcanvas-right">
+
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+            <div class="list-group">
+                <a href="/customer" class="list-group-item">客户列表</a>
+                {%for customer in data_list%}
+                <a class="list-group-item" href="/customer/{{customer['name']}}"><span class="badge">{{customer['data_list']['num']}}</span> {{customer['name']}}</a>
+                {%end%}
+            </div>
+        </div><!--/span-->
+
+        <div class="col-xs-12 col-sm-9">
+
+             {%for each in data_list%}
+                    <div class="row">
+                        <form action="/customer" method="post">
+                        <div class="row">{{each['name']}}
+                                <input type="hidden" name="action" size="10" value="delete">
+                                <input type="hidden" name="name" size="10" value="{{each['name']}}">
+                                <input type="submit" VALUE="Del" />
+                        </div>
+                        </form>
+                    {%for ip in each['data_list']['ips']%}
+                        <form action="/ips" method="post">
+                        <input type="hidden" name="action" size="10" value="delete">
+                        <input type="hidden" name="name" size="10" value="{{each['name']}}">
+                        <input type="hidden" name="ip" size="10" value="{{ip}}">
+                            <div class="col-md-4">{{ip}} <span class="badge"><input type="submit" value="D" /></span></div>
+
+                        </form>
+                    {%end%}
+                    </div>
+
+                <hr />
+            {%end%}
+
+        </div><!--/span-->
+
+
+    </div><!--/row-->
+
+    <hr>
+
+    <footer>
+        <p>&copy; U-mail 2014</p>
+    </footer>
+
+</div><!--/.container-->
+
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/dist/js/bootstrap.min.js"></script>
+<script src="/static/js/offcanvas.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+# Config file
+#
+[redis]
+host = 127.0.0.1
+port = 6379
+
+[mysql]
+host   = 127.0.0.1
+port   = 3306
+user   = root
+pass   = XnLaT34LxaQViNB
+dbname = dbname
+
+[pgsql]
+host   = 127.0.0.1
+port   = 3306
+user   = mm-ms
+pass   = 123456
+dbname = mm-ms
+
+# MongoDB 数据库配置
+[mongodb]
+host = localhost
+port = 27017
+dbname = mm-mc
+username = mm-mc
+password = 123456

@@ -1,0 +1,25 @@
+# setting.conf
+#
+
+# Process setting
+importer = {
+    'new_pid'   : '/home/python/mail-import/run/new_import.pid',
+    'new_sock'  : '/home/python/mail-import/run/new_import.sock',
+    'new_log'   : '/home/python/mail-import/log/new_import.log',
+    'new_error' : '/home/python/mail-import/log/new_error.log'
+}
+
+# MySQL setting   dbname:mm-ms
+mysql = {'host': '127.0.0.1', 'port': '3306', 'user': 'edm_web', 'pass': 'XnLaT34LxaQViNB', 'dbname': 'mm-ms'}
+
+# MySQL setting  dbname:mm-pool
+mysql_pool = {'host': '127.0.0.1', 'port': '3306', 'user': 'edm_web', 'pass': 'XnLaT34LxaQViNB', 'dbname': 'mm-pool'}
+
+# MongoDB setting
+mongo = {'host': '127.0.0.1', 'port': '27017', 'user': 'sa', 'pass': 'sa', 'dbname': 'admin'}
+
+
+# PostGresql setting  dbname:mail_relay
+# postgresql = {'host': '192.168.50.51', 'port': '5432', 'user': 'mm-ms', 'pass': '3ViVTOdrA0L2', 'dbname': 'mm-ms'}
+postgresql = {'host': '127.0.0.1', 'port': '5432', 'user': 'postgres', 'pass': '123456', 'dbname': 'mail_relay'}
+

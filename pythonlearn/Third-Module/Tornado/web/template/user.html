@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Learning Python{% end %}
+
+
+{% block content %}
+<h2>Your informations are:</h2>
+<ul>
+    {% for d in users %}
+    <li>username:{{d.username}}</li>
+    <li>password:{{d.password}}</li>
+    <li>email:{{d.email}}</li>
+    {% end %}
+</ul>
+{% end %}

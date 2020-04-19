@@ -1,0 +1,70 @@
+http://www.cnblogs.com/qlshine/p/6036675.html
+
+Django的理解
+Django的核心是 中间件, 所有的请求和响应都会经过中间件
+
+中间件是一个钩子框架, 它们可以介入请求的响应处理过程, 它用于在全局修改Django的输入和输出
+
+Django有以下几个中间件:
+
+    Request中间件
+    view中间件
+    response中间件
+    exception中间件
+
+具体执行流程如图： django_midleware.png
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+]
+
+Django的中间件在项目的settings.py中的MIDDLEWARE中, 客户端每发起一个http请求, 都会从上到下依次经过所有的中间件
+
+    1.None, 表示什么也不做, 继续向下处理这个请求
+    2.返回HttpResponse对象, 不在向下去执行其它的request, view或exception中间件或对应的视图, 它将运用响应阶段的中间件并返回结果.
+
+中间件和应用的顺序
+
+    在请求阶段中，调用视图之前，Django会按照MIDDLEWARE_CLASSES中定义的顺序自顶向下应用中间件。会用到两个钩子：
+
+    process_request()
+    process_view()
+
+    在响应阶段中，调用视图之后，中间件会按照相反的顺序应用，自底向上。会用到三个钩子：
+
+    process_exception() (仅当视图抛出异常的时候)
+    process_template_response() (仅用于模板响应)
+    process_response
+
+关于自己写中间件
+
+我第一次用中间件的需求是要做拦截登录, 通过使用process_view方法, 来判断用户要访问的网页是否需要登录, 是的话直接跳转到登录页, 否则就什么也不做
+
+每个中间件是一个独立的类, 有几下集中方法
+
+    process_request(self, request)
+    执行时机在django接收到request之后, 但仍未解析出url以确定运行哪个视图函数view之前
+    process_view(self, request, view_func, view_args, view_kwargs)
+    执行时机在django执行完request预处理函数并确定待执行的view之后, 但在视图函数view之前
+        request: HttpRequest对象
+        view_fun: 是django将要调用的视图函数, 是真实的函数对象本身
+        view_args: 将传入view的位置参数列表, 不包括request参数
+        view_kwargs: 将传入view的字典参数
+
+    process_response(self, request, response)
+    该方法必须返回HttpResponse对象, 可以是原来的, 也可以是修改后的
+        调用时机在django执行完view函数并生成response之后, 该中间件能修改response的内容, 常见用途比如压缩内容
+        request是request对象
+        response是从view中返回的response对象
+    process_exception(self, request, exception)
+        该方法只有在request处理过程中出了问题并且view函数抛出了一个未捕获的异常才会被调用, 可以用来发送错误通知, 将相关信息输出到日志文件, 或者甚至尝试从错误中自动恢复
+        参数包括request对象, 还有view函数抛出的异常对象exception
+        必须返回None或HttpResponse对象
