@@ -1,3 +1,3 @@
-from .base import Base
-from .user import User
+from .base import Base, SessionLocal
+from .user import User, Item
 from .role import Role
