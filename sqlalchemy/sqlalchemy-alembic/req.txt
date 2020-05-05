@@ -1,0 +1,4 @@
+mysql
+mysql-connector-python
+SQLAlchemy
+alembic
