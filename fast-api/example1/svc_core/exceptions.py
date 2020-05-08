@@ -1,0 +1,2 @@
+class PyJWTError(Exception):
+    pass
