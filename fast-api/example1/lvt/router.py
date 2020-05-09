@@ -1,7 +1,7 @@
 from fastapi import APIRouter
-from svc_api.user import views as user
-from svc_api.helo import views as helo
-from svc_api.rest_jwt import views as jwt
+from app.user import views as user
+from app.helo import views as helo
+from app.rest_jwt import views as jwt
 
 router = APIRouter()
 router.include_router(helo.router, tags=["Hello"], prefix="/helo")

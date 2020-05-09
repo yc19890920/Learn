@@ -1,8 +1,8 @@
 from typing import Callable
 from fastapi import FastAPI
 
-from svc_core.logger import logger
-from svc_db.events import close_db_connection, connect_to_db
+from lvt_core.logger import logger
+from lvt_db.events import close_db_connection, connect_to_db
 
 
 def create_start_app_handler(app: FastAPI) -> Callable:  # type: ignore

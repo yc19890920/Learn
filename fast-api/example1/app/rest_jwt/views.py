@@ -12,10 +12,10 @@ from passlib.context import CryptContext
 from pydantic import BaseModel, ValidationError
 
 # from jwt import PyJWTError
-from svc_core.exceptions import PyJWTError
-from svc_api.rest_jwt.schems import Token, TokenData, User, UserInDB
-from svc_api.rest_jwt.models import fake_users_db
-from svc.settings import SECRET_KEY, JWT_ALGORITHM, JWT_ACCESS_TOKEN_EXPIRE_MINUTES
+from lvt_core.exceptions import PyJWTError
+from app.rest_jwt.schems import Token, TokenData, User, UserInDB
+from app.rest_jwt.models import fake_users_db
+from lvt.settings import SECRET_KEY, JWT_ALGORITHM, JWT_ACCESS_TOKEN_EXPIRE_MINUTES
 
 router = APIRouter()
 

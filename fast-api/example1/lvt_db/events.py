@@ -1,8 +1,8 @@
 import aiomysql
 from fastapi import FastAPI
 
-from svc_core.logger import logger
-from svc.settings import MAX_CONNECTIONS_COUNT, MIN_CONNECTIONS_COUNT
+from lvt_core.logger import logger
+from lvt.settings import MAX_CONNECTIONS_COUNT, MIN_CONNECTIONS_COUNT
 
 
 async def connect_to_db(app: FastAPI) -> None:
