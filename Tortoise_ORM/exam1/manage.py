@@ -8,11 +8,10 @@ from tortoise.utils import get_schema_sql
 import settings
 
 init(autoreset=True)
-MIGRATIONS_DIR = os.path.join(settings.BASE_DIR, 'migrations')
-if not os.path.exists(MIGRATIONS_DIR):
-    os.mkdir(MIGRATIONS_DIR)
-NEW_SCHEMA_FILE = os.path.join(MIGRATIONS_DIR, 'schema_new.sql')
-OLD_SCHEMA_FILE = os.path.join(MIGRATIONS_DIR, 'schema_old.sql')
+DB_DIR = os.path.join(settings.BASE_DIR, 'db')
+MIGRATIONS_DIR = os.path.join(DB_DIR, 'migrations')
+NEW_SCHEMA_FILE = os.path.join(DB_DIR, 'new_schema.sql')
+OLD_SCHEMA_FILE = os.path.join(DB_DIR, 'old_schema.sql')
 
 parser = argparse.ArgumentParser()
 
@@ -35,8 +34,8 @@ async def makemigrations(args):
         with open(OLD_SCHEMA_FILE, 'w') as f:
             f.write(new_sql)
     # 生成升级sql和降级sql
-    up_sql = os.popen(f'schemalex {OLD_SCHEMA_FILE} {NEW_SCHEMA_FILE}').read()
-    down_sql = os.popen(f'schemalex {NEW_SCHEMA_FILE} {OLD_SCHEMA_FILE}').read()
+    up_sql = os.popen(f'/usr/local/bin/schemalex {OLD_SCHEMA_FILE} {NEW_SCHEMA_FILE}').read()
+    down_sql = os.popen(f'/usr/local/bin/schemalex {NEW_SCHEMA_FILE} {OLD_SCHEMA_FILE}').read()
     if up_sql == down_sql:
         os.unlink(NEW_SCHEMA_FILE)
         print(Fore.BLUE + 'No changes detected')
@@ -59,12 +58,12 @@ async def makemigrations(args):
 
 
 async def migrate(args):
-    ret = os.popen('dbmate migrate').read()
+    ret = os.popen('/usr/local/bin/dbmate migrate').read()
     print(Fore.GREEN + ret)
 
 
 async def rollback(args):
-    ret = os.popen('dbmate rollback').read()
+    ret = os.popen('/usr/local/bin/dbmate rollback').read()
     print(Fore.GREEN + ret)
 
 

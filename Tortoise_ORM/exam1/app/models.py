@@ -14,6 +14,7 @@ class Tournament(Model):
         table = "tournament"
         # Set this to generate a comment message for the table being created for the current model
         table_description = "Tournament"
+        indexes = (("created_at", "updated_at"),)
         # indexes=(("field_a", "field_b"), ("field_c", "field_d", "field_e")
         # unique_together=(("field_a", "field_b"), ("field_c", "field_d", "field_e"))
         # ordering = ["name", "-score"]
@@ -48,7 +49,8 @@ class Team(Model):
     updated_at = fields.DatetimeField(auto_now_add=True, description="修改时间")
     # new add raise error after you have execute Tortoise.init
     # you should use
-    # description = fields.TextField(null=True, description="描述")
+    description = fields.TextField(null=True, description="描述")
+    description3 = fields.TextField(null=True, description="描述")
 
     class Meta:
         table = "team"
