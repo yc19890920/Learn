@@ -17,7 +17,7 @@
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `event` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
+  `name` varchar(64) NOT NULL,
   `prize` decimal(10,2) DEFAULT NULL,
   `created_at` datetime(6) NOT NULL COMMENT '创建时间',
   `updated_at` datetime(6) NOT NULL COMMENT '修改时间',
@@ -64,11 +64,10 @@ CREATE TABLE `schema_migrations` (
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `team` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
+  `name` varchar(64) NOT NULL,
   `created_at` datetime(6) NOT NULL COMMENT '创建时间',
   `updated_at` datetime(6) NOT NULL COMMENT '修改时间',
   `description` longtext COMMENT '描述',
-  `description3` longtext COMMENT '描述',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='Team';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -114,5 +113,6 @@ LOCK TABLES `schema_migrations` WRITE;
 INSERT INTO `schema_migrations` (version) VALUES
   ('20200523081959'),
   ('20200523083225'),
-  ('20200523083305');
+  ('20200523083305'),
+  ('20200523083720');
 UNLOCK TABLES;

@@ -9,6 +9,7 @@ $ sudo chmod +x /usr/local/bin/dbmate
 /home/python/.pyenv/versions/fastapi/bin/python main.py 
 
 /home/python/.pyenv/versions/fastapi/bin/python manage.py makemigrations --name tournament
+/home/python/.pyenv/versions/fastapi/bin/python manage.py makemigrations --name name_max_length_64
 
 /home/python/.pyenv/versions/fastapi/bin/python manage.py migrate
 

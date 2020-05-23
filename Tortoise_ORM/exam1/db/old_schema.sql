@@ -1,10 +1,9 @@
 CREATE TABLE `team` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(64) NOT NULL,
     `created_at` DATETIME(6) NOT NULL  COMMENT '创建时间',
     `updated_at` DATETIME(6) NOT NULL  COMMENT '修改时间',
-    `description` LONGTEXT   COMMENT '描述',
-    `description3` LONGTEXT   COMMENT '描述'
+    `description` LONGTEXT   COMMENT '描述'
 ) CHARACTER SET utf8mb4 COMMENT='Team';
 CREATE TABLE `tournament` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'id',
@@ -16,7 +15,7 @@ CREATE TABLE `tournament` (
 ) CHARACTER SET utf8mb4 COMMENT='Tournament';
 CREATE TABLE `event` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(64) NOT NULL,
     `prize` DECIMAL(10,2),
     `created_at` DATETIME(6) NOT NULL  COMMENT '创建时间',
     `updated_at` DATETIME(6) NOT NULL  COMMENT '修改时间',

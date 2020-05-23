@@ -25,7 +25,7 @@ class Tournament(Model):
 
 class Event(Model):
     id = fields.IntField(pk=True)
-    name = fields.CharField(max_length=255)
+    name = fields.CharField(max_length=64)
     # References to other models are defined in format
     # "{app_name}.{model_name}" - where {app_name} is defined in tortoise config
     tournament = fields.ForeignKeyField("models.Tournament", related_name='events')
@@ -44,13 +44,12 @@ class Event(Model):
 
 class Team(Model):
     id = fields.IntField(pk=True)
-    name = fields.CharField(max_length=255)
+    name = fields.CharField(max_length=64)
     created_at = fields.DatetimeField(auto_now=True, description="创建时间")
     updated_at = fields.DatetimeField(auto_now_add=True, description="修改时间")
     # new add raise error after you have execute Tortoise.init
     # you should use
     description = fields.TextField(null=True, description="描述")
-    description3 = fields.TextField(null=True, description="描述")
 
     class Meta:
         table = "team"
