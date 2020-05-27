@@ -8,6 +8,9 @@ from lvt.router import router as api_router
 from lvt_core.events import create_start_app_handler, create_stop_app_handler
 from lvt_core.errors.http import http_error_handler
 from lvt_core.errors.validation import http422_error_handler
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from fastapi.openapi.utils import get_openapi
 
 
 def get_application() -> FastAPI:
@@ -20,6 +23,24 @@ def get_application() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    # 生成的OpenAPI模式
+    def custom_openapi():
+        if application.openapi_schema:
+            return application.openapi_schema
+        openapi_schema = get_openapi(
+            title="Custom title",
+            version="2.5.0",
+            description="This is a very custom OpenAPI schema",
+            routes=application.routes,
+        )
+        openapi_schema["info"]["x-logo"] = {
+            "url": "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
+        }
+        application.openapi_schema = openapi_schema
+        return application.openapi_schema
+
+    application.openapi = custom_openapi
 
     # 注册应用事件的处理，默认的启动和关闭的监听
     application.add_event_handler("startup", create_start_app_handler(application))
