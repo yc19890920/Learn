@@ -1,4 +1,4 @@
-Django==2.2.5
+Django==2.2.24
 django-haystack==2.8.1
 djangorestframework==3.9.4
 drf-haystack==1.8.5
