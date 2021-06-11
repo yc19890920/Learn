@@ -1,2 +1,2 @@
-websockets==8.0
+websockets==9.1
 ansi2html==1.5.2
