@@ -58,7 +58,7 @@ six==1.11.0
 SQLAlchemy==1.2.7
 sqlalchemy-aio==0.12.0
 tornado==5.0.2
-ujson==1.35
+ujson==5.2.0
 uvloop==0.10.1
 watchdog==0.8.3
 websockets==5.0.1
