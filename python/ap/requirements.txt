@@ -40,7 +40,7 @@ python-paginate==0.3.7
 pytz==2018.4
 PyYAML==3.12
 Represent==1.5.1
-sanic==0.7.0
+sanic==20.12.7
 Sanic-Auth==0.2.0
 sanic-compress==0.1.1
 Sanic-Cors==0.9.3
