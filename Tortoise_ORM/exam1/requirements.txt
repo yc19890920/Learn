@@ -22,7 +22,7 @@ idna==2.9
 iso8601==0.1.12
 jwt==1.0.0
 loguru==0.4.1
-Mako==1.1.2
+Mako==1.2.2
 MarkupSafe==1.1.1
 multidict==4.7.5
 mysql==0.0.2
